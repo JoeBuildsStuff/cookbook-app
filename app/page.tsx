@@ -1,16 +1,13 @@
 import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
 
 export default async function Page() {
-
   const supabase = await createClient()
+  const { data: { session } } = await supabase.auth.getSession()
 
-  const { data: fruits } = await supabase.from('fruits').select()
-
-  return (
-    <ul>
-      {fruits?.map((fruit) => (
-        <li key={fruit.id}>{fruit.name}</li>
-      ))}
-    </ul>
-  )
+  if (session) {
+    redirect('/dashboard')
+  } else {
+    redirect('/marketing')
+  }
 }
