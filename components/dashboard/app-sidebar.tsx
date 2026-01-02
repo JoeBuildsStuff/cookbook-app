@@ -57,7 +57,7 @@ export function AppSidebar() {
     },
     {
       label: "Notes",
-      href: "#",
+      href: "/dashboard/notes",
       icon: FileText,
       action: handleCreateNote,
       actionAriaLabel: "Create new note",

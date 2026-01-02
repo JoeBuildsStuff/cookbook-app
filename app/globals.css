@@ -117,9 +117,264 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50 font-thin tracking-wide;
   }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: hsl(var(--muted-foreground));
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Code block */
+.prose .code-block {
+  position: relative;
+}
+
+.prose .code-block select {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+.prose .code-block pre {
+  padding-top: 4rem;
+}
+
+.prose pre {
+  @apply bg-muted;
+  font-family: 'JetBrainsMono', monospace;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+pre code {
+  color: inherit;
+  padding: 0;
+  background: none;
+  font-size: 0.8rem;
+}
+
+pre .hljs-comment,
+pre .hljs-quote {
+  @apply dark:text-neutral-500 text-neutral-800;
+  font-style: italic;
+}
+
+pre .hljs-variable,
+pre .hljs-template-variable,
+pre .hljs-strong,
+pre .hljs-emphasis,
+pre .hljs-quote,
+pre .hljs-tag,
+pre .hljs-name,
+pre .hljs-link,
+pre .hljs-regexp,
+pre .hljs-deletion,
+pre .hljs-selector-id,
+pre .hljs-selector-class,
+pre .hljs-selector-attr,
+pre .re .hljs-selector-pseudo {
+  @apply dark:text-rose-300 text-rose-700;
+}
+
+pre .hljs-literal,
+pre .hljs-number,
+pre .hljs-bullet,
+pre .hljs-type,
+pre .hljs-symbol,
+pre .hljs-meta,
+pre .hljs-link {
+  @apply dark:text-emerald-300 text-emerald-700;
+}
+
+pre .hljs-built_in,
+pre .hljs-class .hljs-title {
+  @apply dark:text-orange-200 text-orange-700;
+}
+
+pre .hljs-string,
+pre .hljs-char,
+pre .hljs-addition,
+pre .hljs-subst {
+  @apply dark:text-blue-300 text-blue-700;
+}
+
+pre .hljs-attr,
+pre .hljs-attribute {
+  @apply dark:text-blue-300 text-blue-700;
+}
+
+pre .hljs-section,
+pre .hljs-title {
+  @apply dark:text-purple-300 text-purple-700;
+}
+
+pre .hljs-keyword,
+pre .hljs-selector-tag {
+  @apply dark:text-blue-300 text-blue-700 ;
+}
+
+pre .hljs-emphasis {
+  font-style: italic;
+}
+
+pre .hljs-strong {
+  font-weight: bold;
+}
+
+/* Custom prose styles for Tiptap */
+.prose code:not(pre > code) {
+  @apply rounded bg-background px-1.5 py-1 font-mono text-sm font-semibold text-muted-foreground;
+}
+
+.prose pre {
+  @apply whitespace-pre overflow-x-auto;
+}
+
+.prose pre code {
+  @apply text-muted-foreground;
+  white-space: pre !important;
+}
+
+.prose code::before,
+.prose code::after {
+  content: '';
+}
+
+.prose table {
+  @apply w-full rounded-lg border border-border overflow-hidden;
+  border-spacing: 0;
+  border-collapse: separate;
+  margin: 1rem 0;
+  min-width: 300px;
+}
+
+.prose th {
+  @apply border-b border-r border-border px-1 py-2 text-left font-semibold text-foreground;
+}
+
+.prose td {
+  @apply border-b border-r border-border bg-transparent px-1 py-2 text-foreground;
+}
+
+/* Remove individual corner rounding on cells */
+.prose th:first-child {
+  /* Remove rounded-tl-lg */
+}
+
+.prose th:last-child,
+.prose td:last-child {
+  @apply border-r-0;
+}
+
+.prose th:last-child {
+  /* Remove rounded-tr-lg */
+}
+
+.prose tr:last-child th,
+.prose tr:last-child td {
+  @apply border-b-0;
+}
+
+/* Tiptap specific table styles - Fixed corners */
+.ProseMirror table {
+  @apply w-full rounded-lg border border-border overflow-hidden;
+  border-spacing: 0;
+  border-collapse: separate;
+  margin: 1rem 0;
+  min-width: 300px;
+}
+
+.ProseMirror th {
+  @apply border-b border-r border-border px-2 py-2 text-left font-semibold text-foreground;
+}
+
+.ProseMirror td {
+  @apply border-b border-r border-border bg-transparent px-2 py-2 text-foreground;
+}
+
+/* Remove individual corner rounding on cells */
+.ProseMirror th:first-child {
+  /* Remove rounded-tl-lg */
+}
+
+.ProseMirror th:last-child,
+.ProseMirror td:last-child {
+  @apply border-r-0;
+}
+
+.ProseMirror th:last-child {
+  /* Remove rounded-tr-lg */
+}
+
+.ProseMirror tr:last-child th,
+.ProseMirror tr:last-child td {
+  @apply border-b-0;
+}
+
+/* Table cell selection */
+.ProseMirror .selectedCell {
+  @apply bg-accent/50;
+}
+
+/* Table header styling */
+.ProseMirror th {
+  @apply bg-muted font-semibold;
+}
+
+/* Ensure table content is visible */
+.ProseMirror table {
+  display: table !important;
+}
+
+.ProseMirror thead {
+  display: table-header-group !important;
+}
+
+.ProseMirror tbody {
+  display: table-row-group !important;
+}
+
+.ProseMirror tr {
+  display: table-row !important;
+}
+
+.ProseMirror th,
+.ProseMirror td {
+  display: table-cell !important;
+  min-width: 100px;
+  padding: 0.5rem 0.5rem;
+}
+
+/* Table placeholder content */
+.ProseMirror th:empty::before {
+  content: 'Header';
+  @apply text-muted-foreground;
+}
+
+.ProseMirror td:empty::before {
+  content: 'Cell';
+  @apply text-muted-foreground;
+}
+
+/* Remove paragraph margins inside table cells */
+.prose th > p,
+.prose td > p {
+  @apply m-0;
+}
+
+.ProseMirror th > p,
+.ProseMirror td > p {
+  @apply m-0;
 }
