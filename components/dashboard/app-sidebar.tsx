@@ -13,7 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Building2, Calendar, Presentation, FileText, ListTodo, Plus, Users } from "lucide-react"
+import { Building2, Calendar, Presentation, File, ListTodo, Plus, Users, Table } from "lucide-react"
 import { SidebarLogo } from "@/components/dashboard/app-sidebar-logo"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -43,6 +43,10 @@ export function AppSidebar() {
     console.log("Create note clicked")
   }
 
+  const handleCreateTable = () => {
+    console.log("Create table clicked")
+  }
+
   const handleCreateDiagram = () => {
     console.log("Create diagram clicked")
   }
@@ -58,9 +62,16 @@ export function AppSidebar() {
     {
       label: "Notes",
       href: "/dashboard/notes",
-      icon: FileText,
+      icon: File,
       action: handleCreateNote,
       actionAriaLabel: "Create new note",
+    },
+    { 
+      label: "Table",
+      href: "/dashboard/table",
+      icon: Table,
+      action: handleCreateTable,
+      actionAriaLabel: "Create new table",
     },
     {
       label: "Tasks",
