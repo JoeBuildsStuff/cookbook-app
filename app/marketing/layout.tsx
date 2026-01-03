@@ -17,7 +17,7 @@ export default function MarketingLayout({
     <main className="flex-1 overflow-auto px-4 grid grid-rows-[auto_1fr] "> 
     <header className="flex h-12 shrink-0 items-center gap-2">
       <div className="flex grow items-center gap-2 justify-between">
-        <Logo icon={Bird} text="Marketing Page Content" />
+        <Logo icon={Bird} text="An App" />
         <div className="ml-auto">
             <AuthButton variant="icon" side="bottom" />
         </div>

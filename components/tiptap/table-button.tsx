@@ -147,7 +147,7 @@ const TableButton = ({ editor, size = 'sm', className = '' }: TableButtonProps) 
                         className="w-full justify-start text-destructive hover:text-destructive"
                     >
                         <div className="mr-1 h-4 w-4 flex items-center justify-center">
-                            <div className="h-[1rem] w-[.4rem] -ml-1 border border-destructive rounded-xs" />
+                            <div className="h-4 w-[.4rem] -ml-1 border border-destructive rounded-xs" />
                         </div>
                         Delete Column
                     </Button>
@@ -180,7 +180,7 @@ const TableButton = ({ editor, size = 'sm', className = '' }: TableButtonProps) 
                         className="w-full justify-start text-destructive hover:text-destructive"
                     >
                         <div className="mr-1 h-4 w-4 flex items-center justify-center">
-                            <div className="h-[.4rem] w-[1rem] -ml-1 border border-destructive rounded-xs" />
+                            <div className="h-[.4rem] w-4 -ml-1 border border-destructive rounded-xs" />
                         </div>
                         Delete Row
                     </Button>

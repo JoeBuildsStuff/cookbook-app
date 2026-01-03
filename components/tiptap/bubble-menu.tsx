@@ -78,7 +78,7 @@ const BubbleMenuComponent = ({ editor }: BubbleMenuProps) => {
                                             {!editorState.isHeading1 && !editorState.isHeading2 && !editorState.isHeading3 && !editorState.isOrderedList && !editorState.isBulletList && !editorState.isCodeBlock && <Type className='' />}
                                         </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent portalled={false} align='start' side='bottom' sideOffset={10} className='text-xs w-[12rem] bg-background'>
+                            <DropdownMenuContent portalled={false} align='start' side='bottom' sideOffset={10} className='text-xs w-48 bg-background'>
                                 <DropdownMenuItem onClick={() => editor.chain().setParagraph().focus().run()}>
                                     <Type className='' />
                                     <span className='text-xs'>Text</span>
@@ -133,7 +133,7 @@ const BubbleMenuComponent = ({ editor }: BubbleMenuProps) => {
                                     {!editorState.isAlignLeft && !editorState.isAlignCenter && !editorState.isAlignRight && <AlignLeft className='' />}
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent portalled={false} align='start' side='bottom' sideOffset={10} className='text-xs w-[10rem] bg-background'>
+                            <DropdownMenuContent portalled={false} align='start' side='bottom' sideOffset={10} className='text-xs w-40 bg-background'>
                                 <DropdownMenuItem onClick={() => editor.chain().setTextAlign('left').focus().run()}>
                                     <AlignLeft className='' />
                                     <span className='text-xs'>Left</span>

@@ -96,7 +96,7 @@ export default function DataTableSortItem<TData>({
       </Popover>
 
       <Select value={direction} onValueChange={(value: "asc" | "desc") => onDirectionChange(id, value)}>
-        <SelectTrigger className="w-[5.25rem]">
+        <SelectTrigger className="w-21">
           <SelectValue placeholder="Sort" />
         </SelectTrigger>
         <SelectContent>

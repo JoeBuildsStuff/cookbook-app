@@ -80,7 +80,7 @@ const FixedMenu = ({ editor }: FixedMenuProps) => {
                                             {!editorState.isHeading1 && !editorState.isHeading2 && !editorState.isHeading3 && !editorState.isOrderedList && !editorState.isBulletList && !editorState.isCodeBlock && <Type className='' />}
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align='start' side='bottom' sideOffset={4} className='text-xs w-[12rem]'>
+                                    <DropdownMenuContent align='start' side='bottom' sideOffset={4} className='text-xs w-48'>
                                         <DropdownMenuItem onClick={() => editor.chain().focus().setParagraph().run()}>
                                             <Type className='' />
                                             <span className='text-xs'>Text</span>
@@ -138,7 +138,7 @@ const FixedMenu = ({ editor }: FixedMenuProps) => {
                                             {!editorState.isAlignLeft && !editorState.isAlignCenter && !editorState.isAlignRight && <AlignLeft className='' />}
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align='start' side='bottom' sideOffset={4} className='text-xs w-[10rem]'>
+                                    <DropdownMenuContent align='start' side='bottom' sideOffset={4} className='text-xs w-40'>
                                         <DropdownMenuItem onClick={() => editor.chain().focus().setTextAlign('left').run()}>
                                             <AlignLeft className='' />
                                             <span className='text-xs'>Left</span>
