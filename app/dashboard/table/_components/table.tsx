@@ -1,9 +1,10 @@
 import { columns } from "./columns"
 import { DataTable } from "@/components/data-table/data-table"
-import { parseSearchParams, SearchParams } from "@/lib/data-table"
+import { dataTableSearchParamsCache, parseDataTableSearchParams } from "@/lib/data-table-search-params"
+import type { SearchParams } from "nuqs/server"
 
 interface DataTableTableProps {
-  searchParams?: SearchParams
+  searchParams: Promise<SearchParams>
 }
 
 const data = [
@@ -18,20 +19,15 @@ const data = [
 ]
 
 export default async function DataTableTable({ 
-  searchParams = {} 
+  searchParams 
 }: DataTableTableProps) {
-  const { pagination } = parseSearchParams(searchParams)
+  // Parse search params using nuqs cache
+  const parsedParams = await dataTableSearchParamsCache.parse(searchParams)
+  
+  // Convert to DataTableState format
+  const initialState = parseDataTableSearchParams(parsedParams)
 
-  const pageCount = Math.ceil((data.length ?? 0) / (pagination?.pageSize ?? 10))
-  const initialState = {
-    ...parseSearchParams(searchParams),
-    // columnVisibility: {
-    //   name: false,
-    //   email: false,
-    // },
-  }
-
-  console.log(initialState)
+  const pageCount = Math.ceil((data.length ?? 0) / (initialState.pagination.pageSize ?? 10))
 
   return (
       <DataTable 

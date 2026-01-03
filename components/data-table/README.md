@@ -31,32 +31,47 @@ export default async function DataTableMeetingsPage({
 The `DataTableMeetings` server component (see `src/app/(workspace)/workspace/meetings/_components/table.tsx`) uses helpers from `@/lib/data-table` to parse the URL state, fetch rows, and provide an `initialState` back to the client table.
 
 ```tsx
-import { parseSearchParams, SearchParams } from "@/lib/data-table"
+import type { SearchParams } from "nuqs/server"
+import {
+  dataTableSearchParamsCache,
+  parseDataTableSearchParams,
+} from "@/lib/data-table-search-params"
 import { getMeetingsList } from "../../meetings/[id]/_lib/queries"
 
 interface DataTableMeetingsProps {
-  searchParams?: SearchParams
+  searchParams: Promise<SearchParams>
 }
 
 export default async function DataTableMeetings({
-  searchParams = {},
+  searchParams,
 }: DataTableMeetingsProps) {
-  const { data, count, error } = await getMeetingsList(searchParams)
-  const { pagination } = parseSearchParams(searchParams)
+  const parsedSearchParams = await dataTableSearchParamsCache.parse(searchParams)
+  const initialState = parseDataTableSearchParams(parsedSearchParams)
+  const { data, count, error } = await getMeetingsList(parsedSearchParams)
 
   // ... pass data + derived state into <DataTable />
 }
 ```
 
-Within the query helpers you can reuse `parseSearchParams` to keep pagination, sorting, and filter logic aligned with the client state:
+Within the query helpers you can reuse `parseDataTableSearchParams` to keep pagination, sorting, and filter logic aligned with the client state:
 
 ```ts
 import { createClient } from "@/lib/supabase/server"
-import { normalizeFilterValue, parseSearchParams, SearchParams } from "@/lib/data-table"
+import {
+  loadDataTableSearchParams,
+  type ParsedDataTableSearchParams,
+  parseDataTableSearchParams,
+} from "@/lib/data-table-search-params"
 
-export async function getMeetingsList(searchParams: SearchParams) {
+export async function getMeetingsList(
+  searchParams: ParsedDataTableSearchParams | URLSearchParams
+) {
   const supabase = await createClient()
-  const { pagination, sorting, columnFilters } = parseSearchParams(searchParams)
+  const parsed =
+    searchParams instanceof URLSearchParams
+      ? loadDataTableSearchParams(searchParams)
+      : searchParams
+  const { pagination, sorting, columnFilters } = parseDataTableSearchParams(parsed)
 
   // ...apply pagination, sorting, filters directly in your Supabase query
 }
@@ -71,9 +86,9 @@ export async function getMeetingsList(searchParams: SearchParams) {
 - `tableKey` – unique key for persisting saved views.
 - Optional CRUD handlers (`createAction`, `updateActionSingle`, `updateActionMulti`, `deleteAction`) and custom add/edit forms.
 
-Whenever the client component mutates table state, it serializes the new values with `serializeTableState` and merges them into the current `searchParams` via `router.replace`. This keeps the URL authoritative for future requests.
+Whenever the client component mutates table state, it serializes the new values with `serializeDataTableState` (see `lib/data-table-search-params.ts`) and merges them into the current `searchParams` via `router.replace`. This keeps the URL authoritative for future requests.
 
 ## Tips
-- Use the `SearchParams` type exported from `@/lib/data-table` for strong typing on server components.
+- Use the `SearchParams` type from `nuqs/server` for strong typing on server components.
 - Adjust default column visibility or page size by merging values into the `initialState` you pass down.
 - Because the table performs manual sorting/pagination/filtering, ensure your data fetcher respects the parsed state when querying Supabase.

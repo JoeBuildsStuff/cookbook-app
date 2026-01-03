@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { useRouter, useSearchParams, usePathname } from "next/navigation"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -15,6 +14,26 @@ import {
   useReactTable,
   PaginationState,
 } from "@tanstack/react-table"
+import {
+  useQueryStates,
+  parseAsInteger,
+  parseAsString,
+  parseAsJson,
+} from "nuqs"
+
+/**
+ * Validator functions for JSON parsers
+ * These return the value if valid, or null if invalid
+ */
+function isValidColumnFiltersState(value: unknown): ColumnFiltersState | null {
+  return Array.isArray(value) ? value as ColumnFiltersState : null;
+}
+
+function isValidVisibilityState(value: unknown): VisibilityState | null {
+  return value !== null && typeof value === "object" && !Array.isArray(value) 
+    ? value as VisibilityState 
+    : null;
+}
 
 import {
   Table,
@@ -28,10 +47,9 @@ import {
 import { DataTablePagination } from "./data-table-pagination"
 import DataTableToolbar from "./data-table-toolbar"
 import { 
-  DataTableState, 
-  serializeTableState, 
-  updateSearchParams 
+  DataTableState,
 } from "@/lib/data-table"
+import { serializeDataTableState, parseDataTableSearchParams } from "@/lib/data-table-search-params"
 
 /**
  * Props for the DataTable component
@@ -120,28 +138,48 @@ export function DataTable<TData, TValue>({
   customEditFormSingle,
   customEditFormMulti,
 }: DataTableInternalProps<TData, TValue>) {
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  // Use nuqs to manage URL search params
+  const [searchParams, setSearchParams] = useQueryStates(
+    {
+      page: parseAsInteger.withDefault(1),
+      pageSize: parseAsInteger.withDefault(50),
+      sort: parseAsString,
+      filters: parseAsJson<ColumnFiltersState>(isValidColumnFiltersState),
+      visibility: parseAsJson<VisibilityState>(isValidVisibilityState),
+      order: parseAsString,
+    },
+    {
+      history: "push",
+      shallow: false,
+    }
+  )
 
+  // Parse search params into table state
+  const parsedState = React.useMemo(() => {
+    return parseDataTableSearchParams(searchParams)
+  }, [searchParams])
+
+  // Initialize state from URL params or initial state
   const [sorting, setSorting] = React.useState<SortingState>(
-    initialState?.sorting ?? []
+    parsedState.sorting.length > 0 ? parsedState.sorting : (initialState?.sorting ?? [])
   )
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    initialState?.columnFilters ?? []
+    parsedState.columnFilters.length > 0 ? parsedState.columnFilters : (initialState?.columnFilters ?? [])
   )
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>(
-    initialState?.columnVisibility ?? {}
+    Object.keys(parsedState.columnVisibility).length > 0 ? parsedState.columnVisibility : (initialState?.columnVisibility ?? {})
   )
   const [rowSelection, setRowSelection] = React.useState({})
   const [pagination, setPagination] = React.useState<PaginationState>(
-    initialState?.pagination ?? { pageIndex: 0, pageSize: 10 }
+    parsedState.pagination.pageIndex !== 0 || parsedState.pagination.pageSize !== 50
+      ? parsedState.pagination
+      : (initialState?.pagination ?? { pageIndex: 0, pageSize: 10 })
   )
   const [columnOrder, setColumnOrder] = React.useState<string[]>(
-    initialState?.columnOrder ?? []
+    parsedState.columnOrder.length > 0 ? parsedState.columnOrder : (initialState?.columnOrder ?? [])
   )
 
-  // Sync state changes to URL
+  // Sync state changes to URL using nuqs
   React.useEffect(() => {
     const currentState: DataTableState = {
       pagination,
@@ -151,17 +189,21 @@ export function DataTable<TData, TValue>({
       columnOrder,
     }
 
-    const newParams = serializeTableState(currentState)
-    const updatedSearchParams = updateSearchParams(searchParams, newParams)
+    const serializedParams = serializeDataTableState(currentState)
     
-    // Only update URL if parameters actually changed
-    const currentUrl = `${pathname}?${searchParams.toString()}`
-    const newUrl = `${pathname}?${updatedSearchParams.toString()}`
-    
-    if (currentUrl !== newUrl) {
-      router.replace(newUrl, { scroll: false })
+    // Only update if there are actual changes
+    const hasChanges = 
+      serializedParams.page !== searchParams.page ||
+      serializedParams.pageSize !== searchParams.pageSize ||
+      serializedParams.sort !== searchParams.sort ||
+      JSON.stringify(serializedParams.filters) !== JSON.stringify(searchParams.filters) ||
+      JSON.stringify(serializedParams.visibility) !== JSON.stringify(searchParams.visibility) ||
+      serializedParams.order !== searchParams.order
+
+    if (hasChanges) {
+      setSearchParams(serializedParams)
     }
-  }, [pagination, sorting, columnFilters, columnVisibility, columnOrder, router, pathname, searchParams])
+  }, [pagination, sorting, columnFilters, columnVisibility, columnOrder, searchParams, setSearchParams])
 
   const table = useReactTable({
     data,
