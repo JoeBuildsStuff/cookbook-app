@@ -1,35 +1,16 @@
 import { columns, type DataTableRow } from "./columns"
 import { DataTable } from "@/components/data-table/data-table"
-import { dataTableSearchParamsCache, parseDataTableSearchParams } from "@/lib/data-table-search-params"
-import type { SearchParams } from "nuqs/server"
-import rawData from "./data.json"
+import type { DataTableState } from "@/lib/data-table"
+import { Contact } from "../_lib/validations"
+import { getContacts } from "../_lib/queries"
 
 interface DataTableTableProps {
-  searchParams: Promise<SearchParams>
-}
-
-type RawDataItem = {
-  idx: number
-  id: string
-  created_at: string
-  updated_at: string
-  first_name: string
-  last_name: string
-  nickname: string | null
-  primary_email: string
-  primary_phone: string
-  company: string
-  job_title: string
-  birthday: string
-  notes: string
-  is_favorite: boolean
-  tags: string[]
-  display_name: string
+  initialState: DataTableState
 }
 
 // Transform the JSON data to match the table structure
-function transformData(rawData: RawDataItem[]): DataTableRow[] {
-  return rawData.map((item) => {
+function transformData(data: Contact[]): DataTableRow[] {
+  return data.map((item) => {
     // Calculate age from birthday
     const calculateAge = (birthday: string): number => {
       const birthDate = new Date(birthday)
@@ -74,33 +55,28 @@ function transformData(rawData: RawDataItem[]): DataTableRow[] {
   })
 }
 
-const data = transformData(rawData)
+export default async function DataTableTable({ initialState }: DataTableTableProps) {
+  // Fetch contacts with server-side filtering, sorting, and pagination
+  const { data, count, error } = await getContacts({
+    pagination: initialState.pagination,
+    sorting: initialState.sorting,
+    columnFilters: initialState.columnFilters,
+  })
 
-export default async function DataTableTable({ 
-  searchParams 
-}: DataTableTableProps) {
-  // Parse search params using nuqs cache
-  const parsedParams = await dataTableSearchParamsCache.parse(searchParams)
-  
-  // Convert to DataTableState format
-  const parsedInitialState = parseDataTableSearchParams(parsedParams)
-  
-  // Set initial column visibility - hide idx and id columns by default
-  const initialState = {
-    ...parsedInitialState,
-    columnVisibility: {
-      ...parsedInitialState.columnVisibility,
-      idx: false,
-      id: false,
-    },
+  if (error) {
+    console.error(error)
+    return <div>Error: {error.message}</div>
   }
 
-  const pageCount = Math.ceil((data.length ?? 0) / (initialState.pagination.pageSize ?? 10))
+  const transformedData = transformData(data)
+
+  // Calculate page count from total count
+  const pageCount = Math.ceil((count ?? 0) / (initialState.pagination.pageSize ?? 10))
 
   return (
       <DataTable 
         columns={columns} 
-        data={data} 
+        data={transformedData} 
         pageCount={pageCount}
         initialState={initialState}
         tableKey="table-1"
