@@ -13,7 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Building2, Calendar, Presentation, File, ListTodo, Plus, Users, Table } from "lucide-react"
+import { File, Plus, Table2 } from "lucide-react"
 import { SidebarLogo } from "@/components/dashboard/app-sidebar-logo"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -23,22 +23,6 @@ import { AuthButton } from "@/components/auth-button"
 export function AppSidebar() {
   const pathname = usePathname()
 
-  const handleCreateMeeting = () => {
-    console.log("Create meeting clicked")
-  }
-
-  const handleCreateContact = () => {
-    console.log("Create contact clicked")
-  }
-
-  const handleCreateCompany = () => {
-    console.log("Create company clicked")
-  }
-
-  const handleCreateTask = () => {
-    console.log("Create task clicked")
-  }
-
   const handleCreateNote = () => {
     console.log("Create note clicked")
   }
@@ -47,18 +31,7 @@ export function AppSidebar() {
     console.log("Create table clicked")
   }
 
-  const handleCreateDiagram = () => {
-    console.log("Create diagram clicked")
-  }
-
   const navigationItems = [
-    {
-      label: "Diagrams",
-      href: "#",
-      icon: Presentation,
-      action: handleCreateDiagram,
-      actionAriaLabel: "Create new diagram",
-    },
     {
       label: "Notes",
       href: "/dashboard/notes",
@@ -69,37 +42,9 @@ export function AppSidebar() {
     { 
       label: "Table",
       href: "/dashboard/table",
-      icon: Table,
+      icon: Table2,
       action: handleCreateTable,
       actionAriaLabel: "Create new table",
-    },
-    {
-      label: "Tasks",
-      href: "#",
-      icon: ListTodo,
-      action: handleCreateTask,
-      actionAriaLabel: "Create new task",
-    },
-    {
-      label: "Meetings",
-      href: "#",
-      icon: Calendar,
-      action: handleCreateMeeting,
-      actionAriaLabel: "Create new meeting",
-    },
-    {
-      label: "Contacts",
-      href: "#",
-      icon: Users,
-      action: handleCreateContact,
-      actionAriaLabel: "Create new contact",
-    },
-    {
-      label: "Companies",
-      href: "#",
-      icon: Building2,
-      action: handleCreateCompany,
-      actionAriaLabel: "Create new company",
     },
   ]
 
@@ -118,7 +63,7 @@ export function AppSidebar() {
             <SidebarGroupContent>
               <SidebarMenu>
                 {navigationItems.map((item) => (
-                  <SidebarMenuItem key={item.href}>
+                  <SidebarMenuItem key={item.href} >
                     <SidebarMenuButton 
                       asChild
                       className={cn(
@@ -134,7 +79,7 @@ export function AppSidebar() {
                       </Link>
                     </SidebarMenuButton>
                     {item.action && (
-                      <SidebarMenuAction asChild>
+                      <SidebarMenuAction asChild showOnHover={true}>
                         <button
                           onClick={item.action}
                           className="disabled:cursor-not-allowed text-muted-foreground hover:text-foreground"

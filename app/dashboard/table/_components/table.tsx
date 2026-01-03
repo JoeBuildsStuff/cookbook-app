@@ -11,10 +11,14 @@ const data = [
   {
     name: "John Doe",
     email: "john.doe@example.com",
+    age: 25,
+    registered: "2024-01-01",
   },
   {
     name: "Jane Doe",
     email: "jane.doe@example.com",
+    age: 26,
+    registered: "2024-01-02",
   },
 ]
 
