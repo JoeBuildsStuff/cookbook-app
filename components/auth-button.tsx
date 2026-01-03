@@ -2,7 +2,9 @@
 
 import {
   ChevronsUpDown,
+  Home,
   Laptop2,
+  LayoutDashboard,
   LogIn,
   LogOut,
   Moon,
@@ -94,7 +96,7 @@ export function AuthButton({ variant = "full", side }: AuthButtonProps) {
             Sign In
           </Link>
         </Button>
-        <Button size="sm" asChild>
+        <Button variant="outline" size="sm" asChild>
           <Link href="/signup">
             Sign Up
           </Link>
@@ -130,6 +132,15 @@ export function AuthButton({ variant = "full", side }: AuthButtonProps) {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
+            <DropdownMenuItem 
+              asChild
+              className="cursor-pointer"
+            >
+              <Link href="/dashboard">
+                <LayoutDashboard />
+                Dashboard
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger className="flex items-center gap-2 justify-between">
                 {getThemeIcon(theme)}
@@ -194,6 +205,15 @@ export function AuthButton({ variant = "full", side }: AuthButtonProps) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
           <DropdownMenuSub>
+          <DropdownMenuItem 
+              asChild
+              className="cursor-pointer"
+            >
+              <Link href="/marketing">
+                <Home />
+                Home Page
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuSubTrigger className="flex items-center gap-2 justify-between">
               {getThemeIcon(theme)}
               <span>Theme</span>
