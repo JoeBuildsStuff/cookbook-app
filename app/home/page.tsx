@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-export default function MarketingPage() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8">
+    <div className="flex flex-col items-center justify-center py-8">
       <main className="max-w-4xl w-full space-y-12">
         {/* Hero Section */}
         <section className="text-center space-y-6">

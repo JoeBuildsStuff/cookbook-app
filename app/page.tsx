@@ -8,6 +8,6 @@ export default async function Page() {
   if (session) {
     redirect('/dashboard')
   } else {
-    redirect('/marketing')
+    redirect('/home')
   }
 }

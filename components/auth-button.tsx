@@ -157,6 +157,7 @@ export function AuthButton({ variant = "full", side }: AuthButtonProps) {
               </DropdownMenuPortal>
             </DropdownMenuSub>
           </DropdownMenuGroup>
+          <DropdownMenuSeparator />
           <DropdownMenuItem 
             onClick={handleAuthAction}
             className="cursor-pointer"
@@ -209,7 +210,7 @@ export function AuthButton({ variant = "full", side }: AuthButtonProps) {
               asChild
               className="cursor-pointer"
             >
-              <Link href="/marketing">
+              <Link href="/home">
                 <Home />
                 Home Page
               </Link>
@@ -229,6 +230,7 @@ export function AuthButton({ variant = "full", side }: AuthButtonProps) {
             </DropdownMenuPortal>
             </DropdownMenuSub>
           </DropdownMenuGroup>
+          <DropdownMenuSeparator />
             <DropdownMenuItem 
               onClick={handleAuthAction}
               className="cursor-pointer"
