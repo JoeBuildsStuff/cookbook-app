@@ -8,7 +8,9 @@ Accepted
 
 When filters or sorts were removed, the URL parameters weren't cleared. On page refresh, the old parameters would be re-read and re-applied, causing removed filters/sorts to reappear. This broke user expectations - removing a filter should persist that removal.
 
-The `nuqs` library manages URL search parameters, but we needed to understand how to properly remove parameters when state becomes empty.
+Additionally, when navigating backward in pagination (e.g., from page 2 to page 1), the `page` parameter wasn't being removed from the URL. This caused the URL to still show `?page=2` even though the table was displaying page 1, and on refresh it would jump back to page 2.
+
+The `nuqs` library manages URL search parameters, but we needed to understand how to properly remove parameters when state becomes empty or returns to default values.
 
 ## Decision
 
@@ -18,10 +20,20 @@ We explicitly set parameters to `null` when arrays/objects are empty, rather tha
 ```typescript
 // In data-table.tsx useEffect
 const updateParams = { ...serializedParams } as {
+  page?: number | null;
+  pageSize?: number | null;
   sort?: string | null;
   filters?: ColumnFiltersState | null;
   visibility?: VisibilityState | null;
   order?: string | null;
+}
+// Remove page param when going to page 1 (index 0)
+if (pagination.pageIndex === 0 && searchParams.page) {
+  updateParams.page = null
+}
+// Remove pageSize param when it's the default (50)
+if (pagination.pageSize === 50 && searchParams.pageSize) {
+  updateParams.pageSize = null
 }
 if (sorting.length === 0) updateParams.sort = null
 if (columnFilters.length === 0) updateParams.filters = null

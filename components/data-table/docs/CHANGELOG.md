@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Sync loops prevented by removing local state dependencies from URL sync effect
 - Removed unused `keysToRemove` array calculation
+- Pagination component now uses live state props (`pagination`, `rowSelection`) instead of polling `table.getState()` (following ADR-0001 pattern)
+- Backward pagination now properly updates URL when navigating to page 1 (page param is explicitly removed)
+- Pagination buttons now correctly enable/disable based on live pagination state
+- Selected row count now displays correctly using live `rowSelection` state
 
 ### Known Issues
 - Potential double-fetch when URL parameters update (see ADR-0003)

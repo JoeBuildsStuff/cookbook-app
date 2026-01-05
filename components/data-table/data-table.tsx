@@ -199,8 +199,12 @@ export function DataTable<TData, TValue>({
     const serializedParams = serializeDataTableState(currentState)
 
     // Only update if there are actual changes
+    // Handle page param: undefined means page 1 (should be removed from URL if it exists)
+    const currentPage = pagination.pageIndex === 0 ? undefined : pagination.pageIndex + 1
+    const hasPageChange = currentPage !== searchParams.page
+    
     const hasChanges = 
-      serializedParams.page !== searchParams.page ||
+      hasPageChange ||
       serializedParams.pageSize !== searchParams.pageSize ||
       serializedParams.sort !== searchParams.sort ||
       JSON.stringify(serializedParams.filters) !== JSON.stringify(searchParams.filters) ||
@@ -212,12 +216,26 @@ export function DataTable<TData, TValue>({
       // Pass null to remove keys from URL
       // Use explicit type casting to allow nulls for removal
       const updateParams = { ...serializedParams } as {
-        page?: number;
-        pageSize?: number;
+        page?: number | null;
+        pageSize?: number | null;
         sort?: string | null;
         filters?: ColumnFiltersState | null;
         visibility?: VisibilityState | null;
         order?: string | null;
+      }
+      // Explicitly handle page param: set to null when going to page 1, or set the value when on other pages
+      if (pagination.pageIndex === 0) {
+        // Remove page param when going to page 1 (index 0) if it exists in URL
+        if (searchParams.page) {
+          updateParams.page = null
+        }
+      } else {
+        // Ensure page is set when not on page 1
+        updateParams.page = pagination.pageIndex + 1
+      }
+      // Remove pageSize param when it's the default (50)
+      if (pagination.pageSize === 50 && searchParams.pageSize) {
+        updateParams.pageSize = null
       }
       if (sorting.length === 0) updateParams.sort = null
       if (columnFilters.length === 0) updateParams.filters = null
@@ -357,7 +375,11 @@ export function DataTable<TData, TValue>({
         </div>
         
         <div className="pt-2">
-            <DataTablePagination table={table} />
+            <DataTablePagination 
+              table={table} 
+              pagination={pagination}
+              rowSelection={rowSelection}
+            />
         </div>
     </div>
     </DataTableSortingContext.Provider>

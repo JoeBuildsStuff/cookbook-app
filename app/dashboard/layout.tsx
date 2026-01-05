@@ -23,7 +23,7 @@ children: React.ReactNode;
   return (  
     <SidebarProvider> 
       <AppSidebar /> 
-      <main className="flex-1 overflow-auto px-4 grid grid-rows-[auto_1fr] "> 
+      <main className="flex-1 overflow-auto px-4 grid grid-rows-[auto_1fr]"> 
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex grow items-center gap-2 ">
             <SidebarTrigger className="-ml-1" /> 

@@ -18,16 +18,18 @@ The table components were polling `table.getState()` to check for changes, which
 We implemented a prop-based state passing strategy combined with React Context:
 
 1. **Prop-based flow for filters**: Pass `columnFilters` state from `DataTable` → `DataTableToolbar` → `DataTableFilter` & `DataTableCommandFilter`
-2. **Context-based flow for sorting**: Create `DataTableSortingContext` to share sorting state with deeply nested column headers
-3. **Remove polling**: Modified components to consume live state props/context instead of polling `table.getState()`
+2. **Prop-based flow for pagination**: Pass `pagination` and `rowSelection` state from `DataTable` → `DataTablePagination`
+3. **Context-based flow for sorting**: Create `DataTableSortingContext` to share sorting state with deeply nested column headers
+4. **Remove polling**: Modified components to consume live state props/context instead of polling `table.getState()`
 
 **Files Modified**:
-- `data-table.tsx`: Added state props to toolbar, wrapped table in context provider
+- `data-table.tsx`: Added state props to toolbar and pagination, wrapped table in context provider
 - `data-table-toolbar.tsx`: Accepts and forwards `sorting` and `columnFilters` props
 - `data-table-sort.tsx`: Consumes `sorting` prop for badge count and sync logic
 - `data-table-filter.tsx`: Consumes `columnFilters` prop for badge count and sync logic
 - `data-table-column-header.tsx`: Uses `useDataTableSorting()` hook to show sort direction
 - `data-table-command-filter.tsx`: Consumes `columnFilters` prop for real-time pill updates
+- `data-table-pagination.tsx`: Consumes `pagination` and `rowSelection` props for live state display
 - `data-table-context.tsx`: New context provider for sorting state
 
 ## Consequences
