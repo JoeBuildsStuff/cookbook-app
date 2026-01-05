@@ -312,7 +312,11 @@ export function DataTable<TData, TValue>({
 
   return (
     <DataTableSortingContext.Provider value={sorting}>
-    <div className="">
+      {/* TODO: is this the best way to have the table take up the full height of the container with the toolbar and pagination as the header and footer?
+      I'm concerned with the <div className="h-[calc(100vh-10rem)]"> being as teh -10rem is hardcoded and perhaps we have use for not having the table take up
+      the full height of the page? */}
+    <div className="h-[calc(100vh-10rem)]">
+      {/* table controls and toolbar */}
         <div className="pb-2 ">
             <DataTableToolbar 
               table={table} 
@@ -329,8 +333,10 @@ export function DataTable<TData, TValue>({
             />
         </div>
 
-        <div className="rounded-md border">
+        {/* table */}
+        <div className="rounded-md border h-full overflow-auto">
             <Table>
+              {/* TODO: I want the column header to be fixed so the table contents scroll bellow it */}
                 <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id}>
@@ -374,6 +380,7 @@ export function DataTable<TData, TValue>({
             </Table>
         </div>
         
+        {/* pagination */}
         <div className="pt-2">
             <DataTablePagination 
               table={table} 
