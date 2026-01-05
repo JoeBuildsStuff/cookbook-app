@@ -27,7 +27,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Table } from "@tanstack/react-table";
+import { ColumnFiltersState, Table } from "@tanstack/react-table";
 import type { ExtendedColumnFilter, FilterVariant, FilterOperator } from "@/lib/data-table";
 
 // Generate a random ID
@@ -35,7 +35,7 @@ function generateId(length: number = 8): string {
   return Math.random().toString(36).substring(2, 2 + length);
 }
 
-export default function DataTableFilter<TData>({ table }: { table: Table<TData> }) {
+export default function DataTableFilter<TData>({ table, columnFilters }: { table: Table<TData>, columnFilters: ColumnFiltersState }) {
   const [filters, setFilters] = useState<ExtendedColumnFilter<TData>[]>([]);
   const [logicalOperator, setLogicalOperator] = useState<"and" | "or">("and");
   const [open, setOpen] = useState(false);
@@ -68,7 +68,7 @@ export default function DataTableFilter<TData>({ table }: { table: Table<TData> 
 
   // Sync filters with table's column filters state
   useEffect(() => {
-    const currentFilters = table.getState().columnFilters;
+    const currentFilters = columnFilters;
     const currentFiltersKey = JSON.stringify(currentFilters);
     
     // Only update if columnFilters actually changed
@@ -134,7 +134,7 @@ export default function DataTableFilter<TData>({ table }: { table: Table<TData> 
         }
       }
     });
-  }, [table, getNextAvailableColumn]);
+  }, [columnFilters, getNextAvailableColumn, table]);
 
   const applyFilters = useCallback(() => {
     // Get valid filters (those with column selected and either have value or are empty/not empty operators)
@@ -244,7 +244,7 @@ export default function DataTableFilter<TData>({ table }: { table: Table<TData> 
   };
 
   // Get the actual number of applied filters from the table state
-  const appliedFilterCount = table.getState().columnFilters.length;
+  const appliedFilterCount = columnFilters.length;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

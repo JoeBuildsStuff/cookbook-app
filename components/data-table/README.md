@@ -92,3 +92,14 @@ Whenever the client component mutates table state, it serializes the new values 
 - Use the `SearchParams` type from `nuqs/server` for strong typing on server components.
 - Adjust default column visibility or page size by merging values into the `initialState` you pass down.
 - Because the table performs manual sorting/pagination/filtering, ensure your data fetcher respects the parsed state when querying Supabase.
+
+## Documentation
+
+- **[CHANGELOG.md](./docs/CHANGELOG.md)**: List of all changes, fixes, and features
+- **[Architecture Decision Records](./docs/decisions/README.md)**: Detailed documentation of architectural decisions and their rationale
+
+Key architectural decisions:
+- State synchronization strategy (props vs context) - [ADR-0001](./docs/decisions/0001-state-synchronization-strategy.md)
+- URL parameter removal strategy - [ADR-0002](./docs/decisions/0002-url-parameter-removal-strategy.md)
+- Server component refresh strategy - [ADR-0003](./docs/decisions/0003-server-refresh-strategy.md)
+- Preventing sync loops - [ADR-0004](./docs/decisions/0004-preventing-sync-loops.md)

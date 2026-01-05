@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useDataTableSorting } from "./data-table-context"
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -24,6 +25,10 @@ export function DataTableColumnHeader<TData, TValue>({
   icon,
   className,
 }: DataTableColumnHeaderProps<TData, TValue>) {
+  const sortingState = useDataTableSorting()
+  const activeSort = sortingState.find((item) => item.id === column.id)
+  const sortDirection = activeSort ? (activeSort.desc ? "desc" : "asc") : column.getIsSorted()
+  
   if (!column.getCanSort()) {
     return (
       <div className={cn("flex items-center gap-2", className)}>
@@ -44,9 +49,9 @@ export function DataTableColumnHeader<TData, TValue>({
           >
             {icon}
             <span>{title}</span>
-            {column.getIsSorted() === "desc" ? (
+            {sortDirection === "desc" ? (
               <ArrowDown />
-            ) : column.getIsSorted() === "asc" ? (
+            ) : sortDirection === "asc" ? (
               <ArrowUp />
             ) : (
               <ChevronsUpDown />

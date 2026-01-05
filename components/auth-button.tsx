@@ -8,7 +8,9 @@ import {
   LogIn,
   LogOut,
   Moon,
+  Settings,
   Sun,
+  User,
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useRouter } from "next/navigation"
@@ -141,6 +143,15 @@ export function AuthButton({ variant = "full", side }: AuthButtonProps) {
                 Dashboard
               </Link>
             </DropdownMenuItem>
+            <DropdownMenuItem 
+              asChild
+              className="cursor-pointer"
+            >
+              <Link href="/dashboard/account-settings/profile">
+                <User />
+                Profile
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger className="flex items-center gap-2 justify-between">
                 {getThemeIcon(theme)}
@@ -206,6 +217,15 @@ export function AuthButton({ variant = "full", side }: AuthButtonProps) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
           <DropdownMenuSub>
+          <DropdownMenuItem 
+              asChild
+              className="cursor-pointer"
+            >
+              <Link href="/dashboard/account-settings/profile">
+                <User />
+                Profile
+              </Link>
+            </DropdownMenuItem>
           <DropdownMenuItem 
               asChild
               className="cursor-pointer"

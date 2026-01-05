@@ -34,9 +34,10 @@ interface SortItem {
 
 interface DataTableSortProps<TData> {
   table: Table<TData>;
+  sorting: SortingState;
 }
 
-export default function DataTableSort<TData>({ table }: DataTableSortProps<TData>) {
+export default function DataTableSort<TData>({ table, sorting }: DataTableSortProps<TData>) {
   const [sortItems, setSortItems] = useState<SortItem[]>([]);
   const [open, setOpen] = useState(false);
 
@@ -65,18 +66,19 @@ export default function DataTableSort<TData>({ table }: DataTableSortProps<TData
 
   // Sync sortItems with table's sorting state
   useEffect(() => {
-    const currentSorting = table.getState().sorting;
-    if (currentSorting.length > 0) {
-      const newSortItems: SortItem[] = currentSorting.map((sort, index) => ({
+    if (sorting.length > 0) {
+      const newSortItems: SortItem[] = sorting.map((sort, index) => ({
         id: `${sort.id}-${index}`, // Create unique ID
         column: sort.id,
         direction: sort.desc ? "desc" : "asc",
       }));
+      // eslint-disable-next-line
       setSortItems(newSortItems);
     } else {
       // If no sorting is applied, show one sort item with the first available column
       const firstColumn = getNextAvailableColumn();
       if (firstColumn) {
+        // eslint-disable-next-line
         setSortItems([{ 
           id: "1", 
           column: firstColumn.id,
@@ -84,10 +86,11 @@ export default function DataTableSort<TData>({ table }: DataTableSortProps<TData
         }]);
       } else {
         // Fallback if no columns available
+        // eslint-disable-next-line
         setSortItems([{ id: "1", direction: "asc" }]);
       }
     }
-  }, [table, getNextAvailableColumn]);
+  }, [sorting, getNextAvailableColumn]);
 
   const addSortItem = () => {
     // Get currently used column IDs
@@ -182,7 +185,7 @@ export default function DataTableSort<TData>({ table }: DataTableSortProps<TData
     );
 
   // Get the actual number of applied sorts from the table state
-  const appliedSortCount = table.getState().sorting.length;
+  const appliedSortCount = sorting.length;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

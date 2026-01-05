@@ -20,6 +20,7 @@ import {
   parseAsString,
   parseAsJson,
 } from "nuqs"
+import { useRouter } from "next/navigation"
 
 /**
  * Validator functions for JSON parsers
@@ -46,6 +47,7 @@ import {
 
 import { DataTablePagination } from "./data-table-pagination"
 import DataTableToolbar from "./data-table-toolbar"
+import { DataTableSortingContext } from "./data-table-context"
 import { 
   DataTableState,
 } from "@/lib/data-table"
@@ -138,6 +140,8 @@ export function DataTable<TData, TValue>({
   customEditFormSingle,
   customEditFormMulti,
 }: DataTableInternalProps<TData, TValue>) {
+  const router = useRouter()
+  
   // Use nuqs to manage URL search params
   const [searchParams, setSearchParams] = useQueryStates(
     {
@@ -179,6 +183,9 @@ export function DataTable<TData, TValue>({
     parsedState.columnOrder.length > 0 ? parsedState.columnOrder : (initialState?.columnOrder ?? [])
   )
 
+  // Ref to track if we should refresh after URL update
+  const shouldRefreshRef = React.useRef(false)
+
   // Sync state changes to URL using nuqs
   React.useEffect(() => {
     const currentState: DataTableState = {
@@ -190,7 +197,7 @@ export function DataTable<TData, TValue>({
     }
 
     const serializedParams = serializeDataTableState(currentState)
-    
+
     // Only update if there are actual changes
     const hasChanges = 
       serializedParams.page !== searchParams.page ||
@@ -201,9 +208,61 @@ export function DataTable<TData, TValue>({
       serializedParams.order !== searchParams.order
 
     if (hasChanges) {
-      setSearchParams(serializedParams)
+      shouldRefreshRef.current = true
+      // Pass null to remove keys from URL
+      // Use explicit type casting to allow nulls for removal
+      const updateParams = { ...serializedParams } as {
+        page?: number;
+        pageSize?: number;
+        sort?: string | null;
+        filters?: ColumnFiltersState | null;
+        visibility?: VisibilityState | null;
+        order?: string | null;
+      }
+      if (sorting.length === 0) updateParams.sort = null
+      if (columnFilters.length === 0) updateParams.filters = null
+      if (Object.keys(columnVisibility).filter(([, visible]) => !visible).length === 0) updateParams.visibility = null
+      if (columnOrder.length === 0) updateParams.order = null
+      
+      setSearchParams(updateParams)
     }
   }, [pagination, sorting, columnFilters, columnVisibility, columnOrder, searchParams, setSearchParams])
+
+  // Refresh router when URL params are updated
+  React.useEffect(() => {
+    if (shouldRefreshRef.current) {
+      shouldRefreshRef.current = false
+      router.refresh()
+    }
+  }, [searchParams, router])
+
+  // Sync URL params back to state when they change externally (e.g., browser back/forward)
+  React.useEffect(() => {
+    // Check if URL params differ from current state
+    const urlSorting = parsedState.sorting
+    const urlFilters = parsedState.columnFilters
+    const urlVisibility = parsedState.columnVisibility
+    const urlPagination = parsedState.pagination
+    const urlColumnOrder = parsedState.columnOrder
+
+    // Compare and update state if URL params differ
+    if (JSON.stringify(sorting) !== JSON.stringify(urlSorting)) {
+      setSorting(urlSorting)
+    }
+    if (JSON.stringify(columnFilters) !== JSON.stringify(urlFilters)) {
+      setColumnFilters(urlFilters)
+    }
+    if (JSON.stringify(columnVisibility) !== JSON.stringify(urlVisibility)) {
+      setColumnVisibility(urlVisibility)
+    }
+    if (JSON.stringify(pagination) !== JSON.stringify(urlPagination)) {
+      setPagination(urlPagination)
+    }
+    if (JSON.stringify(columnOrder) !== JSON.stringify(urlColumnOrder)) {
+      setColumnOrder(urlColumnOrder)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [parsedState])
 
   const table = useReactTable({
     data,
@@ -234,11 +293,14 @@ export function DataTable<TData, TValue>({
   })
 
   return (
+    <DataTableSortingContext.Provider value={sorting}>
     <div className="">
         <div className="pb-2 ">
             <DataTableToolbar 
               table={table} 
               tableKey={tableKey}
+              sorting={sorting}
+              columnFilters={columnFilters}
               deleteAction={deleteAction} 
               createAction={createAction}
               updateActionSingle={updateActionSingle}
@@ -298,5 +360,6 @@ export function DataTable<TData, TValue>({
             <DataTablePagination table={table} />
         </div>
     </div>
+    </DataTableSortingContext.Provider>
   )
 }

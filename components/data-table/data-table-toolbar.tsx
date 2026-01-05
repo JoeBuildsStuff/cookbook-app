@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Table } from "@tanstack/react-table"
+import { ColumnFiltersState, SortingState, Table } from "@tanstack/react-table"
 
 import DataTableFilter from "./data-table-filter"
 import DataTableSort from "./data-table-sort"
@@ -16,6 +16,8 @@ import DataTableCommandFilter from "./data-table-command-filter"
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
   tableKey: string
+  sorting: SortingState
+  columnFilters: ColumnFiltersState
   deleteAction?: (ids: string[]) => Promise<{ success: boolean; error?: string; deletedCount?: number }>
   createAction?: (data: Partial<TData>) => Promise<{ success: boolean; error?: string }>
   updateActionSingle?: (id: string, data: Partial<TData>) => Promise<{ success: boolean; error?: string }>
@@ -42,6 +44,8 @@ interface DataTableToolbarProps<TData> {
 export default function DataTableToolbar<TData>({
   table,
   tableKey,
+  sorting,
+  columnFilters,
   deleteAction,
   createAction,
   updateActionSingle,
@@ -50,6 +54,7 @@ export default function DataTableToolbar<TData>({
   customEditFormSingle,
   customEditFormMulti,
 }: DataTableToolbarProps<TData>) {
+  void tableKey
   const selectedRows = table.getFilteredSelectedRowModel().rows.map((row) => row.original)
   const selectedRowIds = table
     .getFilteredSelectedRowModel()
@@ -98,15 +103,15 @@ export default function DataTableToolbar<TData>({
           />
         )}
 
-        <DataTableSort table={table} />
-        <DataTableFilter table={table} />
+        <DataTableSort table={table} sorting={sorting} />
+        <DataTableFilter table={table} columnFilters={columnFilters} />
 
         <div className="ml-auto flex items-center gap-2">
           {/* <DataTableSavedViews table={table} tableKey={tableKey} /> */}
           <DataTableViewOptions table={table} />
         </div>
       </div>
-      <DataTableCommandFilter table={table} />
+      <DataTableCommandFilter table={table} columnFilters={columnFilters} />
     </div>
   )
 }

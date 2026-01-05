@@ -9,6 +9,7 @@ import { dataTableConfig, isRelativeDateValue, resolveRelativeDate } from "@/lib
 
 interface DataTableCommandFilterProps<TData> {
   table: Table<TData>
+  columnFilters: ColumnFilter[]
 }
 
 type OperatorConfig = {
@@ -126,8 +127,8 @@ function formatFilterValue(
   }
 }
 
-export default function DataTableCommandFilter<TData>({ table }: DataTableCommandFilterProps<TData>) {
-  const filters = table.getState().columnFilters
+export default function DataTableCommandFilter<TData>({ table, columnFilters }: DataTableCommandFilterProps<TData>) {
+  const filters = columnFilters
 
   const filterItems = useMemo(() => {
     return filters.map<FilterItem | null>((filter: ColumnFilter, index: number) => {

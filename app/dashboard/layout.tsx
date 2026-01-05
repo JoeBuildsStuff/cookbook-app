@@ -3,6 +3,7 @@ import { DynamicBreadcrumbs } from "@/components/ui/dynamic-breadcrumbs";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"; 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import CommandSearch from "@/components/dashboard/command-search";
 
 export default async function RootLayout({
 children,
@@ -28,6 +29,7 @@ children: React.ReactNode;
             <SidebarTrigger className="-ml-1" /> 
             <DynamicBreadcrumbs />
           </div>
+          <CommandSearch groups={[]} />
         </header>
         <div className="mb-4 overflow-auto">
           {children}

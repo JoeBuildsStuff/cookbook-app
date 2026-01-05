@@ -56,7 +56,7 @@ export default function DataTableSortItem<TData>({
         {...listeners}
         className="cursor-grab active:cursor-grabbing"
       >
-        <GripVertical className="w-4 h-4" />
+        <GripVertical className="size-4" />
       </Button>
 
       <Popover open={open} onOpenChange={setOpen}>
@@ -68,7 +68,7 @@ export default function DataTableSortItem<TData>({
                 : "Column"
               }
             </span>
-            <ChevronsUpDown className="w-4 h-4" />
+            <ChevronsUpDown className="size-4" />
           </Button>
         </PopoverTrigger>
         <PopoverContent align="start" className="p-0">
@@ -106,7 +106,7 @@ export default function DataTableSortItem<TData>({
       </Select>
 
       <Button variant="ghost" size="icon" onClick={() => onRemove(id)}>
-        <X className="w-4 h-4" />
+        <X className="size-4" />
       </Button>
     </div>
   );
