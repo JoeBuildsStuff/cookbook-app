@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Sidebar,
@@ -12,24 +12,28 @@ import {
   SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { File, Plus, Table2 } from "lucide-react"
-import { SidebarLogo } from "@/components/dashboard/app-sidebar-logo"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
-import Link from "next/link"
-import { AuthButton } from "@/components/auth-button"
+} from "@/components/ui/sidebar";
+import { File, Plus, Table2 } from "lucide-react";
+import { SidebarLogo } from "@/components/dashboard/app-sidebar-logo";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { AuthButton } from "@/components/auth-button";
 
 export function AppSidebar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const handleCreateNote = () => {
-    console.log("Create note clicked")
-  }
+    console.log("Create note clicked");
+  };
 
   const handleCreateTable = () => {
-    console.log("Create table clicked")
-  }
+    console.log("Create table clicked");
+  };
+
+  const handleCreateOpenAI = () => {
+    console.log("Create OpenAI chat clicked");
+  };
 
   const navigationItems = [
     {
@@ -39,15 +43,22 @@ export function AppSidebar() {
       action: handleCreateNote,
       actionAriaLabel: "Create new note",
     },
-    { 
+    {
       label: "Table",
       href: "/dashboard/table",
       icon: Table2,
       action: handleCreateTable,
       actionAriaLabel: "Create new table",
     },
-  ]
-
+    {
+      label: "OpenAI",
+      href: "/dashboard/openai",
+    },
+    {
+      label: "Anthropic",
+      href: "/dashboard/anthropic",
+    },
+  ];
 
   return (
     <>
@@ -56,15 +67,14 @@ export function AppSidebar() {
           <SidebarLogo />
         </SidebarHeader>
         <SidebarContent className="flex flex-col">
-
           {/* Navigation */}
           <SidebarGroup>
             <SidebarGroupLabel>Navigation</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {navigationItems.map((item) => (
-                  <SidebarMenuItem key={item.href} >
-                    <SidebarMenuButton 
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
                       asChild
                       className={cn(
                         "w-full justify-start",
@@ -74,7 +84,9 @@ export function AppSidebar() {
                       )}
                     >
                       <Link href={item.href}>
-                        <item.icon className="size-3.5 mr-2 flex-none text-muted-foreground" />
+                        {item.icon && (
+                          <item.icon className="size-3.5 mr-2 flex-none text-muted-foreground" />
+                        )}
                         <span>{item.label}</span>
                       </Link>
                     </SidebarMenuButton>
@@ -85,7 +97,7 @@ export function AppSidebar() {
                           className="disabled:cursor-not-allowed text-muted-foreground hover:text-foreground"
                           aria-label={item.actionAriaLabel}
                         >
-                            <Plus className="size-4 text-muted-foreground" />
+                          <Plus className="size-4 text-muted-foreground" />
                         </button>
                       </SidebarMenuAction>
                     )}
@@ -94,12 +106,11 @@ export function AppSidebar() {
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-
         </SidebarContent>
         <SidebarFooter>
           <AuthButton />
         </SidebarFooter>
       </Sidebar>
     </>
-  )
+  );
 }
