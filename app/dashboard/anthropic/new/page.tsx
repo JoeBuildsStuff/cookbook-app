@@ -1,9 +1,9 @@
-import { ChatInput } from "./_components/chat-input";
+import { Chat } from "./_components/chat";
 
 export default function NewAnthropicPage() {
   return (
     <div className="">
-      <ChatInput />
+      <Chat />
     </div>
   );
 }
