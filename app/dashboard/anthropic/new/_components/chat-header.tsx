@@ -18,9 +18,7 @@ export function ChatHeader() {
       </svg>
 
       {/* welcome text here */}
-      <p className="text-2xl text-muted-foreground">
-        Good Afternoon, how can I help?
-      </p>
+      <p className="text-4xl text-foreground/80">Good Afternoon, Joe</p>
     </div>
   );
 }

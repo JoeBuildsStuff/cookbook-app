@@ -87,97 +87,115 @@ export function AnthropicSidebar() {
     toggleSidebar,
   });
 
+  // Render sidebar content once to reuse
+  const sidebarContent = (
+    <>
+      <SidebarHeader className="flex flex-row items-center justify-between">
+        <span className="text-xl font-bold">Claude</span>
+      </SidebarHeader>
+      <SidebarContent className="flex-1 overflow-auto">
+        <SidebarGroup>
+          <SidebarMenuItem>
+            <SidebarMenuButton className="group">
+              <div className="rounded-full bg-[#D97757] p-0.5">
+                <Plus className="size-4" />
+              </div>
+              <span>New Chat</span>
+              <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-75">
+                <span className="text-xs text-muted-foreground px-0.5">
+                  ⇧⌘O
+                </span>
+              </span>
+            </SidebarMenuButton>
+            <SidebarMenuButton>
+              <div className="rounded-full p-1">
+                <MessagesSquare className="size-4" />
+              </div>
+              <span>Chats</span>
+            </SidebarMenuButton>
+            <SidebarMenuButton>
+              <div className="rounded-full p-1">
+                <Folders className="size-4" />
+              </div>
+              <span>Projects</span>
+            </SidebarMenuButton>
+            <SidebarMenuButton>
+              <div className="rounded-full p-1">
+                <LayoutDashboard className="size-4" />
+              </div>
+              <span>Artifacts</span>
+            </SidebarMenuButton>
+            <SidebarMenuButton>
+              <div className="rounded-full p-1">
+                <Code className="size-4" />
+              </div>
+              <span>Code</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Starred</SidebarGroupLabel>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Recents</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {anthropicNavItems.map((item) => {
+                const isActive =
+                  pathname === item.url ||
+                  (item.url !== "/dashboard/anthropic" &&
+                    pathname?.startsWith(item.url));
+                return (
+                  <SidebarMenuItem key={item.url}>
+                    <SidebarMenuButton asChild isActive={isActive}>
+                      <Link href={item.url}>
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                    <AnthropicSidebarAction />
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter className="border-t mt-auto">
+        <AuthButton />
+      </SidebarFooter>
+    </>
+  );
+
   return (
-    <div className="relative flex h-full">
+    <>
+      {/* Mobile: Use Sheet via Sidebar component with offcanvas */}
+      {/* Desktop: Custom nested layout implementation */}
       <Sidebar
         variant="inset"
-        collapsible="none"
+        collapsible={isMobile ? "offcanvas" : "none"}
         className={cn(
-          "border-r rounded-l-lg flex-col h-full bg-transparent transition-[width] duration-200 ease-linear",
-          open ? "w-72" : "w-0 border-0"
+          "bg-[#262624]",
+          isMobile
+            ? ""
+            : cn(
+                "border-r rounded-l-lg flex-col h-full transition-[width] duration-200 ease-linear !flex",
+                open ? "!w-72" : "!w-0 border-0"
+              )
         )}
       >
-        <div
-          className={cn(
-            "flex flex-col h-full w-72 transition-opacity duration-200 ease-linear overflow-hidden",
-            open ? "opacity-100" : "opacity-0 pointer-events-none"
-          )}
-        >
-          <SidebarHeader className="flex flex-row items-center justify-between">
-            <span className="text-xl font-bold">Claude</span>
-          </SidebarHeader>
-          <SidebarContent className="flex-1 overflow-auto">
-            <SidebarGroup>
-              <SidebarMenuItem>
-                <SidebarMenuButton className="group">
-                  <div className="rounded-full bg-anthropic-orange p-1">
-                    <Plus className="size-4" />
-                  </div>
-                  <span>New Chat</span>
-                  <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-75">
-                    <span className="text-xs text-muted-foreground px-0.5">
-                      ⇧⌘O
-                    </span>
-                  </span>
-                </SidebarMenuButton>
-                <SidebarMenuButton>
-                  <div className="rounded-full p-1">
-                    <MessagesSquare className="size-4" />
-                  </div>
-                  <span>Chats</span>
-                </SidebarMenuButton>
-                <SidebarMenuButton>
-                  <div className="rounded-full p-1">
-                    <Folders className="size-4" />
-                  </div>
-                  <span>Projects</span>
-                </SidebarMenuButton>
-                <SidebarMenuButton>
-                  <div className="rounded-full p-1">
-                    <LayoutDashboard className="size-4" />
-                  </div>
-                  <span>Artifacts</span>
-                </SidebarMenuButton>
-                <SidebarMenuButton>
-                  <div className="rounded-full p-1">
-                    <Code className="size-4" />
-                  </div>
-                  <span>Code</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarGroup>
-            <SidebarGroup>
-              <SidebarGroupLabel>Starred</SidebarGroupLabel>
-            </SidebarGroup>
-            <SidebarGroup>
-              <SidebarGroupLabel>Recents</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {anthropicNavItems.map((item) => {
-                    const isActive =
-                      pathname === item.url ||
-                      (item.url !== "/dashboard/anthropic" &&
-                        pathname?.startsWith(item.url));
-                    return (
-                      <SidebarMenuItem key={item.url}>
-                        <SidebarMenuButton asChild isActive={isActive}>
-                          <Link href={item.url}>
-                            <span>{item.title}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                        <AnthropicSidebarAction />
-                      </SidebarMenuItem>
-                    );
-                  })}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </SidebarContent>
-          <SidebarFooter className="border-t mt-auto">
-            <AuthButton />
-          </SidebarFooter>
-        </div>
+        {isMobile ? (
+          sidebarContent
+        ) : (
+          <div
+            className={cn(
+              "flex flex-col h-full w-72 transition-opacity duration-200 ease-linear overflow-hidden bg-[#262624]",
+              open ? "opacity-100" : "opacity-0 pointer-events-none"
+            )}
+          >
+            {sidebarContent}
+          </div>
+        )}
       </Sidebar>
-    </div>
+    </>
   );
 }

@@ -7,9 +7,18 @@ import { Ghost, PanelLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 export function Chat() {
-  const { toggleSidebar, open } = useSidebar();
+  const { toggleSidebar, open, openMobile, isMobile } = useSidebar();
+  // On mobile, check openMobile; on desktop, check open
+  const isOpen = isMobile ? openMobile : open;
+  const [hoveredPromptText, setHoveredPromptText] = useState<string | null>(
+    null
+  );
+  const [selectedPromptText, setSelectedPromptText] = useState<string | null>(
+    null
+  );
 
   return (
     <div className="flex flex-col">
@@ -20,7 +29,7 @@ export function Chat() {
           onClick={toggleSidebar}
           className="text-muted-foreground"
         >
-          <PanelLeft className={cn("size-4", !open && "rotate-180")} />
+          <PanelLeft className={cn("size-4", !isOpen && "rotate-180")} />
         </Button>
         <Button variant="ghost" className="text-muted-foreground">
           <Ghost className="size-4" />
@@ -30,9 +39,15 @@ export function Chat() {
       <div className="flex flex-col gap-4 w-full py-28 items-center max-w-2xl mx-auto relative p-4">
         <ChatHeader />
 
-        <ChatInput />
+        <ChatInput
+          hoveredPromptText={hoveredPromptText}
+          selectedPromptText={selectedPromptText}
+        />
 
-        <ChatActions />
+        <ChatActions
+          onPromptHover={setHoveredPromptText}
+          onPromptSelect={setSelectedPromptText}
+        />
       </div>
     </div>
   );

@@ -29,13 +29,72 @@ import {
   Camera,
   Folders,
 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 
-export function ChatInput() {
+interface ChatInputProps {
+  hoveredPromptText?: string | null;
+  selectedPromptText?: string | null;
+}
+
+export function ChatInput({
+  hoveredPromptText,
+  selectedPromptText,
+}: ChatInputProps) {
+  const [value, setValue] = useState("");
+  const previousValueRef = useRef("");
+  const lastHoveredTextRef = useRef<string | null>(null);
+  const isHoveringRef = useRef(false);
+
+  // Handle prompt selection (on click) - this takes priority over hover
+  useEffect(() => {
+    if (selectedPromptText) {
+      setValue((currentValue) => {
+        previousValueRef.current = currentValue;
+        return selectedPromptText;
+      });
+      // Clear hover state when a prompt is selected
+      isHoveringRef.current = false;
+      lastHoveredTextRef.current = null;
+    }
+  }, [selectedPromptText]);
+
+  // Handle prompt hover (on mouse enter/leave)
+  useEffect(() => {
+    if (hoveredPromptText) {
+      // When hovering over a prompt, save current value and set the hover text
+      if (!isHoveringRef.current) {
+        setValue((currentValue) => {
+          previousValueRef.current = currentValue;
+          return hoveredPromptText;
+        });
+      } else {
+        setValue(hoveredPromptText);
+      }
+      isHoveringRef.current = true;
+      lastHoveredTextRef.current = hoveredPromptText;
+    } else if (hoveredPromptText === null && isHoveringRef.current) {
+      // When hovering away, only revert if the current value matches the hovered text
+      // This allows user typing to be preserved
+      isHoveringRef.current = false;
+      setValue((currentValue) => {
+        if (currentValue === lastHoveredTextRef.current) {
+          return previousValueRef.current;
+        }
+        return currentValue;
+      });
+      lastHoveredTextRef.current = null;
+    }
+  }, [hoveredPromptText]);
+
   return (
     <div className="w-full">
       {/* chat input */}
-      <InputGroup className="rounded-xl mt-6">
-        <InputGroupTextarea placeholder="How can I help you today?" />
+      <InputGroup className="rounded-2xl mt-6 p-1.5 bg-[#FFFFFF] dark:bg-[#30302E] shadow-none">
+        <InputGroupTextarea
+          placeholder="How can I help you today?"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
         <InputGroupAddon align="block-end" className="justify-between">
           <div className="flex flex-row items-center">
             <DropdownMenu>
@@ -208,9 +267,9 @@ export function ChatInput() {
             <InputGroupButton
               variant="default"
               size="icon-sm"
-              className="bg-anthropic-orange/60 text-foreground hover:bg-anthropic-orange/80"
+              className="bg-[#D97757]/60 text-foreground hover:bg-[#D97757]/80"
             >
-              <ArrowUp className="size-4" />
+              <ArrowUp className="size-4 text-white" />
             </InputGroupButton>
           </div>
         </InputGroupAddon>
