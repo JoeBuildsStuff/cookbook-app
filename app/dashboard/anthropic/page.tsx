@@ -1,11 +1,7 @@
-//a page to display anthropic components
-
-import AnthropicDelete from "./_components/page";
+import { redirect } from "next/navigation";
 
 export default function AnthropicPage() {
-  return (
-    <>
-      <AnthropicDelete />
-    </>
-  );
+  redirect("/dashboard/anthropic/new");
+  // This page never renders; redirect occurs server-side
+  return null;
 }
