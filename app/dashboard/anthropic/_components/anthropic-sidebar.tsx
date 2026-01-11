@@ -188,7 +188,7 @@ export function AnthropicSidebar() {
         ) : (
           <div
             className={cn(
-              "flex flex-col h-full w-72 transition-opacity duration-200 ease-linear overflow-hidden bg-[#262624]",
+              "flex flex-col h-full w-72 transition-opacity duration-200 ease-linear overflow-hidden bg-[#262624] border-r",
               open ? "opacity-100" : "opacity-0 pointer-events-none"
             )}
           >

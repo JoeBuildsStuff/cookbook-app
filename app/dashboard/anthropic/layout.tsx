@@ -12,7 +12,7 @@ export default function AnthropicLayout({
   // We wrap AnthropicSidebar in its own SidebarProvider so it has independent state
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="flex w-full h-[calc(100vh-56px)] rounded-lg border border-border bg-[#FAF9F5] dark:bg-[#262624]">
+      <div className="flex w-full h-[calc(100vh-56px)] rounded-lg border border-border bg-[#FAF9F5] dark:bg-[#262624] overflow-hidden">
         <AnthropicSidebar />
 
         <div className="flex-1">{children}</div>
