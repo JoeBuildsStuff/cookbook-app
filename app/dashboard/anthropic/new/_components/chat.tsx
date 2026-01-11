@@ -3,16 +3,11 @@
 import { ChatHeader } from "./chat-header";
 import { ChatInput } from "./chat-input";
 import { ChatActions } from "./chat-actions";
-import { Ghost, PanelLeft } from "lucide-react";
+import { Ghost } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSidebar } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 export function Chat() {
-  const { toggleSidebar, open, openMobile, isMobile } = useSidebar();
-  // On mobile, check openMobile; on desktop, check open
-  const isOpen = isMobile ? openMobile : open;
   const [hoveredPromptText, setHoveredPromptText] = useState<string | null>(
     null
   );
@@ -22,15 +17,7 @@ export function Chat() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-row items-center justify-between mt-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleSidebar}
-          className="text-muted-foreground"
-        >
-          <PanelLeft className={cn("size-4", !isOpen && "rotate-180")} />
-        </Button>
+      <div className="flex flex-row items-center justify-end mt-2 px-4">
         <Button variant="ghost" className="text-muted-foreground">
           <Ghost className="size-4" />
         </Button>

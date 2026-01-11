@@ -96,22 +96,28 @@ export function AnthropicSidebar() {
       <SidebarContent className="flex-1 overflow-auto">
         <SidebarGroup>
           <SidebarMenuItem>
-            <SidebarMenuButton className="group">
-              <div className="rounded-full bg-[#D97757] p-0.5">
-                <Plus className="size-4" />
-              </div>
-              <span>New Chat</span>
-              <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-75">
-                <span className="text-xs text-muted-foreground px-0.5">
-                  ⇧⌘O
+            <SidebarMenuButton className="group" asChild>
+              <Link href="/dashboard/anthropic/new">
+                <div className="rounded-full bg-[#D97757] p-0.5">
+                  <Plus className="size-4" />
+                </div>
+
+                <span>New Chat</span>
+
+                <span className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-75">
+                  <span className="text-xs text-muted-foreground px-0.5">
+                    ⇧⌘O
+                  </span>
                 </span>
-              </span>
+              </Link>
             </SidebarMenuButton>
-            <SidebarMenuButton>
-              <div className="rounded-full p-1">
-                <MessagesSquare className="size-4" />
-              </div>
-              <span>Chats</span>
+            <SidebarMenuButton asChild>
+              <Link href="/dashboard/anthropic/recents">
+                <div className="rounded-full p-1">
+                  <MessagesSquare className="size-4" />
+                </div>
+                <span>Chats</span>
+              </Link>
             </SidebarMenuButton>
             <SidebarMenuButton>
               <div className="rounded-full p-1">
