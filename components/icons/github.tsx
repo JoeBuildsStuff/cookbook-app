@@ -1,5 +1,19 @@
 import React from "react";
 
+interface GithubIconIconProps {
+  size?: number | string;
+  color?: string;
+  strokeWidth?: number;
+  background?: string;
+  opacity?: number;
+  rotation?: number;
+  shadow?: number;
+  flipHorizontal?: boolean;
+  flipVertical?: boolean;
+  padding?: number;
+  className?: string;
+}
+
 const GithubIconIcon = ({
   size = undefined,
   color = "#000000",
@@ -12,7 +26,7 @@ const GithubIconIcon = ({
   flipVertical = false,
   padding = 0,
   className,
-}) => {
+}: GithubIconIconProps) => {
   const transforms = [];
   if (rotation !== 0) transforms.push(`rotate(${rotation}deg)`);
   if (flipHorizontal) transforms.push("scaleX(-1)");

@@ -517,6 +517,7 @@ export default function DataTableSavedViews<TData>({ table, tableKey }: DataTabl
       columnFilters: [],
       columnVisibility: {},
       columnOrder: [],
+      pagination: { pageIndex: 0, pageSize: 10 },
     }
 
     table.setSorting(nextState.sorting ?? [])
