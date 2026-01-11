@@ -119,11 +119,13 @@ export function AnthropicSidebar() {
                 <span>Chats</span>
               </Link>
             </SidebarMenuButton>
-            <SidebarMenuButton>
-              <div className="rounded-full p-1">
-                <Folders className="size-4" />
-              </div>
-              <span>Projects</span>
+            <SidebarMenuButton asChild>
+              <Link href="/dashboard/anthropic/projects">
+                <div className="rounded-full p-1">
+                  <Folders className="size-4" />
+                </div>
+                <span>Projects</span>
+              </Link>
             </SidebarMenuButton>
             <SidebarMenuButton>
               <div className="rounded-full p-1">
