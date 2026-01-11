@@ -87,9 +87,9 @@ export function ChatInput({
   }, [hoveredPromptText]);
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-2xl mx-auto">
       {/* chat input */}
-      <InputGroup className="rounded-2xl mt-6 p-1.5 bg-[#FFFFFF] dark:bg-[#30302E] shadow-none">
+      <InputGroup className="rounded-2xl mt-6 p-1.5 bg-[#FFFFFF] dark:bg-[#30302E] border-border dark:border-border dark:border-[0.5px] border shadow-none">
         <InputGroupTextarea
           placeholder="How can I help you today?"
           value={value}
