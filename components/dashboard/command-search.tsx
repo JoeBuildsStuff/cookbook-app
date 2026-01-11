@@ -89,7 +89,10 @@ export interface CommandSearchProps {
   maxHeight?: string;
 }
 
-const defaultFilterFn = (options: CommandOption[], query: string): CommandOption[] => {
+const defaultFilterFn = (
+  options: CommandOption[],
+  query: string
+): CommandOption[] => {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return options;
 
@@ -157,7 +160,8 @@ export default function CommandSearch({
     });
   }, [groups, searchValue]);
 
-  const hasResults = filteredGroups.some((group) => group.filteredOptions.length > 0) ||
+  const hasResults =
+    filteredGroups.some((group) => group.filteredOptions.length > 0) ||
     (showSearchAction && searchValue.trim().length > 0);
 
   const handleSelectOption = (option: CommandOption, groupId: string) => {
@@ -196,7 +200,7 @@ export default function CommandSearch({
         <Button
           variant="outline"
           size="sm"
-          className="flex items-center gap-2 h-7 text-muted-foreground hover:text-foreground justify-between"
+          className="flex items-center gap-2 h-7 text-muted-foreground hover:text-foreground justify-between shadow-none"
           aria-label={buttonAriaLabel}
         >
           <div className="flex items-center gap-2">
@@ -236,7 +240,9 @@ export default function CommandSearch({
                           <CommandItem
                             key={option.id}
                             value={`${group.id}-${option.id}`}
-                            onSelect={() => handleSelectOption(option, group.id)}
+                            onSelect={() =>
+                              handleSelectOption(option, group.id)
+                            }
                             keywords={option.keywords}
                           >
                             {itemContent}
@@ -250,9 +256,9 @@ export default function CommandSearch({
 
               {showSearchAction && searchValue.trim() && (
                 <>
-                  {filteredGroups.some((group) => group.filteredOptions.length > 0) && (
-                    <CommandSeparator />
-                  )}
+                  {filteredGroups.some(
+                    (group) => group.filteredOptions.length > 0
+                  ) && <CommandSeparator />}
                   <CommandGroup heading="Search">
                     <CommandItem
                       value={`search-${searchValue}`}
@@ -272,4 +278,3 @@ export default function CommandSearch({
     </Popover>
   );
 }
-

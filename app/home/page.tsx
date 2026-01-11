@@ -10,7 +10,8 @@ export default function HomePage() {
             Welcome to Our App
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            A modern web application built with Next.js, Tailwind CSS, and Supabase.
+            A modern web application built with Next.js, Tailwind CSS, and
+            Supabase.
           </p>
           <div className="flex gap-4 justify-center">
             <Link
@@ -56,4 +57,3 @@ export default function HomePage() {
     </div>
   );
 }
-

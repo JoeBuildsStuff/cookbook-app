@@ -25,7 +25,7 @@ export default async function RootLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="flex-1 overflow-auto px-4 h-100dvh">
+      <main className="flex-1 flex flex-col overflow-auto px-4 h-100dvh">
         <header className="flex h-10 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex grow items-center gap-2 ">
             <SidebarTrigger className="-ml-1" />
@@ -33,7 +33,7 @@ export default async function RootLayout({
           </div>
           <CommandSearch groups={[]} />
         </header>
-        <div className="mb-4 overflow-auto">{children}</div>
+        <div className="flex-1 mb-4 overflow-auto">{children}</div>
       </main>
     </SidebarProvider>
   );
