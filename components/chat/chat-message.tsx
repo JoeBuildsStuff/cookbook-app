@@ -138,13 +138,14 @@ const CitationPopover = ({
       </PopoverTrigger>
       <PopoverContent className="p-3" align="start">
         <div className="space-y-2">
-          <Badge
-            variant="blue"
-            className="font-medium text-sm break-words whitespace-normal"
-            href={citation.url}
-          >
-            {citation.title}
-          </Badge>
+          <a href={citation.url} target="_blank" rel="noopener noreferrer" className="inline-block">
+            <Badge
+              variant="blue"
+              className="font-medium text-sm break-words whitespace-normal"
+            >
+              {citation.title}
+            </Badge>
+          </a>
           {citation.cited_text && (
             <div className="text-xs text-muted-foreground italic border-l-2 border-muted pl-2">
               &ldquo;

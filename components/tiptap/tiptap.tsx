@@ -11,10 +11,9 @@ import { Table } from '@tiptap/extension-table'
 import { TableRow } from '@tiptap/extension-table/row'
 import { TableCell } from '@tiptap/extension-table/cell'
 import { TableHeader } from '@tiptap/extension-table/header'
-import { DragHandle } from '@tiptap/extension-drag-handle-react'
 import { FileNode } from '@/components/tiptap/file-node'
 import { createLowlight, common } from 'lowlight'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { TiptapProps } from './types'
 import { Image } from '@tiptap/extension-image'
 import { CustomImageView } from './custom-image-view'
@@ -29,7 +28,6 @@ import {
     ChevronsLeftRight,
     Type,
     AlignLeft,
-    GripVertical,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Toggle } from '@/components/ui/toggle'
@@ -56,8 +54,6 @@ const Tiptap = ({
   fileUploadConfig,
   enableFileNodes = true
 }: TiptapProps) => {
-  // Track the currently selected node for drag handle functionality
-  const [, setSelectedNode] = useState<{ type: { name: string } } | null>(null)
 
   const editor = useEditor({
     extensions: [
@@ -220,25 +216,6 @@ const Tiptap = ({
                 {/* start bubble menu */}
                 {showBubbleMenu && <BubbleMenuComponent editor={editor} />}
                 {/* end bubble menu */}
-
-                {/* start drag handle */}
-                {showDragHandle && (
-                  <DragHandle
-                    editor={editor}
-                    onNodeChange={({ node }) => {
-                      setSelectedNode(node)
-                      // You can add custom logic here to highlight the selected node
-                      if (node) {
-                        // console.log('Selected node:', node.type.name)
-                      }
-                    }}
-                  >
-                    <div className="flex items-center justify-center w-4 h-8 mr-1 hover:bg-muted/80 rounded cursor-grab active:cursor-grabbing transition-colors">
-                      <GripVertical className="size-4 text-muted-foreground/70" />
-                    </div>
-                  </DragHandle>
-                )}
-                {/* end drag handle */}
 
                 {/* start editor */}
                 <div className='h-full flex-1 overflow-y-auto py-2 px-6 prose prose-base dark:prose-invert max-w-none'>
