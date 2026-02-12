@@ -13,13 +13,10 @@ export default function HomeLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className="grid min-h-dvh grid-rows-[auto_1fr_auto] w-full mx-4 ">
+    <main className="grid min-h-dvh grid-rows-[auto_1fr_auto] w-full min-w-0 px-4">
       <HomeHeader />
-      <div>
-        {children}
-      </div>
+      <div>{children}</div>
       <HomeFooter />
     </main>
   );
 }
-
