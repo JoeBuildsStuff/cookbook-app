@@ -175,8 +175,8 @@ export function CommentsPanel({
       aria-hidden={!showComments}
       className="flex min-h-0 min-w-80 w-80 flex-col rounded-md border border-border bg-card"
     >
-      <div className="border-b border-border p-2">
-        <div className="flex items-center justify-between">
+      <div className="h-12 border-b border-border px-2">
+        <div className="flex h-full items-center justify-between">
           <h2 className="text-sm font-semibold">Comments</h2>
           <div className="flex items-center">
             <ButtonGroup>

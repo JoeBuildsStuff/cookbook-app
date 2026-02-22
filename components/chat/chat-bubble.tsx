@@ -64,7 +64,7 @@ export function ChatBubble() {
 
   return (
     <div
-      className={cn("fixed bottom-3 right-3 z-50 bg-background rounded-full")}
+      className={cn("fixed bottom-2 right-2 z-50 bg-background rounded-full")}
     >
       {/* Main bubble button */}
       <div
@@ -78,7 +78,7 @@ export function ChatBubble() {
       >
         <Button
           variant="blue"
-          className="rounded-full size-12 bg-background shadow-md [&_svg]:!w-6 [&_svg]:!h-6 ring-blue-600"
+          className="rounded-full size-12 bg-background shadow-md [&_svg]:w-6! [&_svg]:h-6! ring-blue-600"
         >
           <MessagesSquare />
         </Button>

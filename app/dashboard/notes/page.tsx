@@ -6,11 +6,8 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { createClient } from "@/lib/supabase/server";
 import { NotesSortDropdown, type NotesSortKey } from "./notes-sort-dropdown";
-import {
-  createUniqueSlug,
-  formatNoteIdBadge,
-  slugToDocumentPath,
-} from "./note-path";
+import { formatNoteIdBadge } from "./note-path";
+import { createNoteAction } from "./actions";
 import {
   Card,
   CardDescription,
@@ -75,53 +72,6 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
     throw notesError;
   }
 
-  async function createNote() {
-    "use server";
-
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      redirect("/signin");
-    }
-
-    const { data: existingNotes, error: existingError } = await supabase
-      .schema(APP_SCHEMA)
-      .from("notes")
-      .select("document_path")
-      .eq("user_id", user.id);
-
-    if (existingError) {
-      throw existingError;
-    }
-
-    const slug = createUniqueSlug(
-      "My Note",
-      existingNotes?.map((note) => note.document_path) ?? []
-    );
-
-    const { data: newNote, error: insertError } = await supabase
-      .schema(APP_SCHEMA)
-      .from("notes")
-      .insert({
-        user_id: user.id,
-        title: "My Note",
-        document_path: slugToDocumentPath(slug),
-        sort_order: (existingNotes?.length ?? 0) + 1,
-        content: "",
-      })
-      .select("id")
-      .single();
-
-    if (insertError) {
-      throw insertError;
-    }
-
-    redirect(`/dashboard/notes/${encodeURIComponent(newNote.id)}`);
-  }
-
   return (
     <div className="flex h-full min-h-0 flex-col gap-4 overflow-auto rounded-xl border border-border bg-card p-4">
       <div className="flex items-center justify-between gap-3">
@@ -132,7 +82,7 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
           </p>
         </div>
 
-        <form id="create-note-form" action={createNote} />
+        <form id="create-note-form" action={createNoteAction} />
         <ButtonGroup>
           <Button
             type="submit"

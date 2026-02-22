@@ -1,9 +1,26 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import Tiptap from "@/components/tiptap/tiptap";
 import { createClient } from "@/lib/supabase/client";
+import { Trash } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Input } from "@/components/ui/input";
+import { deleteNoteAction } from "./actions";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const APP_SCHEMA = "tech_stack_2026";
 
@@ -18,9 +35,13 @@ export function NotesEditorClient({
   initialTitle,
   initialContent,
 }: NotesEditorClientProps) {
+  const router = useRouter();
   const [title, setTitle] = useState(initialTitle);
   const [content, setContent] = useState(initialContent);
   const [showComments, setShowComments] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [saveState, setSaveState] = useState<
     "idle" | "saving" | "saved" | "error"
   >("idle");
@@ -79,6 +100,31 @@ export function NotesEditorClient({
     void saveDocument(content, title);
   }, [content, saveDocument, title]);
 
+  const handleDelete = useCallback(async () => {
+    if (isDeleting) {
+      return;
+    }
+
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+      saveTimeoutRef.current = null;
+    }
+
+    setDeleteError(null);
+    setIsDeleting(true);
+
+    const result = await deleteNoteAction(noteId);
+    if (!result.success) {
+      setDeleteError(result.error || "Delete failed");
+      setIsDeleting(false);
+      return;
+    }
+
+    setDeleteDialogOpen(false);
+    router.push("/dashboard/notes");
+    router.refresh();
+  }, [isDeleting, noteId, router]);
+
   useEffect(() => {
     const supabase = createClient();
 
@@ -98,17 +144,55 @@ export function NotesEditorClient({
   }, []);
 
   return (
-    <div className="relative flex h-full min-h-0 flex-col gap-2 overflow-hidden">
-      <input
-        className="rounded-md border border-border bg-card px-3 py-2 text-sm"
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-        onBlur={handleTitleBlur}
-        placeholder="Untitled"
-        aria-label="Note title"
-      />
+    <div className="relative flex h-full min-h-0 flex-col gap-2 overflow-hidden p-1 pb-3">
+      <ButtonGroup className="flex w-full">
+        <Input
+          size="sm"
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
+          onBlur={handleTitleBlur}
+          placeholder="Untitled"
+          aria-label="Note title"
+        />
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              type="button"
+              disabled={isDeleting}
+              aria-label="Delete note"
+            >
+              <Trash className="size-4" />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete note</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                disabled={isDeleting}
+                onClick={(event) => {
+                  event.preventDefault();
+                  void handleDelete();
+                }}
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </ButtonGroup>
 
       <div className="absolute bottom-2 left-2 px-1 text-xs text-muted-foreground z-10">
+        {isDeleting ? "Deleting…" : null}
+        {deleteError ? deleteError : null}
         {saveState === "saving" ? "Saving…" : null}
         {saveState === "saved" ? "Saved" : null}
         {saveState === "error" ? "Save failed" : null}
