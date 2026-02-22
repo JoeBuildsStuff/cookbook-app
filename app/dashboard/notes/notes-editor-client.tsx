@@ -80,6 +80,16 @@ export function NotesEditorClient({
   }, [content, saveDocument, title]);
 
   useEffect(() => {
+    const supabase = createClient();
+
+    void supabase
+      .schema(APP_SCHEMA)
+      .from("notes")
+      .update({ viewed_at: new Date().toISOString() })
+      .eq("id", noteId);
+  }, [noteId]);
+
+  useEffect(() => {
     return () => {
       if (saveTimeoutRef.current) {
         clearTimeout(saveTimeoutRef.current);
