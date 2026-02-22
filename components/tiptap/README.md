@@ -1,353 +1,136 @@
-# Tiptap File Handling System
+# Tiptap in `tech-stack-010226`
 
-A unified file handling system for Tiptap editor that eliminates base64 storage and uses Supabase storage for all file types.
+This folder contains the rich-text editor used by the Notes feature at `/dashboard/notes`.
 
-## 🎯 **Overview**
+It is not just a generic editor wrapper. In this repo it includes:
+- Supabase-backed file upload/render/delete for images and files.
+- Inline comment threads anchored to text ranges.
+- A comments side panel and composer popover.
+- API + database integration for comment CRUD and anchor sync.
 
-The system provides a single, consistent approach for handling all file types in Tiptap:
-- **Images, documents, archives** - All uploaded to Supabase storage
-- **No base64 data** - Only file paths stored in editor content
-- **Unified architecture** - Single pattern for all file operations
-- **Secure access** - Signed URLs generated on-demand
-- **Automatic cleanup** - Files removed from storage when deleted
+## Where It Is Used
 
-## 🚀 **Key Benefits**
+Main integration:
+- `app/dashboard/notes/notes-editor-client.tsx`
 
-1. **Performance**: Editor content remains lightweight regardless of file count/size
-2. **Scalability**: No content size limits from embedded binary data
-3. **Consistency**: Single pattern for all file types
-4. **Security**: Centralized access control and authentication
-5. **Cost Efficiency**: Reduced database storage costs
-6. **Maintainability**: Unified codebase for all file operations
-7. **Developer Experience**: Single import point for all file operations
-8. **Error Handling**: Consistent error handling across all functions
-9. **Configuration**: Centralized file type and size configuration
-10. **Testing**: Easier to test and mock file operations
+The notes page passes:
+- `content` and `onChange` for autosave.
+- `commentsDocumentId={noteId}` to enable built-in comments mode.
+- `showComments` / `onShowCommentsChange` to control the side panel.
+- `enableFileNodes` to allow non-image file nodes.
 
-## 🏗️ **Architecture**
+## Key Files
 
-### **Unified File Manager**
+Core editor:
+- `components/tiptap/tiptap.tsx`
+- `components/tiptap/types.ts`
 
-The system now uses a consolidated `supabase-file-manager.ts` that provides:
+Comments UI/state:
+- `components/tiptap/use-document-comments.ts`
+- `components/tiptap/comment-anchors.ts`
+- `components/tiptap/comment-composer-popover.tsx`
+- `components/tiptap/comments-panel.tsx`
+- `components/tiptap/comment-input-editor.tsx`
+- `components/tiptap/comment-thread-types.ts`
 
-- **Single import point** for all file operations
-- **Consistent error handling** across all functions
-- **Unified interfaces** for upload, delete, and serve operations
-- **Backward compatibility** with legacy function names
-- **Centralized configuration** for file types and limits
+Files/media:
+- `components/tiptap/file-handler.tsx`
+- `components/tiptap/file-node.tsx`
+- `components/tiptap/file-node-view.tsx`
+- `components/tiptap/custom-image-view.tsx`
+- `components/tiptap/supabase-file-manager.ts`
 
-### **Core Components**
+Server-side comment data access:
+- `components/tiptap/lib/comments.ts`
 
-#### 1. **FileHandler Extension** (`file-handler.tsx`)
-- Intercepts all file drops and paste events
-- Uploads files to Supabase storage via unified file manager
-- Determines appropriate node type (Image vs FileNode)
-- Inserts nodes with file paths (not binary data)
+## Comments Mode (Built-In)
 
-#### 2. **FileNode** (`file-node.tsx`)
-- Represents non-image files in editor content
-- Stores file metadata (name, size, type, path)
-- Supports different preview types (document, file)
-- Tracks upload status
+Comments mode is enabled when `commentsDocumentId` is set.
 
-#### 3. **FileNodeView** (`file-node-view.tsx`)
-- Renders file nodes with Supabase integration
-- Fetches signed URLs from `/api/files/serve`
-- Provides download and preview functionality
-- Shows loading and error states
+When enabled, `Tiptap` does the following:
+1. Mounts `CommentAnchors` extension.
+2. Loads threads from `GET /api/documents/:id/threads`.
+3. Lets user create thread from selection via composer popover.
+4. Supports resolve/reopen, thread delete, reply create, comment edit/delete.
+5. Debounces anchor updates and syncs to `PATCH /api/documents/:id/threads/anchors`.
 
-#### 4. **CustomImageView** (`custom-image-view.tsx`)
-- Renders images stored in Supabase storage
-- Uses unified file manager for signed URLs
-- Consistent with the unified file system
+Thread creation behavior:
+- Thread + root comment are created atomically in one database function call
+  (`public.create_note_comment_thread_with_root(...)`), so a thread cannot be created without its first comment.
 
-#### 5. **DocumentPreview** (`file-document-preview.tsx`)
-- Renders document previews from Supabase storage
-- Supports `.txt`, `.docx`, and `.pdf` files
-- Fetches file data via unified file manager
+Anchor sync behavior:
+- Triggered from editor updates.
+- Debounced (`1500ms`).
+- Sends `anchorFrom`, `anchorTo`, and context strings (`anchorExact`, `anchorPrefix`, `anchorSuffix`).
+- Persisted in one batched database function call
+  (`public.batch_update_note_comment_thread_anchors(...)`) instead of per-anchor update calls.
 
-### **API Routes**
+## File Handling Behavior
 
-The system uses these API endpoints, but all interactions are now handled through the unified file manager:
+`createFileHandlerConfig` intercepts drop/paste and uploads via `uploadFile()` (`supabase-file-manager.ts`).
 
-#### **`/api/files/upload`**
-- Uploads all file types to Supabase storage
-- Validates file type and size
-- Creates organized file paths: `{userId}/{category}/{timestamp}-{filename}`
-- Returns file path for storage in editor content
+Current behavior:
+- Images insert as Tiptap `image` nodes.
+- Non-images insert as `fileNode` nodes.
+- Document-like types (`txt`, `docx`, `pdf`) use `previewType: "document"`; others use `"file"`.
+- On node deletion, local Supabase-backed paths are cleaned up via `deleteFile()`.
 
-#### **`/api/files/serve`**
-- Generates signed URLs for secure file access
-- Verifies user authentication and ownership
-- 1-hour expiration for security
-- Used by both images and file nodes
+Current default upload limits/types live in:
+- `components/tiptap/supabase-file-manager.ts` (`DEFAULT_OPTIONS`)
 
-#### **`/api/files/delete`**
-- Removes files from Supabase storage
-- Verifies user ownership before deletion
-- Automatic cleanup when files are removed from editor
+## Required API Routes
 
-### **Storage System**
+Comments routes:
+- `app/api/documents/[id]/threads/route.ts`
+- `app/api/documents/[id]/threads/anchors/route.ts`
+- `app/api/documents/[id]/threads/[threadId]/route.ts`
+- `app/api/documents/[id]/threads/[threadId]/comments/route.ts`
+- `app/api/documents/[id]/threads/[threadId]/comments/[commentId]/route.ts`
 
-#### **Bucket Structure**
-```
-tiptap-bucket-files/
-├── {userId}/
-│   ├── notes/
-│   │   ├── {timestamp}-{filename}.jpg
-│   │   ├── {timestamp}-{filename}.pdf
-│   │   └── {timestamp}-{filename}.docx
-│   └── other-categories/
-└── ...
-```
+Comment route auth behavior:
+- `PATCH` / `DELETE` on `comments/[commentId]` return `403` when the authenticated user is not the comment author.
 
-#### **File Path Format**
-```
-{userId}/{category}/{timestamp}-{filename}
-Example: 401cc145-0c7b-4825-a14b-090c8ba30f7e/notes/1756851600392-document.pdf
-```
+File routes expected by `supabase-file-manager.ts`:
+- `POST /api/files/upload`
+- `GET /api/files/serve`
+- `DELETE /api/files/delete`
 
-## 📁 **File Type Support**
+## Database Dependencies
 
-### **Images**
-- **Formats**: JPEG, PNG, GIF, WebP
-- **Node Type**: Standard Tiptap Image node
-- **Preview**: Direct browser rendering
-- **Storage**: `tiptap-bucket-files` bucket
+Comments and notes rely on schema `tech_stack_2026` and tables:
+- `notes`
+- `comment_threads`
+- `comments`
 
-### **Documents**
-- **Formats**: TXT, PDF, DOCX, XLSX, PPTX, DOC, XLS, PPT
-- **Node Type**: FileNode with `previewType: 'document'`
-- **Preview**: DocumentPreview component
-- **Storage**: `tiptap-bucket-files` bucket
+Migration:
+- `supabase/migrations/20260222100000_add_comments_tables.sql`
+  - Includes RPC functions used by the comments backend:
+    - `public.create_note_comment_thread_with_root(...)`
+    - `public.batch_update_note_comment_thread_anchors(...)`
 
-### **Archives & Other Files**
-- **Formats**: ZIP, RAR, 7Z, JSON, CSV, HTML, CSS
-- **Node Type**: FileNode with `previewType: 'file'`
-- **Preview**: File information card with download actions
-- **Storage**: `tiptap-bucket-files` bucket
+Data access logic:
+- `components/tiptap/lib/comments.ts`
 
-## ⚙️ **Configuration**
+## Minimal Usage Example
 
-### **Basic Setup**
-
-```typescript
-import { createFileHandlerConfig } from './file-handler'
-import { FileNode } from './file-node'
-import { createFileUploader } from './supabase-file-manager'
-
-const fileHandler = createFileHandlerConfig({
-  fileUploadConfig: {
-    supabaseBucket: 'tiptap-bucket-files',
-    pathPrefix: 'notes',
-    maxFileSize: 10 * 1024 * 1024, // 10MB
-    allowedMimeTypes: [
-      // Images
-      'image/jpeg', 'image/png', 'image/gif', 'image/webp',
-      // Documents
-      'text/plain', 'application/pdf',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      // Archives
-      'application/zip', 'application/x-rar-compressed',
-      // Other
-      'application/json', 'text/csv', 'text/html', 'text/css'
-    ]
-  }
-})
-
-const extensions = [
-  // ... other extensions
-  FileNode,
-  fileHandler,
-]
-```
-
-### **Tiptap Component Usage**
-
-```typescript
+```tsx
 <Tiptap
   content={content}
-  onChange={handleChange}
-  fileUploadConfig={{
-    supabaseBucket: 'tiptap-bucket-files',
-    pathPrefix: 'notes',
-    maxFileSize: 10 * 1024 * 1024,
-    allowedMimeTypes: [/* your file types */]
-  }}
-  enableFileNodes={true}
+  onChange={setContent}
+  commentsDocumentId={noteId}
+  showComments={showComments}
+  onShowCommentsChange={setShowComments}
+  enableFileNodes
 />
 ```
 
-### **Editor Configuration**
+## Notes for Future Changes
 
-```typescript
-import { deleteFile } from './supabase-file-manager'
+If you change comment payloads, update all three together:
+1. `components/tiptap/use-document-comments.ts`
+2. `app/api/documents/**` comment routes
+3. `components/tiptap/lib/comments.ts`
 
-const editor = useEditor({
-  extensions,
-  onDelete: ({ type, node }) => {
-    // Handle cleanup of deleted file nodes
-    if (type === 'node' && node?.attrs?.src) {
-      const src = node.attrs.src
-      
-      // Only cleanup Supabase file paths, not external URLs
-      if (typeof src === 'string' && !src.startsWith('http') && !src.startsWith('data:')) {
-        deleteFile(src).catch(error => {
-          console.error('Failed to cleanup deleted file:', error)
-        })
-      }
-    }
-  },
-})
-```
-
-## 🔄 **Data Flow**
-
-### **Upload Flow**
-1. User drops/pastes file → FileHandler intercepts
-2. FileHandler calls unified file manager's `uploadFile()`
-3. Upload API stores in Supabase, returns file path
-4. FileHandler inserts appropriate node with `src: filePath`
-5. Node renders using file path, fetches signed URL on demand
-
-### **Display Flow**
-1. File node has `src` attribute with file path
-2. FileNodeView/CustomImageView component loads
-3. Fetches signed URL via unified file manager
-4. Displays content using signed URL
-
-### **Cleanup Flow**
-1. User deletes file node → `onDelete` event fires
-2. Event handler extracts deleted node's `src` attribute
-3. Unified file manager's `deleteFile()` calls delete API
-4. File removed from Supabase storage
-
-## 🛡️ **Security**
-
-### **Authentication & Authorization**
-- All file operations require user authentication
-- File paths include user ID for access control
-- Each request validates file ownership
-- Users can only access files in their own folders
-
-### **File Access**
-- Signed URLs with 1-hour expiration
-- No direct bucket access from client
-- File type and size validation
-- Path traversal protection
-
-## 🧹 **Cleanup System**
-
-### **Unified File Operations**
-
-```typescript
-import { 
-  uploadFile, 
-  deleteFile, 
-  deleteFiles, 
-  getFileUrl,
-  createFileUploader 
-} from './supabase-file-manager'
-
-// Upload a file
-const result = await uploadFile(file, { pathPrefix: 'notes' })
-
-// Delete single file
-await deleteFile(filePath)
-
-// Delete multiple files
-await deleteFiles([filePath1, filePath2, filePath3])
-
-// Get signed URL for serving
-const urlResult = await getFileUrl(filePath)
-
-// Create custom uploader
-const customUploader = createFileUploader({ 
-  maxFileSize: 5 * 1024 * 1024, // 5MB
-  pathPrefix: 'documents' 
-})
-```
-
-### **Automatic Cleanup**
-- Files automatically removed from storage when deleted from editor
-- Uses Tiptap's `onDelete` event for immediate cleanup
-- No complex content diffing or state tracking needed
-
-## 🔧 **Troubleshooting**
-
-### **Common Issues**
-
-#### **Files Not Uploading**
-- Check Supabase bucket permissions
-- Verify RLS policies are configured
-- Check file type is in `allowedMimeTypes`
-- Verify file size is under `maxFileSize`
-
-#### **Files Not Displaying**
-- Check browser console for API errors
-- Verify file exists in storage bucket
-- Check user authentication
-- Verify file ownership
-
-#### **Cleanup Failing**
-- Check authentication status
-- Verify file path format
-- Check delete API permissions
-- Verify file ownership
-
-### **Debug Tips**
-1. Check browser console for detailed error messages
-2. Verify Supabase storage bucket exists and is accessible
-3. Test with smaller files first
-4. Ensure all API routes are properly configured
-5. Check file type support in configuration
-
-## 📚 **Dependencies**
-
-```json
-{
-  "dependencies": {
-    "@tiptap/core": "^3.0.0",
-    "@tiptap/react": "^3.0.0",
-    "@tiptap/extension-file-handler": "^3.0.0",
-    "docx-preview": "^0.2.0"
-  }
-}
-```
-
-## 🚀 **Getting Started**
-
-1. **Install Dependencies**: Ensure all Tiptap extensions are installed
-2. **Configure Supabase**: Create `tiptap-bucket-files` storage bucket
-3. **Set Up RLS Policies**: Configure storage policies for user isolation
-4. **Add Extensions**: Include FileNode and FileHandler in your editor
-5. **Configure Upload**: Set up `fileUploadConfig` with your preferences
-6. **Test**: Try uploading different file types
-
-## 🎯 **Migration from Legacy System**
-
-### **What Changed**
-- `imageUploadConfig` → `fileUploadConfig`
-- All files now use `tiptap-bucket-files` bucket
-- Unified API endpoints (`/api/files/*`)
-- Single cleanup system for all file types
-- **Consolidated file operations** into `supabase-file-manager.ts`
-
-
-### **Backward Compatibility**
-- Existing image handling continues to work
-- Gradual migration possible for existing content
-- All file types now use the same upload/display pattern
-
-## 🔮 **Future Enhancements**
-
-- Enhanced document preview support (Excel, PowerPoint)
-- File compression and optimization
-- Progress tracking for uploads
-- Batch file operations
-- File versioning and history
-- Advanced preview capabilities
-
----
-
-This system provides a robust, scalable, and maintainable solution for file handling in Tiptap editors, eliminating the performance and scalability issues of base64 storage while providing a consistent user experience across all file types.
+If you change upload validation defaults, update:
+1. `components/tiptap/supabase-file-manager.ts`
+2. any caller passing `fileUploadConfig` overrides

@@ -13,19 +13,19 @@ export default async function RootLayout({
   // Check authentication
   const supabase = await createClient();
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
   // Redirect to signin if not authenticated
   // Include the dashboard path as 'next' parameter for redirect after login
-  if (!session) {
+  if (!user) {
     redirect("/signin");
   }
 
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="flex-1 flex flex-col overflow-auto px-4 h-100dvh">
+      <main className="flex-1 flex min-h-0 flex-col overflow-hidden px-4 h-dvh">
         <header className="flex h-10 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex grow items-center gap-2 ">
             <SidebarTrigger className="-ml-1" />
@@ -33,7 +33,7 @@ export default async function RootLayout({
           </div>
           <CommandSearch groups={[]} />
         </header>
-        <div className="flex-1 mb-4 overflow-auto">{children}</div>
+        <div className="flex-1 min-h-0 mb-4 overflow-hidden">{children}</div>
       </main>
     </SidebarProvider>
   );
