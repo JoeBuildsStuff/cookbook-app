@@ -3,8 +3,8 @@ import { HomeHeader } from "@/components/home/home-header";
 import { HomeFooter } from "@/components/home/home-footer";
 
 export const metadata: Metadata = {
-  title: "Home | A Web App",
-  description: "Welcome to our web app",
+  title: "Home | Cookbook",
+  description: "Welcome to the Cookbook",
 };
 
 export default function HomeLayout({

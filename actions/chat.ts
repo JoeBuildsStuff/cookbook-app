@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { Json } from "@/types/supabase";
 
 /** Schema used for chat tables (agnostic tech stack). */
-const CHAT_SCHEMA = "tech_stack_2026";
+const CHAT_SCHEMA = "cookbook";
 
 /** Storage buckets for chat attachments. Create in Supabase Dashboard → Storage if missing. */
 const CHAT_IMAGES_BUCKET = "chat-images";

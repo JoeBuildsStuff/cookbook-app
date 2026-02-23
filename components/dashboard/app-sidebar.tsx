@@ -13,7 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { File, Plus, Table2 } from "lucide-react";
+import { Book, Plus } from "lucide-react";
 import { SidebarLogo } from "@/components/dashboard/app-sidebar-logo";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -27,36 +27,13 @@ export function AppSidebar() {
     console.log("Create note clicked");
   };
 
-  const handleCreateTable = () => {
-    console.log("Create table clicked");
-  };
-
-  const handleCreateOpenAI = () => {
-    console.log("Create OpenAI chat clicked");
-  };
-
   const navigationItems = [
     {
-      label: "Notes",
-      href: "/dashboard/notes",
-      icon: File,
+      label: "Recipes",
+      href: "/dashboard/recipes",
+      icon: Book,
       action: handleCreateNote,
-      actionAriaLabel: "Create new note",
-    },
-    {
-      label: "Table",
-      href: "/dashboard/table",
-      icon: Table2,
-      action: handleCreateTable,
-      actionAriaLabel: "Create new table",
-    },
-    {
-      label: "OpenAI",
-      href: "/dashboard/openai",
-    },
-    {
-      label: "Anthropic",
-      href: "/dashboard/anthropic",
+      actionAriaLabel: "Create new recipe",
     },
   ];
 

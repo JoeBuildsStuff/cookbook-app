@@ -4,9 +4,51 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
+import { normalizeNoteContent } from "@/lib/note-content";
 import { createUniqueSlug, slugToDocumentPath } from "./note-path";
 
-const APP_SCHEMA = "tech_stack_2026";
+const APP_SCHEMA = "cookbook";
+
+export async function updateNoteContentAction(
+  noteId: string,
+  content: string,
+  title: string
+): Promise<{ success: boolean; error?: string }> {
+  const trimmedId = noteId.trim();
+  if (!trimmedId) {
+    return { success: false, error: "Invalid note ID" };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  const sanitizedContent = await normalizeNoteContent(content);
+
+  const { error } = await supabase
+    .schema(APP_SCHEMA)
+    .from("notes")
+    .update({
+      title: title.trim() || "Untitled",
+      content: sanitizedContent,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", trimmedId)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath(`/dashboard/recipes/${encodeURIComponent(trimmedId)}`);
+  revalidatePath("/dashboard/recipes");
+  return { success: true };
+}
 
 export async function createNoteAction() {
   const supabase = await createClient();
@@ -50,7 +92,7 @@ export async function createNoteAction() {
     throw insertError;
   }
 
-  redirect(`/dashboard/notes/${encodeURIComponent(newNote.id)}`);
+  redirect(`/dashboard/recipes/${encodeURIComponent(newNote.id)}`);
 }
 
 export async function deleteNoteAction(noteId: string) {
@@ -79,6 +121,6 @@ export async function deleteNoteAction(noteId: string) {
     return { success: false, error: error.message };
   }
 
-  revalidatePath("/dashboard/notes");
+  revalidatePath("/dashboard/recipes");
   return { success: true };
 }

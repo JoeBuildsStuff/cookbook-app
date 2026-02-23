@@ -17,7 +17,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { FilePlusCorner } from "lucide-react";
 
-const APP_SCHEMA = "tech_stack_2026";
+const APP_SCHEMA = "cookbook";
 
 type NotesPageProps = {
   searchParams?: Promise<{
@@ -76,9 +76,9 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
     <div className="flex h-full min-h-0 flex-col gap-4 overflow-auto rounded-xl border border-border bg-card p-4">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-lg font-semibold">Notes</h1>
+          <h1 className="text-lg font-semibold">Recipes</h1>
           <p className="text-sm text-muted-foreground">
-            Create and open your notes.
+            Create and open your recipes.
           </p>
         </div>
 
@@ -121,7 +121,7 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
               >
                 <Link
                   key={note.id}
-                  href={`/dashboard/notes/${encodeURIComponent(idSlug)}`}
+                  href={`/dashboard/recipes/${encodeURIComponent(idSlug)}`}
                   className=""
                 >
                   <CardHeader className="p-0">
@@ -147,7 +147,7 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
           })
         ) : (
           <div className="rounded-md border border-dashed border-border px-3 py-8 text-sm text-muted-foreground">
-            You do not have any notes yet.
+            You do not have any recipes yet.
           </div>
         )}
       </div>

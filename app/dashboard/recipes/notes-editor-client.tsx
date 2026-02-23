@@ -6,10 +6,13 @@ import { useRouter } from "next/navigation";
 import Tiptap from "@/components/tiptap/tiptap";
 import { createClient } from "@/lib/supabase/client";
 import { Trash } from "lucide-react";
+import {
+  deleteNoteAction,
+  updateNoteContentAction,
+} from "./actions";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
-import { deleteNoteAction } from "./actions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,7 +25,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-const APP_SCHEMA = "tech_stack_2026";
+const APP_SCHEMA = "cookbook";
 
 type NotesEditorClientProps = {
   noteId: string;
@@ -51,18 +54,9 @@ export function NotesEditorClient({
     async (nextContent: string, nextTitle: string) => {
       setSaveState("saving");
 
-      const supabase = createClient();
-      const { error } = await supabase
-        .schema(APP_SCHEMA)
-        .from("notes")
-        .update({
-          title: nextTitle.trim() || "Untitled",
-          content: nextContent,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", noteId);
+      const result = await updateNoteContentAction(noteId, nextContent, nextTitle);
 
-      if (error) {
+      if (!result.success) {
         setSaveState("error");
         return;
       }
@@ -121,7 +115,7 @@ export function NotesEditorClient({
     }
 
     setDeleteDialogOpen(false);
-    router.push("/dashboard/notes");
+    router.push("/dashboard/recipes");
     router.refresh();
   }, [isDeleting, noteId, router]);
 

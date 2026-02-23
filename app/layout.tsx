@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "A Web App",
-  description: "A web app built with Next.js, Tailwind CSS, and Supabase",
+  title: "Cookbook",
+  description: "A recipe management web app built by Joe",
 };
 
 export default function RootLayout({

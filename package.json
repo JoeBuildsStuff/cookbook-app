@@ -68,6 +68,8 @@
     "highlight.js": "^11",
     "input-otp": "^1.4.2",
     "lowlight": "^3.3.0",
+    "marked": "^15.0.0",
+    "sanitize-html": "^2.14.0",
     "lucide-react": "^0.562.0",
     "motion": "^12.23.26",
     "next": "16.1.1",

@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 
 import { createClient } from "@/lib/supabase/server"
 
-const APP_SCHEMA = "tech_stack_2026"
+const APP_SCHEMA = "cookbook"
 
 export type CommentRecord = {
   id: string
@@ -205,7 +205,7 @@ export async function createThread(input: {
   const supabase = await createClient()
   await assertDocumentOwnership(supabase, input.documentId, input.userId)
 
-  const { data, error } = await supabase.rpc("create_note_comment_thread_with_root", {
+  const { data, error } = await supabase.schema(APP_SCHEMA).rpc("create_note_comment_thread_with_root", {
     p_document_id: input.documentId,
     p_user_id: input.userId,
     p_anchor_from: input.anchorFrom,
@@ -518,7 +518,7 @@ export async function updateThreadAnchors(input: {
   const supabase = await createClient()
   await assertDocumentOwnership(supabase, input.documentId, input.userId)
 
-  const { error } = await supabase.rpc("batch_update_note_comment_thread_anchors", {
+  const { error } = await supabase.schema(APP_SCHEMA).rpc("batch_update_note_comment_thread_anchors", {
     p_document_id: input.documentId,
     p_anchors: input.anchors,
     p_now: new Date().toISOString(),
