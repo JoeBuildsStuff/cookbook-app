@@ -23,8 +23,8 @@ import { AuthButton } from "@/components/auth-button";
 export function AppSidebar() {
   const pathname = usePathname();
 
-  const handleCreateNote = () => {
-    console.log("Create note clicked");
+  const handleCreateRecipe = () => {
+    console.log("Create recipe clicked");
   };
 
   const navigationItems = [
@@ -32,7 +32,7 @@ export function AppSidebar() {
       label: "Recipes",
       href: "/dashboard/recipes",
       icon: Book,
-      action: handleCreateNote,
+      action: handleCreateRecipe,
       actionAriaLabel: "Create new recipe",
     },
   ];

@@ -1,5 +1,5 @@
 import Logo from "@/components/ui/logo";
-import { Bird } from "lucide-react";
+import { ChefHat } from "lucide-react";
 import { AuthButton } from "@/components/auth-button";
 import { Button } from "../ui/button";
 import GithubIconIcon from "../icons/github";
@@ -8,7 +8,7 @@ export function HomeHeader() {
   return (
     <header className="flex h-12 shrink-0 items-center gap-2">
       <div className="flex grow items-center gap-2 justify-between">
-        <Logo icon={Bird} text="An App" />
+        <Logo icon={ChefHat} text="AI Cookbook App" />
         <div className="ml-auto flex items-center gap-2">
           <Button variant="ghost" size="icon" asChild>
             <a

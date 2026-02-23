@@ -1,4 +1,4 @@
-import { Bird } from "lucide-react";
+import { ChefHat } from "lucide-react";
 
 export default function AuthLayout({
   children,
@@ -7,13 +7,11 @@ export default function AuthLayout({
 }) {
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-center p-4">
-        <header className="flex flex-col items-center justify-center mb-4">
-          <Bird className="size-10 shrink-0" />
-          <h1 className="text-2xl font-bold">A Web App</h1>
-          <p className="text-sm text-muted-foreground">
-            A Web App that does something.
-          </p>
-        </header>
+      <header className="flex flex-col items-center justify-center mb-4">
+        <ChefHat className="size-10 shrink-0" />
+        <h1 className="text-2xl font-bold">AI Cookbook App</h1>
+        <p className="text-sm text-muted-foreground">Create recipes with AI.</p>
+      </header>
       {children}
     </main>
   );
