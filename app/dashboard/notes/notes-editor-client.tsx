@@ -144,7 +144,7 @@ export function NotesEditorClient({
   }, []);
 
   return (
-    <div className="relative flex h-full min-h-0 flex-col gap-2 overflow-hidden p-1 pb-3">
+    <div className="relative flex h-full min-h-0 flex-col gap-2 overflow-hidden">
       <ButtonGroup className="flex w-full">
         <Input
           size="sm"
@@ -174,7 +174,9 @@ export function NotesEditorClient({
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+              <AlertDialogCancel disabled={isDeleting}>
+                Cancel
+              </AlertDialogCancel>
               <AlertDialogAction
                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 disabled={isDeleting}

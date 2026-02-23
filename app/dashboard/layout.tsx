@@ -33,7 +33,7 @@ export default async function RootLayout({
           </div>
           <CommandSearch groups={[]} />
         </header>
-        <div className="flex-1 min-h-0 overflow-hidden">{children}</div>
+        <div className="flex-1 min-h-0 overflow-hidden pb-2">{children}</div>
       </main>
     </SidebarProvider>
   );
