@@ -25,9 +25,9 @@ export default function HomePage() {
             <span className="text-primary">made with AI</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Ask the AI chatbot for any recipe — chocolate chip cookies, pad thai,
-            coq au vin — and it creates it for you. Edit, tweak, and add comments
-            as you go.
+            Ask the AI chatbot for any recipe — chocolate chip cookies, pad
+            thai, coq au vin — and it creates it for you. Edit, tweak, and add
+            comments as you go.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
@@ -43,9 +43,7 @@ export default function HomePage() {
         {/* How it works */}
         <section id="features" className="space-y-12">
           <div className="text-center space-y-3">
-            <h2 className="text-3xl font-bold tracking-tight">
-              How it works
-            </h2>
+            <h2 className="text-3xl font-bold tracking-tight">How it works</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
               Chat, create, and refine — all in one place
             </p>
@@ -59,10 +57,10 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-semibold">Ask for any recipe</h3>
               <p className="text-muted-foreground leading-relaxed text-sm">
-                Type what you want — &quot;chocolate chip cookies&quot;, &quot;vegan curry&quot;,
-                &quot;grandma&apos;s banana bread&quot; — and the AI creates a full recipe
-                with ingredients and instructions, saved straight to your
-                cookbook.
+                Type what you want — &quot;chocolate chip cookies&quot;,
+                &quot;vegan curry&quot;, &quot;grandma&apos;s banana bread&quot;
+                — and the AI creates a full recipe with ingredients and
+                instructions, saved straight to your cookbook.
               </p>
               <ul className="space-y-1.5 text-sm text-muted-foreground">
                 <li className="flex items-center gap-2">
@@ -87,9 +85,9 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-semibold">Edit and format</h3>
               <p className="text-muted-foreground leading-relaxed text-sm">
-                Recipes are rich documents — add headings, lists, tables, images,
-                and links. Tweak portions, swap ingredients, or add your own
-                notes. The AI sees what you&apos;re editing and can help.
+                Recipes are rich documents — add headings, lists, tables,
+                images, and links. Tweak portions, swap ingredients, or add your
+                own notes. The AI sees what you&apos;re editing and can help.
               </p>
               <ul className="space-y-1.5 text-sm text-muted-foreground">
                 <li className="flex items-center gap-2">
@@ -114,9 +112,9 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-semibold">Comments and feedback</h3>
               <p className="text-muted-foreground leading-relaxed text-sm">
-                Add comments on recipes — &quot;Maybe a little less flour&quot; or &quot;Try
-                doubling the vanilla&quot;. The AI can add comments too. Keep notes
-                and iterate without losing anything.
+                Add comments on recipes — &quot;Maybe a little less flour&quot;
+                or &quot;Try doubling the vanilla&quot;. The AI can add comments
+                too. Keep notes and iterate without losing anything.
               </p>
               <ul className="space-y-1.5 text-sm text-muted-foreground">
                 <li className="flex items-center gap-2">
@@ -140,15 +138,15 @@ export default function HomePage() {
         <section className="flex justify-center">
           <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border bg-muted/30 text-sm text-muted-foreground">
             <Sparkles className="size-4" />
-            <span>Powered by Claude, GPT &amp; Cerebras — pick the model you like</span>
+            <span>
+              Powered by Claude, GPT &amp; Cerebras — pick the model you like
+            </span>
           </div>
         </section>
 
         {/* CTA Section */}
         <section className="text-center space-y-6 py-14 px-8 rounded-2xl border border-border bg-muted/30">
-          <h2 className="text-3xl font-bold tracking-tight">
-            Ready to cook?
-          </h2>
+          <h2 className="text-3xl font-bold tracking-tight">Ready to cook?</h2>
           <p className="text-muted-foreground max-w-lg mx-auto">
             Create your first recipe with the AI assistant in minutes.
           </p>
