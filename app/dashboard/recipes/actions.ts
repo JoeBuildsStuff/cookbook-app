@@ -124,3 +124,41 @@ export async function deleteNoteAction(noteId: string) {
   revalidatePath("/dashboard/recipes");
   return { success: true };
 }
+
+export async function setNoteFavoriteAction(
+  noteId: string,
+  isFavorite: boolean
+): Promise<{ success: boolean; error?: string }> {
+  const normalizedNoteId = noteId.trim();
+  if (!normalizedNoteId) {
+    return { success: false, error: "Invalid note ID" };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  const { error } = await supabase
+    .schema(APP_SCHEMA)
+    .from("notes")
+    .update({
+      is_favorite: isFavorite,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", normalizedNoteId)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath(`/dashboard/recipes/${encodeURIComponent(normalizedNoteId)}`);
+  revalidatePath("/dashboard/recipes");
+  revalidatePath("/dashboard");
+  return { success: true };
+}

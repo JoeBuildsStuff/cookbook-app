@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 
 import Tiptap from "@/components/tiptap/tiptap";
 import { createClient } from "@/lib/supabase/client";
-import { Trash } from "lucide-react";
+import { Heart, Trash } from "lucide-react";
 import {
   deleteNoteAction,
+  setNoteFavoriteAction,
   updateNoteContentAction,
 } from "./actions";
 import { Button } from "@/components/ui/button";
@@ -31,18 +32,22 @@ type NotesEditorClientProps = {
   noteId: string;
   initialTitle: string;
   initialContent: string;
+  initialIsFavorite: boolean;
 };
 
 export function NotesEditorClient({
   noteId,
   initialTitle,
   initialContent,
+  initialIsFavorite,
 }: NotesEditorClientProps) {
   const router = useRouter();
   const [title, setTitle] = useState(initialTitle);
   const [content, setContent] = useState(initialContent);
   const [showComments, setShowComments] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
+  const [isUpdatingFavorite, setIsUpdatingFavorite] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [saveState, setSaveState] = useState<
@@ -54,7 +59,11 @@ export function NotesEditorClient({
     async (nextContent: string, nextTitle: string) => {
       setSaveState("saving");
 
-      const result = await updateNoteContentAction(noteId, nextContent, nextTitle);
+      const result = await updateNoteContentAction(
+        noteId,
+        nextContent,
+        nextTitle
+      );
 
       if (!result.success) {
         setSaveState("error");
@@ -115,9 +124,31 @@ export function NotesEditorClient({
     }
 
     setDeleteDialogOpen(false);
+    window.dispatchEvent(new Event("cookbook-notes-updated"));
     router.push("/dashboard/recipes");
     router.refresh();
   }, [isDeleting, noteId, router]);
+
+  const handleToggleFavorite = useCallback(async () => {
+    if (isUpdatingFavorite) {
+      return;
+    }
+
+    const nextFavoriteState = !isFavorite;
+    setIsUpdatingFavorite(true);
+    setIsFavorite(nextFavoriteState);
+
+    const result = await setNoteFavoriteAction(noteId, nextFavoriteState);
+    if (!result.success) {
+      setIsFavorite(!nextFavoriteState);
+      setIsUpdatingFavorite(false);
+      setSaveState("error");
+      return;
+    }
+
+    window.dispatchEvent(new Event("cookbook-notes-updated"));
+    setIsUpdatingFavorite(false);
+  }, [isFavorite, isUpdatingFavorite, noteId]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -184,6 +215,20 @@ export function NotesEditorClient({
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+        <Button
+          variant="outline"
+          size="sm"
+          type="button"
+          disabled={isUpdatingFavorite}
+          aria-label={isFavorite ? "Unfavorite note" : "Favorite note"}
+          onClick={() => {
+            void handleToggleFavorite();
+          }}
+        >
+          <Heart
+            className={`size-4 ${isFavorite ? "fill-current text-red-500" : ""}`}
+          />
+        </Button>
       </ButtonGroup>
 
       <div className="absolute bottom-2 left-2 px-1 text-xs text-muted-foreground z-10">
