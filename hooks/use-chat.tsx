@@ -259,6 +259,7 @@ export function useChat({ onSendMessage, onActionClick }: UseChatProps = {}) {
         formData.append("client_tz", tz);
         formData.append("client_utc_offset", offset);
         formData.append("client_now_iso", localISO);
+        formData.append("client_path", window.location.pathname || "");
       } catch {}
 
       // Add attachments if any
@@ -496,6 +497,10 @@ export function useChat({ onSendMessage, onActionClick }: UseChatProps = {}) {
               cerebrasFormData.append("client_tz", tz);
               cerebrasFormData.append("client_utc_offset", offset);
               cerebrasFormData.append("client_now_iso", localISO);
+              cerebrasFormData.append(
+                "client_path",
+                window.location.pathname || ""
+              );
             } catch {}
 
             // Add attachments if any
@@ -607,6 +612,7 @@ export function useChat({ onSendMessage, onActionClick }: UseChatProps = {}) {
               openaiFormData.append("client_tz", tz);
               openaiFormData.append("client_utc_offset", offset);
               openaiFormData.append("client_now_iso", localISO);
+              openaiFormData.append("client_path", window.location.pathname || "");
             } catch {}
 
             // Add attachments if any

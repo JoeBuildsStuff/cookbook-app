@@ -1,17 +1,43 @@
 # Chat API Tools
 
-This directory contains tool definitions and execution logic for the chat API. Tools are functions that the AI can call to perform specific actions.
+This directory contains tool definitions and execution logic for the chat API.
 
 ## Structure
 
-- `index.ts` - Exports all tools and executors
-- `template-tool.ts` - Placeholder template for adding your own tools
-- `README.md` - This documentation file
+- `index.ts` - Exports all enabled tools and executor mapping
+- `note-tools.ts` - Note-specific tools (read/update note, read/add/reply comments)
+- `template-tool.ts` - Optional template for creating additional tools
+- `README.md` - Documentation
 
-## Adding Your Own Tools
+## Enabled Tools
 
-1. Create a new file in this directory (e.g., `my-tool.ts`)
-2. Define the tool schema and execution function:
+- `notes_get_note`
+  - Input: `noteId`, optional `maxChars`
+  - Output: note title/content metadata and `/dashboard/notes/:id` URL
+- `notes_get_comments`
+  - Input: `noteId`, optional `includeResolved`, `limitThreads`, `maxCharsPerComment`
+  - Output: threads with replies, statuses, and anchor summary
+- `notes_update_note`
+  - Input: `noteId`, and at least one of `title` or `content`
+  - Output: updated note record
+- `notes_add_comment`
+  - Input: `noteId`, `content`, optional `anchorText`
+  - Output: created thread ID and root comment ID
+- `notes_reply_to_comment`
+  - Input: `noteId`, `threadId`, `content`
+  - Output: created reply comment metadata
+
+All tools enforce Supabase auth and only operate on notes owned by the current user.
+
+## Notes Page Context
+
+The chat client now sends `client_path` (current URL path) to chat APIs.  
+System prompts include this path, so if the user is on `/dashboard/notes/{id}`, models can infer `noteId` for tool calls.
+
+## Adding New Tools
+
+1. Create a file in this directory (example: `my-tool.ts`)
+2. Define tool schema + executor:
 
 ```typescript
 import type { Anthropic } from '@anthropic-ai/sdk'
@@ -48,18 +74,18 @@ export async function executeMyTool(
 }
 ```
 
-3. Update `index.ts` to include your new tool:
+3. Register it in `index.ts`:
 
 ```typescript
 import { myTool, executeMyTool } from './my-tool'
 
 export const availableTools: Anthropic.Tool[] = [
-  templateTool,
+  notesGetNoteTool,
   myTool,
 ]
 
 export const toolExecutors: Record<string, ...> = {
-  template_example: executeTemplateExample,
+  notes_get_note: executeNotesGetNote,
   my_tool_name: executeMyTool,
 }
 ```

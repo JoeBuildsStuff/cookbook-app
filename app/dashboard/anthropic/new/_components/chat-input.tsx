@@ -220,7 +220,7 @@ export function ChatInput({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <InputGroupButton variant="ghost" size="sm">
-                  Opus 4.5{" "}
+                  Opus 4.6{" "}
                   <ChevronDown className="size-4 text-muted-foreground ml-auto" />
                 </InputGroupButton>
               </DropdownMenuTrigger>
@@ -231,7 +231,7 @@ export function ChatInput({
               >
                 <DropdownMenuItem className="flex flex-row items-center">
                   <div className="flex flex-col items-start gap-1">
-                    <span className="text-sm">Opus 4.5</span>
+                    <span className="text-sm">Opus 4.6</span>
                     <span className="text-xs text-muted-foreground">
                       Most capable for complex work
                     </span>
@@ -242,7 +242,7 @@ export function ChatInput({
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="flex flex-col gap-1 items-start">
-                  <span className="text-sm">Sonnet 4.5</span>
+                  <span className="text-sm">Sonnet 4.6</span>
                   <span className="text-xs text-muted-foreground">
                     Best for everyday tasks
                   </span>
@@ -257,11 +257,9 @@ export function ChatInput({
                 <DropdownMenuLabel className="text-xs text-muted-foreground">
                   More models
                 </DropdownMenuLabel>
-                <DropdownMenuItem>Opus 4.1</DropdownMenuItem>
-                <DropdownMenuItem>Opus 4</DropdownMenuItem>
-                <DropdownMenuItem>Sonnet 4</DropdownMenuItem>
-                <DropdownMenuItem>Opus 3</DropdownMenuItem>
-                <DropdownMenuItem>Haiku 3.5</DropdownMenuItem>
+                <DropdownMenuItem>claude-opus-4-6</DropdownMenuItem>
+                <DropdownMenuItem>claude-sonnet-4-6</DropdownMenuItem>
+                <DropdownMenuItem>claude-haiku-4-5</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             <InputGroupButton

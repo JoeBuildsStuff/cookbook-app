@@ -346,22 +346,22 @@ export function ChatInput() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem
-                    value="claude-3-5-haiku-latest"
+                    value="claude-haiku-4-5"
                     className="font-light text-xs"
                   >
-                    Haiku 3.5
+                    Haiku 4.5
                   </SelectItem>
                   <SelectItem
-                    value="claude-sonnet-4-20250514"
+                    value="claude-sonnet-4-6"
                     className="font-light text-xs"
                   >
-                    Sonnet 4
+                    Sonnet 4.6
                   </SelectItem>
                   <SelectItem
-                    value="claude-opus-4-1-20250805"
+                    value="claude-opus-4-6"
                     className="font-light text-xs"
                   >
-                    Opus 4.1
+                    Opus 4.6
                   </SelectItem>
                   <SelectItem
                     value="gpt-oss-120b"

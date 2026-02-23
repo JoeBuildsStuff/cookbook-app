@@ -6,7 +6,7 @@ This directory contains the chat API endpoints, supporting multiple AI providers
 
 ### 1. Main Chat API (`/api/chat`)
 - **Provider**: Anthropic (Claude models)
-- **Models**: Haiku 3.5, Sonnet 4, Opus 4.1
+- **Models**: Haiku 4.5, Sonnet 4.6, Opus 4.6
 - **Features**: Function calling, web search, file attachments, context awareness
 - **File**: `route.ts`
 
@@ -26,7 +26,7 @@ This directory contains the chat API endpoints, supporting multiple AI providers
 
 Users can select from different AI models in the chat interface:
 
-- **Anthropic Models**: `claude-3-5-haiku-latest`, `claude-sonnet-4-20250514`, `claude-opus-4-1-20250805`
+- **Anthropic Models**: `claude-haiku-4-5`, `claude-sonnet-4-6`, `claude-opus-4-6`
 - **OpenAI Models**: `gpt-5`, `gpt-5-mini`, `gpt-5-nano`
 - **Cerebras Models**: `gpt-oss-120b`
 

@@ -29,6 +29,7 @@ interface ChatAPIRequest {
   clientTz?: string
   clientOffset?: string
   clientNowIso?: string
+  clientPath?: string
 }
 
 interface ChatAPIResponse {
@@ -183,6 +184,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ChatAPIRe
       const clientTz = ((formData.get('client_tz') as string) || '').trim()
       const clientOffset = ((formData.get('client_utc_offset') as string) || '').trim()
       const clientNowIso = ((formData.get('client_now_iso') as string) || '').trim()
+      const clientPath = ((formData.get('client_path') as string) || '').trim()
       const attachmentCount = parseInt((formData.get('attachmentCount') as string) || '0', 10)
 
       const context = contextStr && contextStr !== 'null' ? JSON.parse(contextStr) : null
@@ -197,7 +199,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ChatAPIRe
         if (file) attachments.push({ file, name, type, size })
       }
 
-      body = { message, context, messages, model, attachments, clientTz, clientOffset, clientNowIso }
+      body = { message, context, messages, model, attachments, clientTz, clientOffset, clientNowIso, clientPath }
     } else {
       body = await request.json()
     }
@@ -211,6 +213,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ChatAPIRe
       clientTz = '',
       clientOffset = '',
       clientNowIso = '',
+      clientPath = '',
     } = body
 
     if (!message || typeof message !== 'string') {
@@ -226,6 +229,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<ChatAPIRe
       clientTz,
       clientOffset,
       clientNowIso,
+      clientPath,
     )
 
     return NextResponse.json(response)
@@ -259,6 +263,7 @@ async function getLLMResponse(
   clientTz = '',
   clientOffset = '',
   clientNowIso = '',
+  clientPath = '',
 ): Promise<ChatAPIResponse> {
   // 1) System prompt
   let systemPrompt = `You are a helpful assistant. Use the available tools when appropriate to help users with their requests.
@@ -277,6 +282,14 @@ User Locale Context:
 - Timezone: ${clientTz || 'unknown'}
 - UTC offset (at request): ${clientOffset || 'unknown'}
 - Local time at request: ${clientNowIso || 'unknown'}`
+  }
+
+  if (clientPath) {
+    systemPrompt += `
+
+User Navigation Context:
+- Current path: ${clientPath}
+- If the path is /dashboard/notes/{id}, use that {id} as noteId for note tools.`
   }
 
   if (context) {
@@ -359,7 +372,7 @@ User Locale Context:
 
   while (iteration < maxIterations) {
     const resp = await anthropic.messages.create({
-      model: model || 'claude-sonnet-4-20250514',
+      model: model || 'claude-sonnet-4-6',
       max_tokens: 2048,
       system: systemPrompt,
       tools,

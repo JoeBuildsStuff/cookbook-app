@@ -24,6 +24,7 @@ interface OpenAIAPIRequest {
   clientTz?: string
   clientOffset?: string
   clientNowIso?: string
+  clientPath?: string
 }
 
 interface OpenAIAPIResponse {
@@ -85,6 +86,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<OpenAIAPI
       const clientTz = (formData.get('client_tz') as string) || ''
       const clientOffset = (formData.get('client_utc_offset') as string) || ''
       const clientNowIso = (formData.get('client_now_iso') as string) || ''
+      const clientPath = (formData.get('client_path') as string) || ''
       const attachmentCount = parseInt(formData.get('attachmentCount') as string || '0')
       
       const context = contextStr && contextStr !== 'null' ? JSON.parse(contextStr) : null
@@ -104,13 +106,13 @@ export async function POST(request: NextRequest): Promise<NextResponse<OpenAIAPI
         }
       }
       
-      body = { message, context, messages, model, reasoningEffort, attachments, clientTz, clientOffset, clientNowIso } as unknown as OpenAIAPIRequest
+      body = { message, context, messages, model, reasoningEffort, attachments, clientTz, clientOffset, clientNowIso, clientPath } as unknown as OpenAIAPIRequest
     } else {
       // Handle JSON request (backward compatibility)
       body = await request.json()
     }
 
-    const { message, context, messages = [], model, attachments = [], clientTz = '', clientOffset = '', clientNowIso = '' } = body
+    const { message, context, messages = [], model, attachments = [], clientTz = '', clientOffset = '', clientNowIso = '', clientPath = '' } = body
 
     // Validate input
     if (!message || typeof message !== 'string') {
@@ -127,7 +129,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<OpenAIAPI
       )
     }
 
-    const response = await getOpenAIResponse(messages, message, context || null, attachments, model, clientTz, clientOffset, clientNowIso)
+    const response = await getOpenAIResponse(messages, message, context || null, attachments, model, clientTz, clientOffset, clientNowIso, clientPath)
 
     return NextResponse.json(response)
   } catch (error) {
@@ -196,7 +198,8 @@ async function getOpenAIResponse(
   model?: string,
   clientTz: string = '',
   clientOffset: string = '',
-  clientNowIso: string = ''
+  clientNowIso: string = '',
+  clientPath: string = ''
 ): Promise<OpenAIAPIResponse> {
   try {
     // 1. System Prompt
@@ -211,6 +214,10 @@ If a tool responds with a url to a record, include it in your response using mar
     // Provide user locale/timezone context to the model
     if (clientTz || clientOffset || clientNowIso) {
       systemPrompt += `\n\nUser Locale Context:\n- Timezone: ${clientTz || 'unknown'}\n- UTC offset (at request): ${clientOffset || 'unknown'}\n- Local time at request: ${clientNowIso || 'unknown'}`
+    }
+
+    if (clientPath) {
+      systemPrompt += `\n\nUser Navigation Context:\n- Current path: ${clientPath}\n- If the path is /dashboard/notes/{id}, use that {id} as noteId for note tools.`
     }
     
     if (context) {
