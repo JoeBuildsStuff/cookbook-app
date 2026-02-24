@@ -18,6 +18,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Cookbook",
   description: "A recipe management web app built by Joe",
+  openGraph: {
+    images: ["/recipe-screenshot.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/recipe-screenshot.png"],
+  },
 };
 
 export default function RootLayout({

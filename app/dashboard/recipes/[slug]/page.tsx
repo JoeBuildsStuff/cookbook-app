@@ -31,7 +31,7 @@ export default async function NotePage({ params }: NotePageProps) {
   const { data: note, error } = await supabase
     .schema(APP_SCHEMA)
     .from("notes")
-    .select("id, title, content, is_favorite")
+    .select("id, title, content, is_favorite, icon_name")
     .eq("user_id", user.id)
     .eq("id", noteId)
     .maybeSingle();
@@ -50,6 +50,7 @@ export default async function NotePage({ params }: NotePageProps) {
       initialTitle={note.title ?? "Untitled"}
       initialContent={note.content ?? ""}
       initialIsFavorite={note.is_favorite ?? false}
+      initialIconName={note.icon_name ?? ""}
     />
   );
 }

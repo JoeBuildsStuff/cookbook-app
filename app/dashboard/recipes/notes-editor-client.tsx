@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Heart, Trash } from "lucide-react";
 import {
   deleteNoteAction,
+  setNoteIconAction,
   setNoteFavoriteAction,
   updateNoteContentAction,
 } from "./actions";
@@ -25,6 +26,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { RecipeIconPicker } from "./recipe-icon-picker";
+import {
+  normalizeRecipeIconName,
+  type RecipeIconName,
+} from "@/lib/recipe-icons";
 
 const APP_SCHEMA = "cookbook";
 
@@ -33,6 +39,7 @@ type NotesEditorClientProps = {
   initialTitle: string;
   initialContent: string;
   initialIsFavorite: boolean;
+  initialIconName: string;
 };
 
 export function NotesEditorClient({
@@ -40,6 +47,7 @@ export function NotesEditorClient({
   initialTitle,
   initialContent,
   initialIsFavorite,
+  initialIconName,
 }: NotesEditorClientProps) {
   const router = useRouter();
   const [title, setTitle] = useState(initialTitle);
@@ -48,6 +56,10 @@ export function NotesEditorClient({
   const [isDeleting, setIsDeleting] = useState(false);
   const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
   const [isUpdatingFavorite, setIsUpdatingFavorite] = useState(false);
+  const [iconName, setIconName] = useState<RecipeIconName>(
+    normalizeRecipeIconName(initialIconName)
+  );
+  const [isUpdatingIcon, setIsUpdatingIcon] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [saveState, setSaveState] = useState<
@@ -150,6 +162,30 @@ export function NotesEditorClient({
     setIsUpdatingFavorite(false);
   }, [isFavorite, isUpdatingFavorite, noteId]);
 
+  const handleIconSelect = useCallback(
+    async (nextIconName: RecipeIconName) => {
+      if (isUpdatingIcon || nextIconName === iconName) {
+        return;
+      }
+
+      const previousIconName = iconName;
+      setIsUpdatingIcon(true);
+      setIconName(nextIconName);
+
+      const result = await setNoteIconAction(noteId, nextIconName);
+      if (!result.success) {
+        setIconName(previousIconName);
+        setSaveState("error");
+        setIsUpdatingIcon(false);
+        return;
+      }
+
+      window.dispatchEvent(new Event("cookbook-notes-updated"));
+      setIsUpdatingIcon(false);
+    },
+    [iconName, isUpdatingIcon, noteId]
+  );
+
   useEffect(() => {
     const supabase = createClient();
 
@@ -159,6 +195,10 @@ export function NotesEditorClient({
       .update({ viewed_at: new Date().toISOString() })
       .eq("id", noteId);
   }, [noteId]);
+
+  useEffect(() => {
+    setIconName(normalizeRecipeIconName(initialIconName));
+  }, [initialIconName]);
 
   useEffect(() => {
     return () => {
@@ -171,6 +211,11 @@ export function NotesEditorClient({
   return (
     <div className="relative flex h-full min-h-0 flex-col gap-2 overflow-hidden">
       <ButtonGroup className="flex w-full">
+        <RecipeIconPicker
+          iconName={iconName}
+          isUpdating={isUpdatingIcon}
+          onSelect={handleIconSelect}
+        />
         <Input
           size="sm"
           value={title}
@@ -226,7 +271,7 @@ export function NotesEditorClient({
           }}
         >
           <Heart
-            className={`size-4 ${isFavorite ? "fill-current text-red-500" : ""}`}
+            className={`size-4 ${isFavorite ? "fill-current text-primary-background" : ""}`}
           />
         </Button>
       </ButtonGroup>

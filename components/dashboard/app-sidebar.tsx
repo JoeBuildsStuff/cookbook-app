@@ -14,19 +14,26 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Book, Heart, History } from "lucide-react";
+import { Book } from "lucide-react";
 import { SidebarLogo } from "@/components/dashboard/app-sidebar-logo";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { AuthButton } from "@/components/auth-button";
 import { createClient } from "@/lib/supabase/client";
+import {
+  DEFAULT_RECIPE_ICON,
+  getRecipeIconOption,
+  isRecipeIconName,
+  type RecipeIconName,
+} from "@/lib/recipe-icons";
 
 const APP_SCHEMA = "cookbook";
 
 type SidebarRecipe = {
   id: string;
   title: string | null;
+  icon_name: string | null;
 };
 
 export function AppSidebar() {
@@ -53,7 +60,7 @@ export function AppSidebar() {
       supabase
         .schema(APP_SCHEMA)
         .from("notes")
-        .select("id, title")
+        .select("id, title, icon_name")
         .eq("user_id", user.id)
         .eq("is_favorite", true)
         .order("updated_at", { ascending: false })
@@ -61,7 +68,7 @@ export function AppSidebar() {
       supabase
         .schema(APP_SCHEMA)
         .from("notes")
-        .select("id, title")
+        .select("id, title, icon_name")
         .eq("user_id", user.id)
         .order("viewed_at", { ascending: false })
         .limit(5),
@@ -108,6 +115,30 @@ export function AppSidebar() {
     },
   ];
 
+  const renderRecipeMenuItem = (recipe: SidebarRecipe) => {
+    const iconName: RecipeIconName =
+      recipe.icon_name && isRecipeIconName(recipe.icon_name)
+        ? recipe.icon_name
+        : DEFAULT_RECIPE_ICON;
+    const recipeIcon = getRecipeIconOption(iconName);
+
+    return (
+      <SidebarMenuButton
+        asChild
+        className={cn(
+          pathname === `/dashboard/recipes/${encodeURIComponent(recipe.id)}`
+            ? "bg-muted/50 hover:bg-muted font-semibold"
+            : "hover:bg-muted"
+        )}
+      >
+        <Link href={`/dashboard/recipes/${encodeURIComponent(recipe.id)}`}>
+          <recipeIcon.Icon className="size-3.5 shrink-0 text-muted-foreground" />
+          <span className="truncate">{recipe.title || "Untitled"}</span>
+        </Link>
+      </SidebarMenuButton>
+    );
+  };
+
   return (
     <>
       <Sidebar>
@@ -144,7 +175,6 @@ export function AppSidebar() {
 
           <SidebarGroup>
             <SidebarGroupLabel className="flex items-center gap-2">
-              <Heart className="size-3.5" />
               Favorites
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -158,29 +188,15 @@ export function AppSidebar() {
                 ) : favorites.length > 0 ? (
                   favorites.map((recipe) => (
                     <SidebarMenuItem key={recipe.id}>
-                      <SidebarMenuButton
-                        asChild
-                        className={cn(
-                          pathname ===
-                            `/dashboard/recipes/${encodeURIComponent(recipe.id)}`
-                            ? "bg-muted/50 hover:bg-muted font-semibold"
-                            : "hover:bg-muted"
-                        )}
-                      >
-                        <Link
-                          href={`/dashboard/recipes/${encodeURIComponent(recipe.id)}`}
-                        >
-                          <span className="truncate">
-                            {recipe.title || "Untitled"}
-                          </span>
-                        </Link>
-                      </SidebarMenuButton>
+                      {renderRecipeMenuItem(recipe)}
                     </SidebarMenuItem>
                   ))
                 ) : (
                   <SidebarMenuItem>
                     <SidebarMenuButton disabled>
-                      <span className="text-muted-foreground">No favorites</span>
+                      <span className="text-muted-foreground">
+                        No favorites
+                      </span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 )}
@@ -190,7 +206,6 @@ export function AppSidebar() {
 
           <SidebarGroup>
             <SidebarGroupLabel className="flex items-center gap-2">
-              <History className="size-3.5" />
               Recent
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -204,29 +219,15 @@ export function AppSidebar() {
                 ) : recentRecipes.length > 0 ? (
                   recentRecipes.map((recipe) => (
                     <SidebarMenuItem key={recipe.id}>
-                      <SidebarMenuButton
-                        asChild
-                        className={cn(
-                          pathname ===
-                            `/dashboard/recipes/${encodeURIComponent(recipe.id)}`
-                            ? "bg-muted/50 hover:bg-muted font-semibold"
-                            : "hover:bg-muted"
-                        )}
-                      >
-                        <Link
-                          href={`/dashboard/recipes/${encodeURIComponent(recipe.id)}`}
-                        >
-                          <span className="truncate">
-                            {recipe.title || "Untitled"}
-                          </span>
-                        </Link>
-                      </SidebarMenuButton>
+                      {renderRecipeMenuItem(recipe)}
                     </SidebarMenuItem>
                   ))
                 ) : (
                   <SidebarMenuItem>
                     <SidebarMenuButton disabled>
-                      <span className="text-muted-foreground">No recent recipes</span>
+                      <span className="text-muted-foreground">
+                        No recent recipes
+                      </span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 )}

@@ -1,0 +1,117 @@
+import {
+  Apple,
+  Beef,
+  Carrot,
+  ChefHat,
+  Coffee,
+  Cookie,
+  Croissant,
+  Drumstick,
+  Fish,
+  IceCreamCone,
+  Pizza,
+  Salad,
+  Sandwich,
+  Soup,
+  UtensilsCrossed,
+  type LucideIcon,
+} from "lucide-react";
+
+export const RECIPE_ICON_NAMES = [
+  "utensils-crossed",
+  "chef-hat",
+  "beef",
+  "drumstick",
+  "fish",
+  "salad",
+  "carrot",
+  "apple",
+  "pizza",
+  "sandwich",
+  "soup",
+  "croissant",
+  "cookie",
+  "ice-cream-cone",
+  "coffee",
+] as const;
+
+export type RecipeIconName = (typeof RECIPE_ICON_NAMES)[number];
+
+export const DEFAULT_RECIPE_ICON: RecipeIconName = "utensils-crossed";
+
+const RECIPE_ICON_NAME_SET = new Set<string>(RECIPE_ICON_NAMES);
+
+export function isRecipeIconName(value: string): value is RecipeIconName {
+  return RECIPE_ICON_NAME_SET.has(value);
+}
+
+export function normalizeRecipeIconName(
+  value: string | null | undefined
+): RecipeIconName {
+  return value && isRecipeIconName(value) ? value : DEFAULT_RECIPE_ICON;
+}
+
+/** Map from icon name to Lucide component, for rendering icons in lists/cards. */
+export const RECIPE_ICON_COMPONENTS: Record<string, LucideIcon> = {
+  "utensils-crossed": UtensilsCrossed,
+  "chef-hat": ChefHat,
+  beef: Beef,
+  drumstick: Drumstick,
+  fish: Fish,
+  salad: Salad,
+  carrot: Carrot,
+  apple: Apple,
+  pizza: Pizza,
+  sandwich: Sandwich,
+  soup: Soup,
+  croissant: Croissant,
+  cookie: Cookie,
+  "ice-cream-cone": IceCreamCone,
+  coffee: Coffee,
+};
+
+export type RecipeIconOption = {
+  name: RecipeIconName;
+  label: string;
+  Icon: LucideIcon;
+};
+
+/** Options with labels, for the icon picker UI. */
+export const RECIPE_ICON_OPTIONS: RecipeIconOption[] = [
+  { name: "utensils-crossed", label: "Utensils", Icon: UtensilsCrossed },
+  { name: "chef-hat", label: "Chef Hat", Icon: ChefHat },
+  { name: "beef", label: "Beef", Icon: Beef },
+  { name: "drumstick", label: "Drumstick", Icon: Drumstick },
+  { name: "fish", label: "Fish", Icon: Fish },
+  { name: "salad", label: "Salad", Icon: Salad },
+  { name: "carrot", label: "Carrot", Icon: Carrot },
+  { name: "apple", label: "Apple", Icon: Apple },
+  { name: "pizza", label: "Pizza", Icon: Pizza },
+  { name: "sandwich", label: "Sandwich", Icon: Sandwich },
+  { name: "soup", label: "Soup", Icon: Soup },
+  { name: "croissant", label: "Croissant", Icon: Croissant },
+  { name: "cookie", label: "Cookie", Icon: Cookie },
+  { name: "ice-cream-cone", label: "Ice Cream", Icon: IceCreamCone },
+  { name: "coffee", label: "Coffee", Icon: Coffee },
+];
+
+const RECIPE_ICON_OPTION_MAP = new Map<RecipeIconName, RecipeIconOption>(
+  RECIPE_ICON_OPTIONS.map((option) => [option.name, option])
+);
+
+export function getRecipeIconOption(
+  iconName: RecipeIconName | null | undefined
+): RecipeIconOption {
+  return (
+    (iconName ? RECIPE_ICON_OPTION_MAP.get(iconName) : undefined) ??
+    RECIPE_ICON_OPTION_MAP.get(DEFAULT_RECIPE_ICON)!
+  );
+}
+
+export function getRecipeIconComponent(
+  iconName: string | null | undefined
+): LucideIcon {
+  return (
+    (iconName && RECIPE_ICON_COMPONENTS[iconName]) ?? UtensilsCrossed
+  );
+}

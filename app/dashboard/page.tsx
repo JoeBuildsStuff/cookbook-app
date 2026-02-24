@@ -2,7 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
 import { createClient } from "@/lib/supabase/server";
-import { ChefHat, Book, MessageSquare, ArrowRight } from "lucide-react";
+import { ArrowRight, Book, ChefHat, MessageSquare } from "lucide-react";
+import { getRecipeIconComponent } from "@/lib/recipe-icons";
 import {
   Card,
   CardContent,
@@ -27,7 +28,7 @@ export default async function DashboardPage() {
   const { data: recipes } = await supabase
     .schema(APP_SCHEMA)
     .from("notes")
-    .select("id, title, updated_at")
+    .select("id, title, icon_name, updated_at")
     .eq("user_id", user.id)
     .order("updated_at", { ascending: false })
     .limit(5);
@@ -95,23 +96,28 @@ export default async function DashboardPage() {
         <CardContent>
           {recipes && recipes.length > 0 ? (
             <ul className="space-y-2">
-              {recipes.map((recipe) => (
-                <li key={recipe.id}>
-                  <Link
-                    href={`/dashboard/recipes/${encodeURIComponent(recipe.id)}`}
-                    className="flex items-center justify-between rounded-md px-3 py-2 hover:bg-accent transition-colors group"
-                  >
-                    <span className="font-medium truncate">
-                      {recipe.title || "Untitled"}
-                    </span>
-                    <span className="text-xs text-muted-foreground shrink-0 ml-2">
-                      {formatDistanceToNow(new Date(recipe.updated_at), {
-                        addSuffix: true,
-                      })}
-                    </span>
-                  </Link>
-                </li>
-              ))}
+              {recipes.map((recipe) => {
+                const RecipeIcon = getRecipeIconComponent(recipe.icon_name);
+
+                return (
+                  <li key={recipe.id}>
+                    <Link
+                      href={`/dashboard/recipes/${encodeURIComponent(recipe.id)}`}
+                      className="flex items-center justify-between rounded-md px-3 py-2 hover:bg-accent transition-colors group"
+                    >
+                      <span className="font-medium truncate flex items-center gap-2">
+                        <RecipeIcon className="size-4 shrink-0 text-muted-foreground" />
+                        <span className="truncate">{recipe.title || "Untitled"}</span>
+                      </span>
+                      <span className="text-xs text-muted-foreground shrink-0 ml-2">
+                        {formatDistanceToNow(new Date(recipe.updated_at), {
+                          addSuffix: true,
+                        })}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           ) : (
             <p className="text-sm text-muted-foreground py-4">
