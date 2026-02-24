@@ -10,17 +10,19 @@ import {
   PenLine,
   Bot,
 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
   return (
     <div className="flex flex-col items-center justify-center py-12">
       <main className="max-w-5xl w-full space-y-24">
         {/* Hero Section */}
-        <section className="text-center space-y-8">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-muted/50 text-sm text-muted-foreground">
+        <section className="text-center space-y-4">
+          <Badge className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-muted/50 text-sm text-muted-foreground">
             <ChefHat className="size-3.5" />
             <span>Create recipes with AI</span>
-          </div>
+          </Badge>
           <h1 className="text-5xl font-bold tracking-tight sm:text-7xl leading-tight">
             Your recipes,
             <br />
@@ -31,15 +33,10 @@ export default function HomePage() {
             thai, coq au vin — and it creates it for you. Edit, tweak, and add
             comments as you go.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/dashboard"
-              className="flex items-center gap-2 px-8 py-3 bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity font-medium"
-            >
-              Start Creating Recipes
-              <ArrowRight className="size-4" />
-            </Link>
-          </div>
+          <Button asChild>
+            <Link href="/dashboard">Start Creating Recipes</Link>
+            {/* <ArrowRight className="size-4" /> */}
+          </Button>
         </section>
 
         {/* App Screenshot */}
@@ -164,9 +161,7 @@ export default function HomePage() {
               <div className="size-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                 <Bot className="size-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold">
-                AI built right in
-              </h3>
+              <h3 className="text-xl font-semibold">AI built right in</h3>
               <p className="text-muted-foreground leading-relaxed text-sm">
                 Need a recipe from scratch? Want to rework an old favorite? The
                 AI assistant can create, revise, edit, and comment on recipes
@@ -214,13 +209,10 @@ export default function HomePage() {
             Start building your digital cookbook in minutes — save an old
             favorite or let the AI create something new.
           </p>
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity font-medium"
-          >
-            Start Creating Recipes
-            <ArrowRight className="size-4" />
-          </Link>
+          <Button asChild>
+            <Link href="/dashboard">Start Creating Recipes</Link>
+            {/* <ArrowRight className="size-4" /> */}
+          </Button>
         </section>
       </main>
     </div>
