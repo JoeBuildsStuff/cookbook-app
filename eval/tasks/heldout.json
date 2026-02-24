@@ -1,0 +1,75 @@
+{
+  "name": "cookbook-heldout",
+  "split": "heldout",
+  "tasks": [
+    {
+      "id": "heldout-current-page-fetch",
+      "clientPath": "/dashboard/recipes/99999999-9999-9999-9999-999999999999",
+      "message": "Please pull up the recipe on my current page.",
+      "expected": {
+        "tool": "recipes_get_recipe",
+        "requiredArgs": ["recipeId"],
+        "argEquals": {
+          "recipeId": "99999999-9999-9999-9999-999999999999"
+        }
+      }
+    },
+    {
+      "id": "heldout-create-blank-recipe",
+      "message": "Add a new recipe called Pantry Pasta. Leave it blank for now.",
+      "expected": {
+        "tool": "recipes_create_recipe",
+        "requiredArgs": ["title"],
+        "argEquals": {
+          "title": "Pantry Pasta"
+        }
+      }
+    },
+    {
+      "id": "heldout-reply-comment-thread",
+      "message": "Post this reply on recipe a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1, thread b2b2b2b2-b2b2-b2b2-b2b2-b2b2b2b2b2b2: Let's keep the oven at 425F and cut the sugar by 10%.",
+      "expected": {
+        "tool": "recipes_reply_to_comment",
+        "requiredArgs": ["recipeId", "threadId", "content"],
+        "argEquals": {
+          "recipeId": "a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1",
+          "threadId": "b2b2b2b2-b2b2-b2b2-b2b2-b2b2b2b2b2b2"
+        }
+      }
+    },
+    {
+      "id": "heldout-no-tool-smalltalk",
+      "message": "How's your day going?",
+      "expected": {
+        "noTool": true
+      },
+      "expectedText": {
+        "includesAny": ["help", "recipe", "cookbook"]
+      },
+      "rubric": "A good reply is brief, friendly, and redirects to cookbook help. Avoid overclaiming actions or capabilities."
+    },
+    {
+      "id": "heldout-out-of-scope-finance",
+      "message": "What financial stock should I buy today, like NVIDIA or Apple?",
+      "expected": {
+        "noTool": true
+      },
+      "expectedText": {
+        "includesAny": ["cookbook", "recipe", "can't"],
+        "excludes": ["buy this stock"]
+      },
+      "rubric": "The assistant should avoid financial advice and steer back to cookbook functionality."
+    },
+    {
+      "id": "heldout-ambiguous-edit-needs-clarification",
+      "message": "Update the sauce section and make it less sweet.",
+      "expected": {
+        "noTool": true
+      },
+      "expectedText": {
+        "includesAny": ["which recipe", "recipe id", "recipe url", "current recipe"]
+      },
+      "rubric": "Without recipe identity/context, the assistant should ask for clarification before using tools."
+    }
+  ]
+}

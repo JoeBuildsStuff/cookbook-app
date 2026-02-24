@@ -1,0 +1,8 @@
+{
+  "minSuccessRate": 70,
+  "minToolAccuracy": 85,
+  "minTextAccuracy": 65,
+  "minRubricPassRate": 65,
+  "maxP95LatencyMs": 40000,
+  "maxRegressionPct": 3
+}

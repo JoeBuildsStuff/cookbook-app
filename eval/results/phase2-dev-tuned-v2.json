@@ -1,0 +1,312 @@
+{
+  "runStartedAt": "2026-02-24T06:41:07.834Z",
+  "runFinishedAt": "2026-02-24T06:42:23.659Z",
+  "args": {
+    "provider": "openai",
+    "tasks": "eval/tasks",
+    "split": "dev",
+    "prompts": "eval/prompts/cookbook-v1.txt",
+    "tools": "eval/tools/recipe-tools-v1.json",
+    "out": "eval/results/phase2-dev-tuned-v2.json",
+    "thresholds": "eval/thresholds/default.json",
+    "baseline": "",
+    "grader": "anthropic",
+    "graderModel": "claude-sonnet-4-6",
+    "modelAnthropic": "claude-sonnet-4-6",
+    "modelOpenAI": "gpt-5",
+    "modelCerebras": "gpt-oss-120b"
+  },
+  "thresholds": {
+    "minSuccessRate": 70,
+    "minToolAccuracy": 85,
+    "minTextAccuracy": 65,
+    "minRubricPassRate": 65,
+    "maxP95LatencyMs": 30000,
+    "maxRegressionPct": 3
+  },
+  "runs": [
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "promptFile": "eval/prompts/cookbook-v1.txt",
+      "toolFile": "eval/tools/recipe-tools-v1.json",
+      "tasksTotal": 6,
+      "tasksPassed": 6,
+      "successRate": 100,
+      "toolAccuracy": 100,
+      "textAccuracy": 100,
+      "rubricPassRate": 100,
+      "rubricAvgScore": 9,
+      "p95LatencyMs": 22157,
+      "coverage": {
+        "toolApplicable": 6,
+        "textApplicable": 3,
+        "rubricApplicable": 3
+      },
+      "thresholds": {
+        "pass": true,
+        "checks": [
+          {
+            "gate": "minSuccessRate",
+            "pass": true,
+            "actual": 100,
+            "target": 70
+          },
+          {
+            "gate": "minToolAccuracy",
+            "pass": true,
+            "actual": 100,
+            "target": 85
+          },
+          {
+            "gate": "minTextAccuracy",
+            "pass": true,
+            "actual": 100,
+            "target": 65
+          },
+          {
+            "gate": "minRubricPassRate",
+            "pass": true,
+            "actual": 100,
+            "target": 65
+          },
+          {
+            "gate": "maxP95LatencyMs",
+            "pass": true,
+            "actual": 22157,
+            "target": 30000
+          }
+        ]
+      },
+      "baselineComparison": null,
+      "taskResults": [
+        {
+          "id": "dev-no-tool-capabilities-question",
+          "split": "dev",
+          "sourceFile": "eval/tasks/dev.json",
+          "pass": true,
+          "expectedTool": null,
+          "assistantText": "I can help you manage your recipes end-to-end. In this app, “note” or “document” means “recipe.”\n\nHere’s what I can do:\n- Create new recipes from your ideas or a rough outline.\n- Open a specific recipe (give me the URL or recipe ID) to summarize, review, or extract ingredients/instructions.\n- Edit recipes: add/remove ingredients, rewrite steps, fix typos, convert units, and scale servings—then save the changes.\n- Work with comments: add new comment threads, review existing feedback, and reply to threads (and I can anchor comments to specific text).\n- Suggest substitutions, variations, and dietary adaptations.\n- Generate shopping lists or meal ideas based on your recipes.\n\nExamples you can send me:\n- “Create a new recipe for creamy tomato basil pasta.”\n- “Open /dashboard/recipes/123e4567-e89b-12d3-a456-426614174000 and add a vegan substitution note to the cheese line.”\n- “Scale this recipe to 8 servings and convert to metric.”\n- “Summarize the steps and highlight any unclear instructions.”\n- “Add a comment asking if we should preheat the oven earlier.”",
+          "toolCalls": [],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": null,
+            "expectedToolCalled": null,
+            "requiredArgsPresent": null,
+            "argEqualsMatch": null,
+            "noToolMatch": true
+          },
+          "textEval": {
+            "applicable": true,
+            "pass": true,
+            "includesAllPass": true,
+            "includesAnyPass": true,
+            "excludesPass": true,
+            "regexPass": true
+          },
+          "rubricEval": {
+            "applicable": true,
+            "pass": true,
+            "score": 9,
+            "reason": "The response clearly explains cookbook-specific capabilities including creating, reading, and editing recipes as well as working with comments. It does not pretend any tool call happened and stays grounded in what the app can do. Minor deduction for being somewhat verbose and including features like 'shopping lists' and 'meal ideas' that may go beyond core app capabilities, but the core rubric items are well covered."
+          },
+          "latencyMs": 22157
+        },
+        {
+          "id": "dev-clarify-missing-recipe-id",
+          "split": "dev",
+          "sourceFile": "eval/tasks/dev.json",
+          "pass": true,
+          "expectedTool": null,
+          "assistantText": "I can do that—please share the recipe URL (e.g., /dashboard/recipes/{recipeId}) or the recipe ID so I can rename it to “Sunday Lasagna.”",
+          "toolCalls": [],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": null,
+            "expectedToolCalled": null,
+            "requiredArgsPresent": null,
+            "argEqualsMatch": null,
+            "noToolMatch": true
+          },
+          "textEval": {
+            "applicable": true,
+            "pass": true,
+            "includesAllPass": true,
+            "includesAnyPass": true,
+            "excludesPass": true,
+            "regexPass": true
+          },
+          "rubricEval": {
+            "applicable": true,
+            "pass": true,
+            "score": 9,
+            "reason": "The assistant correctly identified that no recipe ID or path was provided and asked a clarifying question requesting the recipe URL or ID before proceeding with the rename, which aligns with the rubric."
+          },
+          "latencyMs": 15537
+        },
+        {
+          "id": "dev-no-email-tool",
+          "split": "dev",
+          "sourceFile": "eval/tasks/dev.json",
+          "pass": true,
+          "expectedTool": null,
+          "assistantText": "I can’t send emails directly, but I can draft a ready‑to‑send email that includes the recipe and a share link.\n\nPlease share:\n- The recipe link (URL like /dashboard/recipes/{recipeId}) or the recipe ID\n- Your sister’s name (and optional email greeting/tone)\n- Any personal note you want included\n\nOnce I have that, I’ll pull the recipe and draft the email for you.",
+          "toolCalls": [],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": null,
+            "expectedToolCalled": null,
+            "requiredArgsPresent": null,
+            "argEqualsMatch": null,
+            "noToolMatch": true
+          },
+          "textEval": {
+            "applicable": true,
+            "pass": true,
+            "includesAllPass": true,
+            "includesAnyPass": true,
+            "excludesPass": true,
+            "regexPass": true
+          },
+          "rubricEval": {
+            "applicable": true,
+            "pass": true,
+            "score": 9,
+            "reason": "The assistant correctly states it cannot send emails directly and offers an alternative (drafting a ready-to-send email). It does not falsely claim the ability to send emails and provides a helpful path forward by asking for necessary information to draft the email."
+          },
+          "latencyMs": 20595
+        },
+        {
+          "id": "dev-note-alias-uses-current-path",
+          "split": "dev",
+          "sourceFile": "eval/tasks/dev.json",
+          "pass": true,
+          "expectedTool": "recipes_get_recipe",
+          "assistantText": "",
+          "toolCalls": [
+            {
+              "id": "call_nr74BkOaonyUrWUcHK9SucH7",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "66666666-6666-6666-6666-666666666666"
+              }
+            }
+          ],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": "recipes_get_recipe",
+            "expectedToolCalled": true,
+            "requiredArgsPresent": true,
+            "argEqualsMatch": true,
+            "noToolMatch": null
+          },
+          "textEval": {
+            "applicable": false,
+            "pass": true,
+            "includesAllPass": null,
+            "includesAnyPass": null,
+            "excludesPass": null,
+            "regexPass": null
+          },
+          "rubricEval": {
+            "applicable": false,
+            "pass": true,
+            "score": null,
+            "reason": null,
+            "skipped": true
+          },
+          "latencyMs": 4356
+        },
+        {
+          "id": "dev-robust-id-extraction-noisy",
+          "split": "dev",
+          "sourceFile": "eval/tasks/dev.json",
+          "pass": true,
+          "expectedTool": "recipes_get_comments",
+          "assistantText": "",
+          "toolCalls": [
+            {
+              "id": "call_tacl1PCtKgOlQ7qaS8K912A9",
+              "name": "recipes_get_comments",
+              "arguments": {
+                "recipeId": "77777777-7777-7777-7777-777777777777"
+              }
+            }
+          ],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": "recipes_get_comments",
+            "expectedToolCalled": true,
+            "requiredArgsPresent": true,
+            "argEqualsMatch": true,
+            "noToolMatch": null
+          },
+          "textEval": {
+            "applicable": false,
+            "pass": true,
+            "includesAllPass": null,
+            "includesAnyPass": null,
+            "excludesPass": null,
+            "regexPass": null
+          },
+          "rubricEval": {
+            "applicable": false,
+            "pass": true,
+            "score": null,
+            "reason": null,
+            "skipped": true
+          },
+          "latencyMs": 6613
+        },
+        {
+          "id": "dev-title-and-content-update",
+          "split": "dev",
+          "sourceFile": "eval/tasks/dev.json",
+          "pass": true,
+          "expectedTool": null,
+          "assistantText": "",
+          "toolCalls": [
+            {
+              "id": "call_tCbIb0zB1MmbMyAz7di54Ivr",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "88888888-8888-8888-8888-888888888888"
+              }
+            }
+          ],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": "recipes_get_recipe",
+            "expectedToolCalled": true,
+            "requiredArgsPresent": true,
+            "argEqualsMatch": true,
+            "noToolMatch": null,
+            "matchedAnyOf": true
+          },
+          "textEval": {
+            "applicable": false,
+            "pass": true,
+            "includesAllPass": null,
+            "includesAnyPass": null,
+            "excludesPass": null,
+            "regexPass": null
+          },
+          "rubricEval": {
+            "applicable": false,
+            "pass": true,
+            "score": null,
+            "reason": null,
+            "skipped": true
+          },
+          "latencyMs": 6567
+        }
+      ]
+    }
+  ]
+}

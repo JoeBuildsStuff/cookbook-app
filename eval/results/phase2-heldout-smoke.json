@@ -1,0 +1,317 @@
+{
+  "runStartedAt": "2026-02-24T06:27:02.031Z",
+  "runFinishedAt": "2026-02-24T06:27:45.512Z",
+  "args": {
+    "provider": "openai",
+    "tasks": "eval/tasks",
+    "split": "heldout",
+    "prompts": "eval/prompts/cookbook-v1.txt",
+    "tools": "eval/tools/recipe-tools-v1.json",
+    "out": "eval/results/phase2-heldout-smoke.json",
+    "thresholds": "eval/thresholds/default.json",
+    "baseline": "",
+    "grader": "none",
+    "graderModel": "claude-sonnet-4-6",
+    "modelAnthropic": "claude-sonnet-4-6",
+    "modelOpenAI": "gpt-5",
+    "modelCerebras": "gpt-oss-120b"
+  },
+  "thresholds": {
+    "minSuccessRate": 80,
+    "minToolAccuracy": 90,
+    "minTextAccuracy": 70,
+    "minRubricPassRate": 70,
+    "maxP95LatencyMs": 15000,
+    "maxRegressionPct": 3
+  },
+  "runs": [
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "promptFile": "eval/prompts/cookbook-v1.txt",
+      "toolFile": "eval/tools/recipe-tools-v1.json",
+      "tasksTotal": 6,
+      "tasksPassed": 3,
+      "successRate": 50,
+      "toolAccuracy": 100,
+      "textAccuracy": 100,
+      "rubricPassRate": 0,
+      "rubricAvgScore": 0,
+      "p95LatencyMs": 15983,
+      "coverage": {
+        "toolApplicable": 6,
+        "textApplicable": 3,
+        "rubricApplicable": 3
+      },
+      "thresholds": {
+        "pass": false,
+        "checks": [
+          {
+            "gate": "minSuccessRate",
+            "pass": false,
+            "actual": 50,
+            "target": 80
+          },
+          {
+            "gate": "minToolAccuracy",
+            "pass": true,
+            "actual": 100,
+            "target": 90
+          },
+          {
+            "gate": "minTextAccuracy",
+            "pass": true,
+            "actual": 100,
+            "target": 70
+          },
+          {
+            "gate": "minRubricPassRate",
+            "pass": false,
+            "actual": 0,
+            "target": 70
+          },
+          {
+            "gate": "maxP95LatencyMs",
+            "pass": false,
+            "actual": 15983,
+            "target": 15000
+          }
+        ]
+      },
+      "baselineComparison": null,
+      "taskResults": [
+        {
+          "id": "heldout-current-page-fetch",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": "recipes_get_recipe",
+          "assistantText": "",
+          "toolCalls": [
+            {
+              "id": "call_57s2HNa7KA0EDwNnpyKoU27K",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "99999999-9999-9999-9999-999999999999"
+              }
+            }
+          ],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": "recipes_get_recipe",
+            "expectedToolCalled": true,
+            "requiredArgsPresent": true,
+            "argEqualsMatch": true,
+            "noToolMatch": null
+          },
+          "textEval": {
+            "applicable": false,
+            "pass": true,
+            "includesAllPass": null,
+            "includesAnyPass": null,
+            "excludesPass": null,
+            "regexPass": null
+          },
+          "rubricEval": {
+            "applicable": false,
+            "pass": true,
+            "score": null,
+            "reason": null,
+            "skipped": true
+          },
+          "latencyMs": 4647
+        },
+        {
+          "id": "heldout-create-blank-recipe",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": "recipes_create_recipe",
+          "assistantText": "",
+          "toolCalls": [
+            {
+              "id": "call_5DsjzfkqA9FdLRsRUI8RckP5",
+              "name": "recipes_create_recipe",
+              "arguments": {
+                "title": "Pantry Pasta",
+                "content": ""
+              }
+            }
+          ],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": "recipes_create_recipe",
+            "expectedToolCalled": true,
+            "requiredArgsPresent": true,
+            "argEqualsMatch": true,
+            "noToolMatch": null
+          },
+          "textEval": {
+            "applicable": false,
+            "pass": true,
+            "includesAllPass": null,
+            "includesAnyPass": null,
+            "excludesPass": null,
+            "regexPass": null
+          },
+          "rubricEval": {
+            "applicable": false,
+            "pass": true,
+            "score": null,
+            "reason": null,
+            "skipped": true
+          },
+          "latencyMs": 1949
+        },
+        {
+          "id": "heldout-reply-comment-thread",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": "recipes_reply_to_comment",
+          "assistantText": "",
+          "toolCalls": [
+            {
+              "id": "call_YxJTnuMn0GbPmFJFS5u63sAV",
+              "name": "recipes_reply_to_comment",
+              "arguments": {
+                "recipeId": "a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1",
+                "threadId": "b2b2b2b2-b2b2-b2b2-b2b2-b2b2b2b2b2b2",
+                "content": "Let's keep the oven at 425F and cut the sugar by 10%."
+              }
+            }
+          ],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": "recipes_reply_to_comment",
+            "expectedToolCalled": true,
+            "requiredArgsPresent": true,
+            "argEqualsMatch": true,
+            "noToolMatch": null
+          },
+          "textEval": {
+            "applicable": false,
+            "pass": true,
+            "includesAllPass": null,
+            "includesAnyPass": null,
+            "excludesPass": null,
+            "regexPass": null
+          },
+          "rubricEval": {
+            "applicable": false,
+            "pass": true,
+            "score": null,
+            "reason": null,
+            "skipped": true
+          },
+          "latencyMs": 3566
+        },
+        {
+          "id": "heldout-no-tool-smalltalk",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": false,
+          "expectedTool": null,
+          "assistantText": "I’m doing great, thanks for asking! How can I help with your cookbook today—add a new recipe, tweak an existing one, or leave a comment on a recipe?",
+          "toolCalls": [],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": null,
+            "expectedToolCalled": null,
+            "requiredArgsPresent": null,
+            "argEqualsMatch": null,
+            "noToolMatch": true
+          },
+          "textEval": {
+            "applicable": true,
+            "pass": true,
+            "includesAllPass": true,
+            "includesAnyPass": true,
+            "excludesPass": true,
+            "regexPass": true
+          },
+          "rubricEval": {
+            "applicable": true,
+            "pass": false,
+            "score": 0,
+            "reason": "Rubric present but grader disabled (--grader none).",
+            "skipped": true
+          },
+          "latencyMs": 3685
+        },
+        {
+          "id": "heldout-out-of-scope-finance",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": false,
+          "expectedTool": null,
+          "assistantText": "Do you mean culinary stock for cooking, or financial stocks?\n\nIf you mean cooking:\n- Most versatile: low- or no-sodium chicken stock (or unsalted chicken bone broth).\n- Vegetarian/vegan: low- or no-sodium vegetable stock.\n- Beefy stews/braises: unsalted beef stock or bone broth.\n- Seafood dishes: seafood stock or clam juice.\n- Asian soups: consider dashi (kombu + bonito) for a clean umami base.\nTips: choose low/unsalted so you can season later; avoid overly salty bouillon cubes unless diluting; “Better Than Bouillon” bases are handy if fridge space is tight.\n\nTell me what you’re making and any dietary needs, and I’ll recommend a specific type/brand. If you’d like, I can add a quick homemade stock recipe to your cookbook.",
+          "toolCalls": [],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": null,
+            "expectedToolCalled": null,
+            "requiredArgsPresent": null,
+            "argEqualsMatch": null,
+            "noToolMatch": true
+          },
+          "textEval": {
+            "applicable": true,
+            "pass": true,
+            "includesAllPass": true,
+            "includesAnyPass": true,
+            "excludesPass": true,
+            "regexPass": true
+          },
+          "rubricEval": {
+            "applicable": true,
+            "pass": false,
+            "score": 0,
+            "reason": "Rubric present but grader disabled (--grader none).",
+            "skipped": true
+          },
+          "latencyMs": 15983
+        },
+        {
+          "id": "heldout-ambiguous-edit-needs-clarification",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": false,
+          "expectedTool": null,
+          "assistantText": "I can do that. Please share the recipe link or ID (from /dashboard/recipes/{recipeId}) so I can edit the sauce section directly.\n\nOptional: tell me how much less sweet you want it (e.g., cut sugar by 25%, 50%), or if you prefer I:\n- reduce the sweetener\n- add a bit more acid (vinegar/lemon)\n- adjust salt/spices to balance\n\nIf you’re not sure, I can apply a balanced default (halve the sweetener, add 1–2 tsp acid) once I have the recipe ID.",
+          "toolCalls": [],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": null,
+            "expectedToolCalled": null,
+            "requiredArgsPresent": null,
+            "argEqualsMatch": null,
+            "noToolMatch": true
+          },
+          "textEval": {
+            "applicable": true,
+            "pass": true,
+            "includesAllPass": true,
+            "includesAnyPass": true,
+            "excludesPass": true,
+            "regexPass": true
+          },
+          "rubricEval": {
+            "applicable": true,
+            "pass": false,
+            "score": 0,
+            "reason": "Rubric present but grader disabled (--grader none).",
+            "skipped": true
+          },
+          "latencyMs": 13648
+        }
+      ]
+    }
+  ]
+}

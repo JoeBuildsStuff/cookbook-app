@@ -1,0 +1,88 @@
+{
+  "name": "cookbook-dev",
+  "split": "dev",
+  "tasks": [
+    {
+      "id": "dev-no-tool-capabilities-question",
+      "message": "What can you help me with in this app?",
+      "expected": {
+        "noTool": true
+      },
+      "expectedText": {
+        "includesAny": ["recipe", "comment", "cookbook"],
+        "excludes": ["i already fetched"]
+      },
+      "rubric": "A good answer briefly explains cookbook-specific capabilities (create/update/read recipes and comments) without pretending a tool call happened."
+    },
+    {
+      "id": "dev-clarify-missing-recipe-id",
+      "message": "Rename this recipe to Sunday Lasagna.",
+      "expected": {
+        "noTool": true
+      },
+      "expectedText": {
+        "includesAny": ["recipe id", "recipe url", "which recipe", "current recipe"],
+        "excludes": ["recipes_update_recipe"]
+      },
+      "rubric": "Because no recipe id or current path is provided, the assistant should ask a clarifying question before editing."
+    },
+    {
+      "id": "dev-no-email-tool",
+      "message": "Send an email to my sister with this cookie recipe.",
+      "expected": {
+        "noTool": true
+      },
+      "expectedText": {
+        "includesAny": ["can't send", "can’t send", "cannot send", "draft"],
+        "excludes": ["email sent"]
+      },
+      "rubric": "The assistant should not claim it can send emails and should offer an alternative like drafting text."
+    },
+    {
+      "id": "dev-note-alias-uses-current-path",
+      "clientPath": "/dashboard/recipes/66666666-6666-6666-6666-666666666666",
+      "message": "Open this note and tell me what's in it.",
+      "expected": {
+        "tool": "recipes_get_recipe",
+        "requiredArgs": ["recipeId"],
+        "argEquals": {
+          "recipeId": "66666666-6666-6666-6666-666666666666"
+        }
+      }
+    },
+    {
+      "id": "dev-robust-id-extraction-noisy",
+      "message": "Quick thing, after school pickup and before soccer, can you grab comments for recipe id 77777777-7777-7777-7777-777777777777 and summarize the main themes?",
+      "expected": {
+        "tool": "recipes_get_comments",
+        "requiredArgs": ["recipeId"],
+        "argEquals": {
+          "recipeId": "77777777-7777-7777-7777-777777777777"
+        }
+      }
+    },
+    {
+      "id": "dev-title-and-content-update",
+      "message": "For recipe 88888888-8888-8888-8888-888888888888, rename it to Crispy Tofu Tacos and replace the instructions with: Press tofu, season well, bake until crisp, then serve with lime slaw.",
+      "expected": {
+        "anyOf": [
+          {
+            "tool": "recipes_update_recipe",
+            "requiredArgs": ["recipeId", "title", "content"],
+            "argEquals": {
+              "recipeId": "88888888-8888-8888-8888-888888888888",
+              "title": "Crispy Tofu Tacos"
+            }
+          },
+          {
+            "tool": "recipes_get_recipe",
+            "requiredArgs": ["recipeId"],
+            "argEquals": {
+              "recipeId": "88888888-8888-8888-8888-888888888888"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

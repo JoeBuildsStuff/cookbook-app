@@ -1,0 +1,82 @@
+{
+  "name": "recipe-tools-v2-concise",
+  "tools": [
+    {
+      "name": "recipes_get_recipe",
+      "description": "Get one recipe by `recipeId` (UUID from /dashboard/recipes/{recipeId}).",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "recipeId": { "type": "string" },
+          "maxChars": { "type": "integer" }
+        },
+        "required": ["recipeId"]
+      }
+    },
+    {
+      "name": "recipes_get_comments",
+      "description": "List comment threads for a recipe.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "recipeId": { "type": "string" },
+          "includeResolved": { "type": "boolean" },
+          "limitThreads": { "type": "integer" },
+          "maxCharsPerComment": { "type": "integer" }
+        },
+        "required": ["recipeId"]
+      }
+    },
+    {
+      "name": "recipes_create_recipe",
+      "description": "Create a new recipe.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "content": { "type": "string" }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "recipes_update_recipe",
+      "description": "Update title/content for an existing recipe.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "recipeId": { "type": "string" },
+          "title": { "type": "string" },
+          "content": { "type": "string" }
+        },
+        "required": ["recipeId"]
+      }
+    },
+    {
+      "name": "recipes_add_comment",
+      "description": "Start a new comment thread on a recipe.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "recipeId": { "type": "string" },
+          "content": { "type": "string" },
+          "anchorText": { "type": "string" }
+        },
+        "required": ["recipeId", "content"]
+      }
+    },
+    {
+      "name": "recipes_reply_to_comment",
+      "description": "Reply to a recipe comment thread.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "recipeId": { "type": "string" },
+          "threadId": { "type": "string" },
+          "content": { "type": "string" }
+        },
+        "required": ["recipeId", "threadId", "content"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,318 @@
+{
+  "runStartedAt": "2026-02-24T08:12:22.071Z",
+  "runFinishedAt": "2026-02-24T08:13:24.448Z",
+  "args": {
+    "provider": "openai",
+    "tasks": "eval/tasks",
+    "split": "heldout",
+    "prompts": "eval/prompts/cookbook-v1.txt",
+    "tools": "eval/tools/recipe-tools-v1.json",
+    "out": "eval/results/ci-local-smoke.json",
+    "thresholds": "eval/thresholds/default.json",
+    "baseline": "",
+    "grader": "anthropic",
+    "graderModel": "claude-sonnet-4-6",
+    "failOnGateFail": false,
+    "requireRuns": true,
+    "modelAnthropic": "claude-sonnet-4-6",
+    "modelOpenAI": "gpt-5",
+    "modelCerebras": "gpt-oss-120b"
+  },
+  "thresholds": {
+    "minSuccessRate": 70,
+    "minToolAccuracy": 85,
+    "minTextAccuracy": 65,
+    "minRubricPassRate": 65,
+    "maxP95LatencyMs": 40000,
+    "maxRegressionPct": 3
+  },
+  "runs": [
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "promptFile": "eval/prompts/cookbook-v1.txt",
+      "toolFile": "eval/tools/recipe-tools-v1.json",
+      "tasksTotal": 6,
+      "tasksPassed": 5,
+      "successRate": 83.33,
+      "toolAccuracy": 100,
+      "textAccuracy": 100,
+      "rubricPassRate": 66.67,
+      "rubricAvgScore": 6.667,
+      "p95LatencyMs": 25481,
+      "coverage": {
+        "toolApplicable": 6,
+        "textApplicable": 3,
+        "rubricApplicable": 3
+      },
+      "thresholds": {
+        "pass": true,
+        "checks": [
+          {
+            "gate": "minSuccessRate",
+            "pass": true,
+            "actual": 83.33,
+            "target": 70
+          },
+          {
+            "gate": "minToolAccuracy",
+            "pass": true,
+            "actual": 100,
+            "target": 85
+          },
+          {
+            "gate": "minTextAccuracy",
+            "pass": true,
+            "actual": 100,
+            "target": 65
+          },
+          {
+            "gate": "minRubricPassRate",
+            "pass": true,
+            "actual": 66.67,
+            "target": 65
+          },
+          {
+            "gate": "maxP95LatencyMs",
+            "pass": true,
+            "actual": 25481,
+            "target": 40000
+          }
+        ]
+      },
+      "baselineComparison": null,
+      "taskResults": [
+        {
+          "id": "heldout-current-page-fetch",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": "recipes_get_recipe",
+          "assistantText": "",
+          "toolCalls": [
+            {
+              "id": "call_HDeC7Co5654NLhdgIdfxTRMa",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "99999999-9999-9999-9999-999999999999"
+              }
+            }
+          ],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": "recipes_get_recipe",
+            "expectedToolCalled": true,
+            "requiredArgsPresent": true,
+            "argEqualsMatch": true,
+            "noToolMatch": null
+          },
+          "textEval": {
+            "applicable": false,
+            "pass": true,
+            "includesAllPass": null,
+            "includesAnyPass": null,
+            "excludesPass": null,
+            "regexPass": null
+          },
+          "rubricEval": {
+            "applicable": false,
+            "pass": true,
+            "score": null,
+            "reason": null,
+            "skipped": true
+          },
+          "latencyMs": 2832
+        },
+        {
+          "id": "heldout-create-blank-recipe",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": "recipes_create_recipe",
+          "assistantText": "",
+          "toolCalls": [
+            {
+              "id": "call_Cq7VITljDbUBGyMzP3cZBEyB",
+              "name": "recipes_create_recipe",
+              "arguments": {
+                "title": "Pantry Pasta"
+              }
+            }
+          ],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": "recipes_create_recipe",
+            "expectedToolCalled": true,
+            "requiredArgsPresent": true,
+            "argEqualsMatch": true,
+            "noToolMatch": null
+          },
+          "textEval": {
+            "applicable": false,
+            "pass": true,
+            "includesAllPass": null,
+            "includesAnyPass": null,
+            "excludesPass": null,
+            "regexPass": null
+          },
+          "rubricEval": {
+            "applicable": false,
+            "pass": true,
+            "score": null,
+            "reason": null,
+            "skipped": true
+          },
+          "latencyMs": 4765
+        },
+        {
+          "id": "heldout-reply-comment-thread",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": "recipes_reply_to_comment",
+          "assistantText": "",
+          "toolCalls": [
+            {
+              "id": "call_Y0yaVXlrL4R0ErXMYbZ1x545",
+              "name": "recipes_reply_to_comment",
+              "arguments": {
+                "recipeId": "a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1",
+                "threadId": "b2b2b2b2-b2b2-b2b2-b2b2-b2b2b2b2b2b2",
+                "content": "Let's keep the oven at 425F and cut the sugar by 10%."
+              }
+            }
+          ],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": "recipes_reply_to_comment",
+            "expectedToolCalled": true,
+            "requiredArgsPresent": true,
+            "argEqualsMatch": true,
+            "noToolMatch": null
+          },
+          "textEval": {
+            "applicable": false,
+            "pass": true,
+            "includesAllPass": null,
+            "includesAnyPass": null,
+            "excludesPass": null,
+            "regexPass": null
+          },
+          "rubricEval": {
+            "applicable": false,
+            "pass": true,
+            "score": null,
+            "reason": null,
+            "skipped": true
+          },
+          "latencyMs": 6265
+        },
+        {
+          "id": "heldout-no-tool-smalltalk",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": null,
+          "assistantText": "Doing great—thanks for asking! Ready to help with your recipes. What are you cooking today? Want me to add a new recipe or tweak one you’ve got?",
+          "toolCalls": [],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": null,
+            "expectedToolCalled": null,
+            "requiredArgsPresent": null,
+            "argEqualsMatch": null,
+            "noToolMatch": true
+          },
+          "textEval": {
+            "applicable": true,
+            "pass": true,
+            "includesAllPass": true,
+            "includesAnyPass": true,
+            "excludesPass": true,
+            "regexPass": true
+          },
+          "rubricEval": {
+            "applicable": true,
+            "pass": true,
+            "score": 8,
+            "reason": "The response is brief and friendly, and effectively redirects to cookbook help by asking about recipes. It avoids overclaiming capabilities. A minor note: offering two specific options ('add a new recipe or tweak one') is helpful but slightly presumptuous without knowing the user's context, which keeps it from a perfect score.",
+            "skipped": false
+          },
+          "latencyMs": 5719
+        },
+        {
+          "id": "heldout-out-of-scope-finance",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": false,
+          "expectedTool": null,
+          "assistantText": "I can’t give personalized investment advice or real‑time stock picks, but I can help you decide between options like NVIDIA and Apple with a quick framework.\n\nQuick compare\n- NVIDIA (growth/volatility): Leader in AI chips and software ecosystem; huge growth but high valuation and big swings. Key risks: competition (AMD/custom silicon), export controls, cyclicality, supply constraints.\n- Apple (stability/cash flow): Enormous ecosystem, strong services revenue, massive buybacks/dividends; typically steadier but slower growth. Key risks: iPhone dependence, regulation, China exposure, innovation pace.\n\nHow to choose\n- Time horizon: 5–10+ years can better absorb volatility (favor growth). Shorter horizon favors stability.\n- Risk tolerance: Comfortable with large swings? Consider more NVDA. Prefer smoother ride? Tilt to AAPL.\n- Diversification: Single-stock picks increase risk. Many investors use a core of broad index funds and add small “satellite” positions.\n- Valuation check: Review latest earnings, revenue growth, margins, guidance, and valuation vs. history/peers before buying.\n\nAlternatives to a single stock\n- Broad market ETFs (e.g., total market or S&P 500) for diversified exposure.\n- Tech-tilted ETFs (e.g., Nasdaq-100) if you want more growth without single‑name risk.\n\nPractical tips\n- Position sizing: Keep any single stock a modest slice of your portfolio.\n- Dollar‑cost averaging can reduce timing risk.\n- Revisit the thesis each quarter as new earnings arrive.\n\nIf you share your time horizon, risk tolerance, and whether you prefer growth or stability, I can help you outline a simple, diversified plan and how a small NVDA or AAPL position might fit.",
+          "toolCalls": [],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": null,
+            "expectedToolCalled": null,
+            "requiredArgsPresent": null,
+            "argEqualsMatch": null,
+            "noToolMatch": true
+          },
+          "textEval": {
+            "applicable": true,
+            "pass": true,
+            "includesAllPass": true,
+            "includesAnyPass": true,
+            "excludesPass": true,
+            "regexPass": true
+          },
+          "rubricEval": {
+            "applicable": true,
+            "pass": false,
+            "score": 2,
+            "reason": "The assistant was supposed to avoid financial advice and steer back to cookbook functionality, but instead provided detailed stock comparison, investment frameworks, ETF alternatives, and position sizing tips. This is substantial financial guidance rather than declining and redirecting to cookbook functionality.",
+            "skipped": false
+          },
+          "latencyMs": 25481
+        },
+        {
+          "id": "heldout-ambiguous-edit-needs-clarification",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": null,
+          "assistantText": "I can do that. Which recipe should I update? Please share the recipe URL or ID from /dashboard/recipes/{recipeId}.\n\nAlso, how would you like it “less sweet”? Options:\n- Reduce added sugar/sweeteners by a set amount (e.g., -50%)\n- Swap a sweet base (e.g., ketchup) for a less sweet alternative (e.g., tomato puree + spices)\n- Add balancing acidity (vinegar/lemon) or savory (soy/Worcestershire)\n\nIf you don’t have a preference, I’ll default to halving added sweeteners and adding 1–2 teaspoons vinegar per cup of sauce, then update the sauce section and instructions accordingly.",
+          "toolCalls": [],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": null,
+            "expectedToolCalled": null,
+            "requiredArgsPresent": null,
+            "argEqualsMatch": null,
+            "noToolMatch": true
+          },
+          "textEval": {
+            "applicable": true,
+            "pass": true,
+            "includesAllPass": true,
+            "includesAnyPass": true,
+            "excludesPass": true,
+            "regexPass": true
+          },
+          "rubricEval": {
+            "applicable": true,
+            "pass": true,
+            "score": 10,
+            "reason": "The assistant correctly identified the missing recipe context and asked for clarification (recipe URL or ID) before attempting to use any tools or make changes. It also helpfully asked about the nature of 'less sweet' adjustments, which is good practice. No tools were invoked prematurely.",
+            "skipped": false
+          },
+          "latencyMs": 17313
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "name": "cookbook-baseline",
+  "tasks": [
+    {
+      "id": "get-recipe-by-url-id",
+      "clientPath": "/dashboard/recipes/11111111-1111-1111-1111-111111111111",
+      "message": "Get the recipe I am viewing and summarize it.",
+      "expected": {
+        "tool": "recipes_get_recipe",
+        "requiredArgs": ["recipeId"],
+        "argEquals": {
+          "recipeId": "11111111-1111-1111-1111-111111111111"
+        }
+      }
+    },
+    {
+      "id": "get-comments",
+      "message": "Show me comments for recipe 22222222-2222-2222-2222-222222222222.",
+      "expected": {
+        "tool": "recipes_get_comments",
+        "requiredArgs": ["recipeId"],
+        "argEquals": {
+          "recipeId": "22222222-2222-2222-2222-222222222222"
+        }
+      }
+    },
+    {
+      "id": "create-recipe",
+      "message": "Create a new recipe titled Weeknight Turkey Chili.",
+      "expected": {
+        "tool": "recipes_create_recipe",
+        "requiredArgs": ["title"],
+        "argEquals": {
+          "title": "Weeknight Turkey Chili"
+        }
+      }
+    },
+    {
+      "id": "update-recipe-title",
+      "message": "Rename recipe 33333333-3333-3333-3333-333333333333 to Lemon Ricotta Pancakes.",
+      "expected": {
+        "tool": "recipes_update_recipe",
+        "requiredArgs": ["recipeId", "title"],
+        "argEquals": {
+          "recipeId": "33333333-3333-3333-3333-333333333333",
+          "title": "Lemon Ricotta Pancakes"
+        }
+      }
+    },
+    {
+      "id": "add-comment",
+      "message": "Add a comment to recipe 44444444-4444-4444-4444-444444444444 saying: Try doubling the garlic next time.",
+      "expected": {
+        "tool": "recipes_add_comment",
+        "requiredArgs": ["recipeId", "content"],
+        "argEquals": {
+          "recipeId": "44444444-4444-4444-4444-444444444444",
+          "content": "Try doubling the garlic next time."
+        }
+      }
+    },
+    {
+      "id": "reply-comment",
+      "message": "Reply on recipe 55555555-5555-5555-5555-555555555555 in thread aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa with: Agreed, and add more lemon zest too.",
+      "expected": {
+        "tool": "recipes_reply_to_comment",
+        "requiredArgs": ["recipeId", "threadId", "content"],
+        "argEquals": {
+          "recipeId": "55555555-5555-5555-5555-555555555555",
+          "threadId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+          "content": "Agreed, and add more lemon zest too."
+        }
+      }
+    }
+  ]
+}

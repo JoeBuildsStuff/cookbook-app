@@ -1,0 +1,65 @@
+name: Agent Eval Heldout
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "app/api/chat/**"
+      - "eval/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/eval-heldout.yml"
+  workflow_dispatch:
+
+jobs:
+  heldout-eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run heldout eval gate
+        run: |
+          pnpm eval:harness -- \
+            --provider openai \
+            --split heldout \
+            --grader anthropic \
+            --fail-on-gate-fail true \
+            --require-runs true \
+            --out eval/results/ci-heldout-${{ github.run_id }}.json
+
+      - name: Summarize eval results
+        if: always()
+        run: |
+          RESULT_PATH="eval/results/ci-heldout-${{ github.run_id }}.json"
+          if [ -f "$RESULT_PATH" ]; then
+            echo "## Heldout Eval" >> "$GITHUB_STEP_SUMMARY"
+            jq -r '.runs[] | "- provider=\(.provider) model=\(.model) success=\(.successRate)% tool=\(.toolAccuracy)% text=\(.textAccuracy)% rubric=\(.rubricPassRate)% p95=\(.p95LatencyMs)ms gate=\(.thresholds.pass)"' "$RESULT_PATH" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## Heldout Eval" >> "$GITHUB_STEP_SUMMARY"
+            echo "- No result artifact found." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload eval artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heldout-eval-results-${{ github.run_id }}
+          path: eval/results/ci-heldout-${{ github.run_id }}.json
+          if-no-files-found: warn

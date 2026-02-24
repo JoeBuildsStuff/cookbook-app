@@ -1,0 +1,1049 @@
+{
+  "runStartedAt": "2026-02-24T05:33:09.134Z",
+  "runFinishedAt": "2026-02-24T05:36:00.638Z",
+  "args": {
+    "provider": "all",
+    "tasks": "eval/tasks/baseline.json",
+    "prompts": "eval/prompts",
+    "tools": "eval/tools",
+    "out": "eval/results/smoke.json",
+    "modelAnthropic": "claude-sonnet-4-6",
+    "modelOpenAI": "gpt-5",
+    "modelCerebras": "gpt-oss-120b"
+  },
+  "runs": [
+    {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6",
+      "promptFile": "eval/prompts/cookbook-v1.txt",
+      "toolFile": "eval/tools/recipe-tools-v1.json",
+      "tasksTotal": 6,
+      "tasksPassed": 6,
+      "successRate": 100,
+      "taskResults": [
+        {
+          "id": "get-recipe-by-url-id",
+          "pass": true,
+          "expectedTool": "recipes_get_recipe",
+          "selectedTool": "recipes_get_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01EVyiZ8NfRCBswhfTE7m9YR",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "11111111-1111-1111-1111-111111111111"
+              }
+            }
+          ],
+          "latencyMs": 1430
+        },
+        {
+          "id": "get-comments",
+          "pass": true,
+          "expectedTool": "recipes_get_comments",
+          "selectedTool": "recipes_get_comments",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01SC8fEPqXLNGxDjxUTxsm7H",
+              "name": "recipes_get_comments",
+              "arguments": {
+                "recipeId": "22222222-2222-2222-2222-222222222222"
+              }
+            }
+          ],
+          "latencyMs": 1399
+        },
+        {
+          "id": "create-recipe",
+          "pass": true,
+          "expectedTool": "recipes_create_recipe",
+          "selectedTool": "recipes_create_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_018ePhwgXyyfZtWGka137WhX",
+              "name": "recipes_create_recipe",
+              "arguments": {
+                "title": "Weeknight Turkey Chili"
+              }
+            }
+          ],
+          "latencyMs": 1591
+        },
+        {
+          "id": "update-recipe-title",
+          "pass": true,
+          "expectedTool": "recipes_update_recipe",
+          "selectedTool": "recipes_update_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01MMeohrrm7nRVDq6WUi4DUn",
+              "name": "recipes_update_recipe",
+              "arguments": {
+                "recipeId": "33333333-3333-3333-3333-333333333333",
+                "title": "Lemon Ricotta Pancakes"
+              }
+            }
+          ],
+          "latencyMs": 1802
+        },
+        {
+          "id": "add-comment",
+          "pass": true,
+          "expectedTool": "recipes_add_comment",
+          "selectedTool": "recipes_add_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01T4RxQRMb2jNoL2X72xQ4jE",
+              "name": "recipes_add_comment",
+              "arguments": {
+                "recipeId": "44444444-4444-4444-4444-444444444444",
+                "content": "Try doubling the garlic next time."
+              }
+            }
+          ],
+          "latencyMs": 1635
+        },
+        {
+          "id": "reply-comment",
+          "pass": true,
+          "expectedTool": "recipes_reply_to_comment",
+          "selectedTool": "recipes_reply_to_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_0118KzRnFjR9EDKn8R4CFfHm",
+              "name": "recipes_reply_to_comment",
+              "arguments": {
+                "recipeId": "55555555-5555-5555-5555-555555555555",
+                "threadId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+                "content": "Agreed, and add more lemon zest too."
+              }
+            }
+          ],
+          "latencyMs": 1677
+        }
+      ]
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6",
+      "promptFile": "eval/prompts/cookbook-v1.txt",
+      "toolFile": "eval/tools/recipe-tools-v2-concise.json",
+      "tasksTotal": 6,
+      "tasksPassed": 6,
+      "successRate": 100,
+      "taskResults": [
+        {
+          "id": "get-recipe-by-url-id",
+          "pass": true,
+          "expectedTool": "recipes_get_recipe",
+          "selectedTool": "recipes_get_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_012JydQjeoo5j9i2S4a7zM3M",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "11111111-1111-1111-1111-111111111111"
+              }
+            }
+          ],
+          "latencyMs": 1407
+        },
+        {
+          "id": "get-comments",
+          "pass": true,
+          "expectedTool": "recipes_get_comments",
+          "selectedTool": "recipes_get_comments",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01Q9nkKoHZ2m2ysM9poiLov8",
+              "name": "recipes_get_comments",
+              "arguments": {
+                "recipeId": "22222222-2222-2222-2222-222222222222"
+              }
+            }
+          ],
+          "latencyMs": 1967
+        },
+        {
+          "id": "create-recipe",
+          "pass": true,
+          "expectedTool": "recipes_create_recipe",
+          "selectedTool": "recipes_create_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01FHDYiNwcn8Lqx6jhhvQxDY",
+              "name": "recipes_create_recipe",
+              "arguments": {
+                "title": "Weeknight Turkey Chili"
+              }
+            }
+          ],
+          "latencyMs": 1221
+        },
+        {
+          "id": "update-recipe-title",
+          "pass": true,
+          "expectedTool": "recipes_update_recipe",
+          "selectedTool": "recipes_update_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01H9YbhrY6ivCrMZq6DXraUn",
+              "name": "recipes_update_recipe",
+              "arguments": {
+                "recipeId": "33333333-3333-3333-3333-333333333333",
+                "title": "Lemon Ricotta Pancakes"
+              }
+            }
+          ],
+          "latencyMs": 2149
+        },
+        {
+          "id": "add-comment",
+          "pass": true,
+          "expectedTool": "recipes_add_comment",
+          "selectedTool": "recipes_add_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01W3w9x5VGvAcwkaGTbxn3qD",
+              "name": "recipes_add_comment",
+              "arguments": {
+                "recipeId": "44444444-4444-4444-4444-444444444444",
+                "content": "Try doubling the garlic next time."
+              }
+            }
+          ],
+          "latencyMs": 1729
+        },
+        {
+          "id": "reply-comment",
+          "pass": true,
+          "expectedTool": "recipes_reply_to_comment",
+          "selectedTool": "recipes_reply_to_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01BYgnGxEZeKcKHGwC2CFfeY",
+              "name": "recipes_reply_to_comment",
+              "arguments": {
+                "recipeId": "55555555-5555-5555-5555-555555555555",
+                "threadId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+                "content": "Agreed, and add more lemon zest too."
+              }
+            }
+          ],
+          "latencyMs": 2505
+        }
+      ]
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6",
+      "promptFile": "eval/prompts/cookbook-v2-concise.txt",
+      "toolFile": "eval/tools/recipe-tools-v1.json",
+      "tasksTotal": 6,
+      "tasksPassed": 6,
+      "successRate": 100,
+      "taskResults": [
+        {
+          "id": "get-recipe-by-url-id",
+          "pass": true,
+          "expectedTool": "recipes_get_recipe",
+          "selectedTool": "recipes_get_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01JausDEespfrsR8VChRZpUy",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "11111111-1111-1111-1111-111111111111"
+              }
+            }
+          ],
+          "latencyMs": 1756
+        },
+        {
+          "id": "get-comments",
+          "pass": true,
+          "expectedTool": "recipes_get_comments",
+          "selectedTool": "recipes_get_comments",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_019Dmwiv1zfzZXgDbZZz1PmX",
+              "name": "recipes_get_comments",
+              "arguments": {
+                "recipeId": "22222222-2222-2222-2222-222222222222"
+              }
+            }
+          ],
+          "latencyMs": 1438
+        },
+        {
+          "id": "create-recipe",
+          "pass": true,
+          "expectedTool": "recipes_create_recipe",
+          "selectedTool": "recipes_create_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01AbB4ACRExKLFyEFJTevAQX",
+              "name": "recipes_create_recipe",
+              "arguments": {
+                "title": "Weeknight Turkey Chili"
+              }
+            }
+          ],
+          "latencyMs": 1710
+        },
+        {
+          "id": "update-recipe-title",
+          "pass": true,
+          "expectedTool": "recipes_update_recipe",
+          "selectedTool": "recipes_update_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_011PpAcYjgneSvNY32iTupni",
+              "name": "recipes_update_recipe",
+              "arguments": {
+                "recipeId": "33333333-3333-3333-3333-333333333333",
+                "title": "Lemon Ricotta Pancakes"
+              }
+            }
+          ],
+          "latencyMs": 1809
+        },
+        {
+          "id": "add-comment",
+          "pass": true,
+          "expectedTool": "recipes_add_comment",
+          "selectedTool": "recipes_add_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_016gnjTmuggBnGtCkAo8Eo2W",
+              "name": "recipes_add_comment",
+              "arguments": {
+                "recipeId": "44444444-4444-4444-4444-444444444444",
+                "content": "Try doubling the garlic next time."
+              }
+            }
+          ],
+          "latencyMs": 1401
+        },
+        {
+          "id": "reply-comment",
+          "pass": true,
+          "expectedTool": "recipes_reply_to_comment",
+          "selectedTool": "recipes_reply_to_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01PEs2JuUFjzKrJB83Nq4cAm",
+              "name": "recipes_reply_to_comment",
+              "arguments": {
+                "recipeId": "55555555-5555-5555-5555-555555555555",
+                "threadId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+                "content": "Agreed, and add more lemon zest too."
+              }
+            }
+          ],
+          "latencyMs": 1788
+        }
+      ]
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6",
+      "promptFile": "eval/prompts/cookbook-v2-concise.txt",
+      "toolFile": "eval/tools/recipe-tools-v2-concise.json",
+      "tasksTotal": 6,
+      "tasksPassed": 6,
+      "successRate": 100,
+      "taskResults": [
+        {
+          "id": "get-recipe-by-url-id",
+          "pass": true,
+          "expectedTool": "recipes_get_recipe",
+          "selectedTool": "recipes_get_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01L2muRoBiznGmnFQhXGcrdz",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "11111111-1111-1111-1111-111111111111"
+              }
+            }
+          ],
+          "latencyMs": 1644
+        },
+        {
+          "id": "get-comments",
+          "pass": true,
+          "expectedTool": "recipes_get_comments",
+          "selectedTool": "recipes_get_comments",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01XJCyW6kJbronWmsM6YgRYY",
+              "name": "recipes_get_comments",
+              "arguments": {
+                "recipeId": "22222222-2222-2222-2222-222222222222"
+              }
+            }
+          ],
+          "latencyMs": 1156
+        },
+        {
+          "id": "create-recipe",
+          "pass": true,
+          "expectedTool": "recipes_create_recipe",
+          "selectedTool": "recipes_create_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01B4LEJ2Z7yjDgfTrhzFNrJu",
+              "name": "recipes_create_recipe",
+              "arguments": {
+                "title": "Weeknight Turkey Chili"
+              }
+            }
+          ],
+          "latencyMs": 1498
+        },
+        {
+          "id": "update-recipe-title",
+          "pass": true,
+          "expectedTool": "recipes_update_recipe",
+          "selectedTool": "recipes_update_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_01KbdRtjTQNtzsxTU8Tv7rG3",
+              "name": "recipes_update_recipe",
+              "arguments": {
+                "recipeId": "33333333-3333-3333-3333-333333333333",
+                "title": "Lemon Ricotta Pancakes"
+              }
+            }
+          ],
+          "latencyMs": 1619
+        },
+        {
+          "id": "add-comment",
+          "pass": true,
+          "expectedTool": "recipes_add_comment",
+          "selectedTool": "recipes_add_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_016tYooqpr2494U91NaEshWk",
+              "name": "recipes_add_comment",
+              "arguments": {
+                "recipeId": "44444444-4444-4444-4444-444444444444",
+                "content": "Try doubling the garlic next time."
+              }
+            }
+          ],
+          "latencyMs": 1691
+        },
+        {
+          "id": "reply-comment",
+          "pass": true,
+          "expectedTool": "recipes_reply_to_comment",
+          "selectedTool": "recipes_reply_to_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "toolu_0181X2NAH7cRffzrcmdvQJ3n",
+              "name": "recipes_reply_to_comment",
+              "arguments": {
+                "recipeId": "55555555-5555-5555-5555-555555555555",
+                "threadId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+                "content": "Agreed, and add more lemon zest too."
+              }
+            }
+          ],
+          "latencyMs": 1807
+        }
+      ]
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "promptFile": "eval/prompts/cookbook-v1.txt",
+      "toolFile": "eval/tools/recipe-tools-v1.json",
+      "tasksTotal": 6,
+      "tasksPassed": 6,
+      "successRate": 100,
+      "taskResults": [
+        {
+          "id": "get-recipe-by-url-id",
+          "pass": true,
+          "expectedTool": "recipes_get_recipe",
+          "selectedTool": "recipes_get_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_x4wzyywoPxKFzwo2MWYVNjxW",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "11111111-1111-1111-1111-111111111111"
+              }
+            }
+          ],
+          "latencyMs": 10225
+        },
+        {
+          "id": "get-comments",
+          "pass": true,
+          "expectedTool": "recipes_get_comments",
+          "selectedTool": "recipes_get_comments",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_ePVLl7oaOgQkOrOrqI0iap2t",
+              "name": "recipes_get_comments",
+              "arguments": {
+                "recipeId": "22222222-2222-2222-2222-222222222222"
+              }
+            }
+          ],
+          "latencyMs": 4604
+        },
+        {
+          "id": "create-recipe",
+          "pass": true,
+          "expectedTool": "recipes_create_recipe",
+          "selectedTool": "recipes_create_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_1T3nXz19nrtBHonEgdyvsk5z",
+              "name": "recipes_create_recipe",
+              "arguments": {
+                "title": "Weeknight Turkey Chili"
+              }
+            }
+          ],
+          "latencyMs": 14336
+        },
+        {
+          "id": "update-recipe-title",
+          "pass": true,
+          "expectedTool": "recipes_update_recipe",
+          "selectedTool": "recipes_update_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_ajZOaCT6cZFFUcE4pEf2pfMS",
+              "name": "recipes_update_recipe",
+              "arguments": {
+                "recipeId": "33333333-3333-3333-3333-333333333333",
+                "title": "Lemon Ricotta Pancakes"
+              }
+            }
+          ],
+          "latencyMs": 5691
+        },
+        {
+          "id": "add-comment",
+          "pass": true,
+          "expectedTool": "recipes_add_comment",
+          "selectedTool": "recipes_add_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_d4r9xzYHKvgp3hOtPboTQUAB",
+              "name": "recipes_add_comment",
+              "arguments": {
+                "recipeId": "44444444-4444-4444-4444-444444444444",
+                "content": "Try doubling the garlic next time."
+              }
+            }
+          ],
+          "latencyMs": 4536
+        },
+        {
+          "id": "reply-comment",
+          "pass": true,
+          "expectedTool": "recipes_reply_to_comment",
+          "selectedTool": "recipes_reply_to_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_4uEvDs3AAn181fW9iQ7CvE0m",
+              "name": "recipes_reply_to_comment",
+              "arguments": {
+                "recipeId": "55555555-5555-5555-5555-555555555555",
+                "threadId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+                "content": "Agreed, and add more lemon zest too."
+              }
+            }
+          ],
+          "latencyMs": 6055
+        }
+      ]
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "promptFile": "eval/prompts/cookbook-v1.txt",
+      "toolFile": "eval/tools/recipe-tools-v2-concise.json",
+      "tasksTotal": 6,
+      "tasksPassed": 6,
+      "successRate": 100,
+      "taskResults": [
+        {
+          "id": "get-recipe-by-url-id",
+          "pass": true,
+          "expectedTool": "recipes_get_recipe",
+          "selectedTool": "recipes_get_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_93yUX6ptm8FEwxVLci8oagnS",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "11111111-1111-1111-1111-111111111111"
+              }
+            }
+          ],
+          "latencyMs": 5521
+        },
+        {
+          "id": "get-comments",
+          "pass": true,
+          "expectedTool": "recipes_get_comments",
+          "selectedTool": "recipes_get_comments",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_UeIetwAZsRedIWv60yPT0V7A",
+              "name": "recipes_get_comments",
+              "arguments": {
+                "recipeId": "22222222-2222-2222-2222-222222222222",
+                "includeResolved": true
+              }
+            }
+          ],
+          "latencyMs": 4363
+        },
+        {
+          "id": "create-recipe",
+          "pass": true,
+          "expectedTool": "recipes_create_recipe",
+          "selectedTool": "recipes_create_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_yLbpKhxhg88efklVDK4zYR3n",
+              "name": "recipes_create_recipe",
+              "arguments": {
+                "title": "Weeknight Turkey Chili"
+              }
+            }
+          ],
+          "latencyMs": 3837
+        },
+        {
+          "id": "update-recipe-title",
+          "pass": true,
+          "expectedTool": "recipes_update_recipe",
+          "selectedTool": "recipes_update_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_Two8cM8CzsIJ1NmfKheOT4n2",
+              "name": "recipes_update_recipe",
+              "arguments": {
+                "recipeId": "33333333-3333-3333-3333-333333333333",
+                "title": "Lemon Ricotta Pancakes"
+              }
+            }
+          ],
+          "latencyMs": 3893
+        },
+        {
+          "id": "add-comment",
+          "pass": true,
+          "expectedTool": "recipes_add_comment",
+          "selectedTool": "recipes_add_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_vq6ApETsjYcQYoSAwGFg48K7",
+              "name": "recipes_add_comment",
+              "arguments": {
+                "recipeId": "44444444-4444-4444-4444-444444444444",
+                "content": "Try doubling the garlic next time."
+              }
+            }
+          ],
+          "latencyMs": 9113
+        },
+        {
+          "id": "reply-comment",
+          "pass": true,
+          "expectedTool": "recipes_reply_to_comment",
+          "selectedTool": "recipes_reply_to_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_0WxkA9cjxqArcIzT5KGL6YUP",
+              "name": "recipes_reply_to_comment",
+              "arguments": {
+                "recipeId": "55555555-5555-5555-5555-555555555555",
+                "threadId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+                "content": "Agreed, and add more lemon zest too."
+              }
+            }
+          ],
+          "latencyMs": 4403
+        }
+      ]
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "promptFile": "eval/prompts/cookbook-v2-concise.txt",
+      "toolFile": "eval/tools/recipe-tools-v1.json",
+      "tasksTotal": 6,
+      "tasksPassed": 6,
+      "successRate": 100,
+      "taskResults": [
+        {
+          "id": "get-recipe-by-url-id",
+          "pass": true,
+          "expectedTool": "recipes_get_recipe",
+          "selectedTool": "recipes_get_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_Q1Ws27espZx2flwxruRnsB9R",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "11111111-1111-1111-1111-111111111111"
+              }
+            }
+          ],
+          "latencyMs": 3989
+        },
+        {
+          "id": "get-comments",
+          "pass": true,
+          "expectedTool": "recipes_get_comments",
+          "selectedTool": "recipes_get_comments",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_jxNq9w49MYnKoo6W6NwEZxCr",
+              "name": "recipes_get_comments",
+              "arguments": {
+                "recipeId": "22222222-2222-2222-2222-222222222222"
+              }
+            }
+          ],
+          "latencyMs": 3573
+        },
+        {
+          "id": "create-recipe",
+          "pass": true,
+          "expectedTool": "recipes_create_recipe",
+          "selectedTool": "recipes_create_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_XdxVRJDH3QzBCSqN8NLWdvH8",
+              "name": "recipes_create_recipe",
+              "arguments": {
+                "title": "Weeknight Turkey Chili"
+              }
+            }
+          ],
+          "latencyMs": 6805
+        },
+        {
+          "id": "update-recipe-title",
+          "pass": true,
+          "expectedTool": "recipes_update_recipe",
+          "selectedTool": "recipes_update_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_cvE25nn28z4rzMYv8IcAhyV5",
+              "name": "recipes_update_recipe",
+              "arguments": {
+                "recipeId": "33333333-3333-3333-3333-333333333333",
+                "title": "Lemon Ricotta Pancakes"
+              }
+            }
+          ],
+          "latencyMs": 5702
+        },
+        {
+          "id": "add-comment",
+          "pass": true,
+          "expectedTool": "recipes_add_comment",
+          "selectedTool": "recipes_add_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_z90PGrAS6LMHEApbbHfCJwcF",
+              "name": "recipes_add_comment",
+              "arguments": {
+                "recipeId": "44444444-4444-4444-4444-444444444444",
+                "content": "Try doubling the garlic next time."
+              }
+            }
+          ],
+          "latencyMs": 3688
+        },
+        {
+          "id": "reply-comment",
+          "pass": true,
+          "expectedTool": "recipes_reply_to_comment",
+          "selectedTool": "recipes_reply_to_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_VaNzEN32oA4DEiLgN8wZWhmV",
+              "name": "recipes_reply_to_comment",
+              "arguments": {
+                "recipeId": "55555555-5555-5555-5555-555555555555",
+                "threadId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+                "content": "Agreed, and add more lemon zest too."
+              }
+            }
+          ],
+          "latencyMs": 5157
+        }
+      ]
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "promptFile": "eval/prompts/cookbook-v2-concise.txt",
+      "toolFile": "eval/tools/recipe-tools-v2-concise.json",
+      "tasksTotal": 6,
+      "tasksPassed": 6,
+      "successRate": 100,
+      "taskResults": [
+        {
+          "id": "get-recipe-by-url-id",
+          "pass": true,
+          "expectedTool": "recipes_get_recipe",
+          "selectedTool": "recipes_get_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_eid9pSbqvkC5FFjkl07tuqus",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "11111111-1111-1111-1111-111111111111"
+              }
+            }
+          ],
+          "latencyMs": 4977
+        },
+        {
+          "id": "get-comments",
+          "pass": true,
+          "expectedTool": "recipes_get_comments",
+          "selectedTool": "recipes_get_comments",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_QkSH052bx47dg4zc94EMiVp7",
+              "name": "recipes_get_comments",
+              "arguments": {
+                "recipeId": "22222222-2222-2222-2222-222222222222"
+              }
+            }
+          ],
+          "latencyMs": 3527
+        },
+        {
+          "id": "create-recipe",
+          "pass": true,
+          "expectedTool": "recipes_create_recipe",
+          "selectedTool": "recipes_create_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_6A7a7hEWIeYaMuCEIebvURxC",
+              "name": "recipes_create_recipe",
+              "arguments": {
+                "title": "Weeknight Turkey Chili"
+              }
+            }
+          ],
+          "latencyMs": 4230
+        },
+        {
+          "id": "update-recipe-title",
+          "pass": true,
+          "expectedTool": "recipes_update_recipe",
+          "selectedTool": "recipes_update_recipe",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_94HLaNUbfEkRlTNfa1U1eA3P",
+              "name": "recipes_update_recipe",
+              "arguments": {
+                "recipeId": "33333333-3333-3333-3333-333333333333",
+                "title": "Lemon Ricotta Pancakes"
+              }
+            }
+          ],
+          "latencyMs": 2856
+        },
+        {
+          "id": "add-comment",
+          "pass": true,
+          "expectedTool": "recipes_add_comment",
+          "selectedTool": "recipes_add_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_gTNYVujjY3szEnrcDw8mohsJ",
+              "name": "recipes_add_comment",
+              "arguments": {
+                "recipeId": "44444444-4444-4444-4444-444444444444",
+                "content": "Try doubling the garlic next time."
+              }
+            }
+          ],
+          "latencyMs": 5480
+        },
+        {
+          "id": "reply-comment",
+          "pass": true,
+          "expectedTool": "recipes_reply_to_comment",
+          "selectedTool": "recipes_reply_to_comment",
+          "expectedToolCalled": true,
+          "requiredArgsPresent": true,
+          "argEqualsMatch": true,
+          "toolCalls": [
+            {
+              "id": "call_h3spFNT7J8R4i9z4gcI4kw5X",
+              "name": "recipes_reply_to_comment",
+              "arguments": {
+                "recipeId": "55555555-5555-5555-5555-555555555555",
+                "threadId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+                "content": "Agreed, and add more lemon zest too."
+              }
+            }
+          ],
+          "latencyMs": 5104
+        }
+      ]
+    }
+  ]
+}

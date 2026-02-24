@@ -1,0 +1,133 @@
+{
+  "name": "recipe-tools-v1",
+  "tools": [
+    {
+      "name": "recipes_get_recipe",
+      "description": "Retrieve a recipe by ID, including title and content (ingredients, instructions, etc). Use this before summarizing or editing a recipe. Recipe IDs come from URLs like /dashboard/recipes/{recipeId}.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "recipeId": {
+            "type": "string",
+            "description": "Recipe ID (the UUID in /dashboard/recipes/{recipeId}). When the user is viewing a recipe, this is the ID from the current URL."
+          },
+          "maxChars": {
+            "type": "integer",
+            "description": "Optional max characters of recipe content to return."
+          }
+        },
+        "required": ["recipeId"]
+      }
+    },
+    {
+      "name": "recipes_get_comments",
+      "description": "Retrieve comment threads on a recipe. Use to see feedback, suggestions, or discussion attached to a recipe.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "recipeId": {
+            "type": "string",
+            "description": "Recipe ID (the UUID in /dashboard/recipes/{recipeId})."
+          },
+          "includeResolved": {
+            "type": "boolean",
+            "description": "Include resolved threads. Defaults to true."
+          },
+          "limitThreads": {
+            "type": "integer",
+            "description": "Maximum number of threads to return."
+          },
+          "maxCharsPerComment": {
+            "type": "integer",
+            "description": "Maximum comment content size in chars per comment."
+          }
+        },
+        "required": ["recipeId"]
+      }
+    },
+    {
+      "name": "recipes_create_recipe",
+      "description": "Create a new recipe. Use when the user wants to add a new recipe to their cookbook. Returns the new recipe's ID and URL.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Recipe title."
+          },
+          "content": {
+            "type": "string",
+            "description": "Optional initial recipe content (ingredients, instructions)."
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "recipes_update_recipe",
+      "description": "Update a recipe's title and/or content. Use this to save edits when the user asks you to add ingredients, change instructions, fix typos, or revise a recipe. Content is rich text.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "recipeId": {
+            "type": "string",
+            "description": "Recipe ID (the UUID in /dashboard/recipes/{recipeId})."
+          },
+          "title": {
+            "type": "string",
+            "description": "Updated recipe title."
+          },
+          "content": {
+            "type": "string",
+            "description": "Updated full recipe content."
+          }
+        },
+        "required": ["recipeId"]
+      }
+    },
+    {
+      "name": "recipes_add_comment",
+      "description": "Create a new comment thread on a recipe. Use when the user wants to add a note, suggestion, or discussion point to a recipe.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "recipeId": {
+            "type": "string",
+            "description": "Recipe ID (the UUID in /dashboard/recipes/{recipeId})."
+          },
+          "content": {
+            "type": "string",
+            "description": "Comment content for the new thread."
+          },
+          "anchorText": {
+            "type": "string",
+            "description": "Optional anchor text to attach the comment to a specific part of the recipe."
+          }
+        },
+        "required": ["recipeId", "content"]
+      }
+    },
+    {
+      "name": "recipes_reply_to_comment",
+      "description": "Add a reply to an existing comment thread on a recipe.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "recipeId": {
+            "type": "string",
+            "description": "Recipe ID (the UUID in /dashboard/recipes/{recipeId})."
+          },
+          "threadId": {
+            "type": "string",
+            "description": "Thread ID to reply to."
+          },
+          "content": {
+            "type": "string",
+            "description": "Reply content."
+          }
+        },
+        "required": ["recipeId", "threadId", "content"]
+      }
+    }
+  ]
+}

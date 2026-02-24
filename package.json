@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "eval:harness": "node eval/run.mjs",
+    "eval:ci-heldout": "node eval/run.mjs --provider openai --split heldout --grader anthropic --require-runs true --fail-on-gate-fail true"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.74.0",

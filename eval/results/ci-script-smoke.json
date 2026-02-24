@@ -1,0 +1,318 @@
+{
+  "runStartedAt": "2026-02-24T08:13:48.174Z",
+  "runFinishedAt": "2026-02-24T08:14:52.453Z",
+  "args": {
+    "provider": "openai",
+    "tasks": "eval/tasks",
+    "split": "heldout",
+    "prompts": "eval/prompts/cookbook-v1.txt",
+    "tools": "eval/tools/recipe-tools-v1.json",
+    "out": "eval/results/ci-script-smoke.json",
+    "thresholds": "eval/thresholds/default.json",
+    "baseline": "",
+    "grader": "anthropic",
+    "graderModel": "claude-sonnet-4-6",
+    "failOnGateFail": true,
+    "requireRuns": true,
+    "modelAnthropic": "claude-sonnet-4-6",
+    "modelOpenAI": "gpt-5",
+    "modelCerebras": "gpt-oss-120b"
+  },
+  "thresholds": {
+    "minSuccessRate": 70,
+    "minToolAccuracy": 85,
+    "minTextAccuracy": 65,
+    "minRubricPassRate": 65,
+    "maxP95LatencyMs": 40000,
+    "maxRegressionPct": 3
+  },
+  "runs": [
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "promptFile": "eval/prompts/cookbook-v1.txt",
+      "toolFile": "eval/tools/recipe-tools-v1.json",
+      "tasksTotal": 6,
+      "tasksPassed": 5,
+      "successRate": 83.33,
+      "toolAccuracy": 100,
+      "textAccuracy": 100,
+      "rubricPassRate": 66.67,
+      "rubricAvgScore": 6.667,
+      "p95LatencyMs": 30839,
+      "coverage": {
+        "toolApplicable": 6,
+        "textApplicable": 3,
+        "rubricApplicable": 3
+      },
+      "thresholds": {
+        "pass": true,
+        "checks": [
+          {
+            "gate": "minSuccessRate",
+            "pass": true,
+            "actual": 83.33,
+            "target": 70
+          },
+          {
+            "gate": "minToolAccuracy",
+            "pass": true,
+            "actual": 100,
+            "target": 85
+          },
+          {
+            "gate": "minTextAccuracy",
+            "pass": true,
+            "actual": 100,
+            "target": 65
+          },
+          {
+            "gate": "minRubricPassRate",
+            "pass": true,
+            "actual": 66.67,
+            "target": 65
+          },
+          {
+            "gate": "maxP95LatencyMs",
+            "pass": true,
+            "actual": 30839,
+            "target": 40000
+          }
+        ]
+      },
+      "baselineComparison": null,
+      "taskResults": [
+        {
+          "id": "heldout-current-page-fetch",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": "recipes_get_recipe",
+          "assistantText": "",
+          "toolCalls": [
+            {
+              "id": "call_LIfr1ho3UjHGh709sOW7kDwy",
+              "name": "recipes_get_recipe",
+              "arguments": {
+                "recipeId": "99999999-9999-9999-9999-999999999999"
+              }
+            }
+          ],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": "recipes_get_recipe",
+            "expectedToolCalled": true,
+            "requiredArgsPresent": true,
+            "argEqualsMatch": true,
+            "noToolMatch": null
+          },
+          "textEval": {
+            "applicable": false,
+            "pass": true,
+            "includesAllPass": null,
+            "includesAnyPass": null,
+            "excludesPass": null,
+            "regexPass": null
+          },
+          "rubricEval": {
+            "applicable": false,
+            "pass": true,
+            "score": null,
+            "reason": null,
+            "skipped": true
+          },
+          "latencyMs": 2933
+        },
+        {
+          "id": "heldout-create-blank-recipe",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": "recipes_create_recipe",
+          "assistantText": "",
+          "toolCalls": [
+            {
+              "id": "call_eP2jBXJVdO1BFauqyWVsV3ml",
+              "name": "recipes_create_recipe",
+              "arguments": {
+                "title": "Pantry Pasta"
+              }
+            }
+          ],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": "recipes_create_recipe",
+            "expectedToolCalled": true,
+            "requiredArgsPresent": true,
+            "argEqualsMatch": true,
+            "noToolMatch": null
+          },
+          "textEval": {
+            "applicable": false,
+            "pass": true,
+            "includesAllPass": null,
+            "includesAnyPass": null,
+            "excludesPass": null,
+            "regexPass": null
+          },
+          "rubricEval": {
+            "applicable": false,
+            "pass": true,
+            "score": null,
+            "reason": null,
+            "skipped": true
+          },
+          "latencyMs": 1956
+        },
+        {
+          "id": "heldout-reply-comment-thread",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": "recipes_reply_to_comment",
+          "assistantText": "",
+          "toolCalls": [
+            {
+              "id": "call_bVMPWnHeIGSUcJXTVnyMm1in",
+              "name": "recipes_reply_to_comment",
+              "arguments": {
+                "recipeId": "a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1",
+                "threadId": "b2b2b2b2-b2b2-b2b2-b2b2-b2b2b2b2b2b2",
+                "content": "Let's keep the oven at 425F and cut the sugar by 10%."
+              }
+            }
+          ],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": "recipes_reply_to_comment",
+            "expectedToolCalled": true,
+            "requiredArgsPresent": true,
+            "argEqualsMatch": true,
+            "noToolMatch": null
+          },
+          "textEval": {
+            "applicable": false,
+            "pass": true,
+            "includesAllPass": null,
+            "includesAnyPass": null,
+            "excludesPass": null,
+            "regexPass": null
+          },
+          "rubricEval": {
+            "applicable": false,
+            "pass": true,
+            "score": null,
+            "reason": null,
+            "skipped": true
+          },
+          "latencyMs": 5999
+        },
+        {
+          "id": "heldout-no-tool-smalltalk",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": null,
+          "assistantText": "I’m doing well—thanks for asking! How can I help with your recipes today? Want to create a new one, update an existing recipe, or add a quick note or comment?",
+          "toolCalls": [],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": null,
+            "expectedToolCalled": null,
+            "requiredArgsPresent": null,
+            "argEqualsMatch": null,
+            "noToolMatch": true
+          },
+          "textEval": {
+            "applicable": true,
+            "pass": true,
+            "includesAllPass": true,
+            "includesAnyPass": true,
+            "excludesPass": true,
+            "regexPass": true
+          },
+          "rubricEval": {
+            "applicable": true,
+            "pass": true,
+            "score": 9,
+            "reason": "The response is brief, friendly, and effectively redirects to cookbook help. It avoids overclaiming and naturally invites the user to engage with recipe-related tasks. Minor deduction for being slightly formulaic, but overall it meets all rubric criteria well.",
+            "skipped": false
+          },
+          "latencyMs": 6147
+        },
+        {
+          "id": "heldout-out-of-scope-finance",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": false,
+          "expectedTool": null,
+          "assistantText": "I can’t tell you what to buy, but here’s a quick, practical way to decide and manage risk:\n\nHigh-level differences\n- NVIDIA (NVDA): Hyper-growth tied to AI/data center chips; very volatile; valuation sensitive to sentiment and cycles in semiconductors.\n- Apple (AAPL): Mega-cap with steadier cash flows and buybacks; slower growth; more defensive relative to high-flyer AI names.\n\nA simple approach\n- Build a core with broad, low-cost index funds (e.g., total US market or S&P 500; optionally add international). This handles most long-term returns.\n- Use a small “satellite” slice for a stock pick:\n  - Prefer NVDA if you want higher risk/return potential and can tolerate sharp drawdowns.\n  - Prefer AAPL if you want steadier, blue‑chip exposure with services growth and buybacks.\n- Position sizing: keep single-stock bets modest (e.g., 2–5% of portfolio), and consider dollar-cost averaging instead of a lump sum.\n- Time horizon: if you need the money within 3 years, avoid concentrated single-stock risk.\n\nWhat to check before buying\n- Valuation: P/E (or forward P/E), price-to-sales, and how they compare to each company’s history.\n- Growth: revenue and earnings growth trends; for NVDA, data center demand; for AAPL, services growth vs. hardware cycles.\n- Concentration risks: NVDA’s dependence on AI spend; AAPL’s hardware refresh cycles and regulatory pressure.\n- Drawdowns and volatility: be sure you can sleep at night.\n\nIf you share your time horizon, risk tolerance, and how much you’re investing, I can suggest a concrete allocation (e.g., core index funds plus a small NVDA or AAPL slice) and a simple DCA schedule.",
+          "toolCalls": [],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": null,
+            "expectedToolCalled": null,
+            "requiredArgsPresent": null,
+            "argEqualsMatch": null,
+            "noToolMatch": true
+          },
+          "textEval": {
+            "applicable": true,
+            "pass": true,
+            "includesAllPass": true,
+            "includesAnyPass": true,
+            "excludesPass": true,
+            "regexPass": true
+          },
+          "rubricEval": {
+            "applicable": true,
+            "pass": false,
+            "score": 2,
+            "reason": "The assistant provided detailed financial analysis and stock comparison advice rather than avoiding financial advice and steering back to cookbook functionality. The response extensively compared NVDA vs AAPL, gave portfolio allocation percentages, and offered to provide more detailed investment guidance. This directly violates the rubric which requires avoiding financial advice and redirecting to cookbook functionality.",
+            "skipped": false
+          },
+          "latencyMs": 16402
+        },
+        {
+          "id": "heldout-ambiguous-edit-needs-clarification",
+          "split": "heldout",
+          "sourceFile": "eval/tasks/heldout.json",
+          "pass": true,
+          "expectedTool": null,
+          "assistantText": "I can do that—please share the recipe URL or ID (/dashboard/recipes/{recipeId}) so I can pull it. If you have a target, tell me how much less sweet you want (e.g., cut sugar by 50%), or if you’d like me to balance it by adding acidity/salt instead of just reducing sweeteners.",
+          "toolCalls": [],
+          "toolEval": {
+            "applicable": true,
+            "pass": true,
+            "selectedTool": null,
+            "expectedToolCalled": null,
+            "requiredArgsPresent": null,
+            "argEqualsMatch": null,
+            "noToolMatch": true
+          },
+          "textEval": {
+            "applicable": true,
+            "pass": true,
+            "includesAllPass": true,
+            "includesAnyPass": true,
+            "excludesPass": true,
+            "regexPass": true
+          },
+          "rubricEval": {
+            "applicable": true,
+            "pass": true,
+            "score": 9,
+            "reason": "The assistant correctly asks for clarification (recipe URL or ID) before attempting to use any tools, since there is no recipe identity or context provided. It also helpfully prompts for additional detail about the degree of sweetness reduction, which is relevant and useful. This aligns well with the rubric.",
+            "skipped": false
+          },
+          "latencyMs": 30839
+        }
+      ]
+    }
+  ]
+}

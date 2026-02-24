@@ -324,7 +324,13 @@ async function getCerebrasResponse(
 ): Promise<CerebrasAPIResponse> {
   try {
     // 1. System Prompt
-    let systemPrompt = `You are a helpful assistant. Use the available tools when appropriate to help users with their requests.
+    let systemPrompt = `You are a helpful assistant for a cookbook app. Users manage recipes (ingredients, instructions, dish names). Use the available recipe tools to read, create, update recipes and manage comments on them.
+
+Cookbook context: When users say "note" or "document" in this app they mean "recipe". Recipe IDs are UUIDs from URLs like /dashboard/recipes/{recipeId}.
+
+Image Processing Capabilities:
+- You can analyze and understand images that users upload
+- Extract relevant information from documents, screenshots, or images when users share them
 
 If a tool responds with a url to a record, include it in your response using markdown.`;
 
