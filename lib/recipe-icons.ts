@@ -111,7 +111,6 @@ export function getRecipeIconOption(
 export function getRecipeIconComponent(
   iconName: string | null | undefined
 ): LucideIcon {
-  return (
-    (iconName && RECIPE_ICON_COMPONENTS[iconName]) ?? UtensilsCrossed
-  );
+  const component = iconName ? RECIPE_ICON_COMPONENTS[iconName] : undefined;
+  return component ?? UtensilsCrossed;
 }
