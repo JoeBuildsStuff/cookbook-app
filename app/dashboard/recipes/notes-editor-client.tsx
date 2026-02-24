@@ -52,7 +52,7 @@ export function NotesEditorClient({
   const router = useRouter();
   const [title, setTitle] = useState(initialTitle);
   const [content, setContent] = useState(initialContent);
-  const [showComments, setShowComments] = useState(true);
+  const [showComments, setShowComments] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
   const [isUpdatingFavorite, setIsUpdatingFavorite] = useState(false);
