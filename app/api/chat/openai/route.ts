@@ -14,7 +14,7 @@ interface OpenAIAPIRequest {
   context?: PageContext | null;
   messages?: ChatMessage[];
   model?: string;
-  reasoningEffort?: "low" | "medium" | "high";
+  reasoningEffort?: "none" | "low" | "medium" | "high" | "xhigh";
   attachments?: Array<{
     file: File;
     name: string;
@@ -87,9 +87,11 @@ export async function POST(
       const messagesStr = formData.get("messages") as string;
       const model = formData.get("model") as string;
       const reasoningEffort = formData.get("reasoning_effort") as
+        | "none"
         | "low"
         | "medium"
-        | "high";
+        | "high"
+        | "xhigh";
       const clientTz = (formData.get("client_tz") as string) || "";
       const clientOffset = (formData.get("client_utc_offset") as string) || "";
       const clientNowIso = (formData.get("client_now_iso") as string) || "";

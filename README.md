@@ -24,7 +24,7 @@ A web cookbook application for creating and managing recipes with an AI assistan
 - **Recipe tools** – Create, update, and fetch recipes; add comments and replies.
 - **Web search** – Real-time search with citations (Anthropic only).
 - **File attachments** – Attach images and documents to chat messages.
-- **Model selection** – Claude (Haiku, Sonnet, Opus), GPT-5 variants, Cerebras.
+- **Model selection** – `claude-haiku-4-5`, `claude-sonnet-4-6`, `claude-opus-4-6`, `gpt-oss-120b`, `gpt-5.4`, `gpt-5`, `gpt-5.4-mini`, `gpt-5.4-nano`.
 - **Reasoning effort** – Configurable reasoning level for supported models.
 
 ### Account
