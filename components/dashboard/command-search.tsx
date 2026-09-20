@@ -165,16 +165,24 @@ export default function CommandSearch({
     (showSearchAction && searchValue.trim().length > 0);
 
   const handleSelectOption = (option: CommandOption, groupId: string) => {
+    setOpen(false);
+    // Reset the query so the next open starts fresh
+    setSearchValue("");
     onSelect?.(option, groupId);
   };
 
   const handleSelectSearch = (value: string) => {
+    setSearchValue("");
     onSearch?.(value);
     setOpen(false);
   };
 
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
+    if (!isOpen) {
+      // Clear the query when dismissed so stale text doesn't persist
+      setSearchValue("");
+    }
   };
 
   const defaultRenderItem = (option: CommandOption) => {
@@ -200,12 +208,12 @@ export default function CommandSearch({
         <Button
           variant="outline"
           size="sm"
-          className="flex items-center gap-2 h-7 text-muted-foreground hover:text-foreground justify-between shadow-none"
+          className="flex items-center gap-2 h-8 w-48 sm:w-56 text-muted-foreground hover:text-foreground justify-between shadow-none rounded-lg"
           aria-label={buttonAriaLabel}
         >
-          <div className="flex items-center gap-2">
-            <Search className="size-3" />
-            <span className="text-xs">{buttonPlaceholder}</span>
+          <div className="flex items-center gap-2 min-w-0">
+            <Search className="size-3.5 shrink-0" />
+            <span className="text-xs truncate">{buttonPlaceholder}</span>
           </div>
           <KbdGroup>
             <Kbd>{isMac ? "⌘" : "Ctrl"}</Kbd>
@@ -216,6 +224,7 @@ export default function CommandSearch({
       <PopoverContent className={`${popoverWidth} p-0 rounded-xl`} align="end">
         <Command shouldFilter={false} className="rounded-xl">
           <CommandInput
+            autoFocus
             placeholder={placeholder}
             value={searchValue}
             onValueChange={setSearchValue}
